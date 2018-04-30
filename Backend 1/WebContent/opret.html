@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	
+<link rel="stylesheet" type="text/css" href="Stylish.css">
+<script type="text/javascript" src="jquery-3.3.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript" src="jquery.jquery.serialize-object.js"> </script>
+
+<script>
+	$(function() { // Sikrer sig at dokumentet er indlæst, 
+		// før click handlers håndteres
+		$('#submit').click(function() { //Sætter en click handler på knappen
+			$.ajax({ //Indleder et asynkront ajax kald
+				url : 'front/query', //specificerer endpointet
+				type : 'POST', //Typen af HTTP requestet (GET er default)
+				data: $('#id').val(), 
+				contentType : 'text/plain',
+			success : function(data) {//Funktion der skal udføres når data er hentet
+					$('#mydiv').html(data); //Manipulerer #mydiv.
+
+				}
+			});
+			return false; //For at undgå at knappen poster data (default behavior).
+
+		});
+
+	});
+	    
+</script>
+
+</head>
+
+<body>
+
+
+<p id = "demo"></p><br>
+<input type="text" id="myText" value="">
+<button onclick="myFunction()">Test</button>
+
+<div class = "divOpret">
+<!--   <img>
+<img src="http://www.dtu.dk/english/-/media/DTU-endk/About%20DTU/PRESS_ROOM/DTU-3.ashx?h=237&la=da&mw=460&w=162"
+    alt="http://www.dtu.dk/english/About/PRESS-ROOM/Photos-and-Multimedia/DTU-logo" width="90" height="125">
+  </img> -->
+<form action ="" method="post" form enctype='application/json' onclick="myFunction()">
+<h1> <b> <center> Opret bruger </center></b> </h1>
+
+<center>BrugerID:</center>  <center><input type = "text" id = "ID"  required  pattern="[0-9.]+"> </center><br>
+<center>Brugernavn</center> <center><input type = "text" id = "Brugernavn" required="required" pattern="[a-åA-Å]*" ></center><br>
+<center> Initial </center>  <center><input  type = "text" id = "ini" required="required" ></center><br>
+<center>CPR-nr 	</center> 	<center><input  type = "text" id = "CPR" required="required" ></center><br>
+
+<center><select id = rolle required="required">
+<option value =""> Vælg rolle </option> 
+<option value="Admin">Admin</option>
+<option value="Pharmacist">Pharmacist</option>
+<option value="Produktionsleder">Produktionsleder</option>
+<option value="Laborant">Laborant</option>
+</select></center><br>
+
+<center><input type = "submit" value = "Opret"></center>
+</form>
+</div>
+
+</body>
+<script>
+			function myFunction() {
+				var id = document.getElementById("ID").value;  
+				var navn = document.getElementById("Brugernavn").value
+				var ini = document.getElementById("ini").value
+				var cpr = document.getElementById("CPR").value 
+				
+				var soren = { "ID": id, "Brugernavn" : "Søren", "Initial" : "Srn", "CPR" : 10204920 }
+			    document.getElementById("demo").innerHTML = id;
+				document.getElementById("demo").innerHTML += " " + navn;
+				document.getElementById("demo").innerHTML += " " + ini;
+				document.getElementById("demo").innerHTML += " " + cpr;
+				}
+			</script>
+</html>

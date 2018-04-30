@@ -1,0 +1,89 @@
+body {
+    background-color: white;
+}
+
+h1 {
+    color: black;
+    text-align: center;
+}
+
+p {
+    font-family: verdana;
+    font-size: 20px;
+}
+div{
+  padding: 10px;
+  position: fixed;
+  right: 40%;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 7px;
+  width: 400px;
+  top: 10%;
+  box-shadow: 5px 10px 18px #888888;
+}
+.divAdmin{
+  padding: 10px;
+  position: fixed;
+  margin: auto;
+  /*
+right: 27.5%;
+  */
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 7px;
+  width: 600px;
+  top: 20%;
+  box-shadow: 5px 10px 18px #888888;
+}
+.divOpret{
+  padding: 10px;
+  position: fixed;
+  right: 40%;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 7px;
+  width: 400px;
+  top: 20%;
+  box-shadow: 5px 10px 18px #888888;
+}
+
+tr:nth-of-type(even) {
+ background-color:lightgrey;
+}
+
+.input{
+  border-radius: 5px;
+  float: right;
+}
+
+img{
+float: left;
+  position: absolute;
+}
+
+
+ul{
+  list-style-type: none;
+  background-color: grey;
+  overflow: hidden;
+}
+
+li{
+  float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 20px;
+}
+li a:hover:not(.active) {
+    color : darkorange;
+}
+.active{
+  background-color: darkorange;
+}
