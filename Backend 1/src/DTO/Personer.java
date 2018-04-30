@@ -70,4 +70,11 @@ public class Personer {
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
+	
+	public String toString() {
+		String str = null;
+		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles; " + roles;
+		return str;
+		
+	}
 }
