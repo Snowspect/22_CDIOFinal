@@ -20,7 +20,7 @@
 				url : 'front/query', //specificerer endpointet
 				type : 'POST', //Typen af HTTP requestet (GET er default)
 				data : $('#id').val(),
-				contentType : 'text/plain',
+				contentType : 'application/json',
 				success : function(data) {//Funktion der skal udføres når data er hentet
 					$('#mydiv').html(data); //Manipulerer #mydiv.
 				}
@@ -101,17 +101,23 @@
 		var navn = document.getElementById("Brugernavn").value
 		var ini = document.getElementById("ini").value
 		var cpr = document.getElementById("CPR").value
-
+		var rolle = document.getElementById("rolle").value
+		
 		var soren = {
 			"ID" : id,
 			"Brugernavn" : navn,
 			"Initial" : ini,
-			"CPR" : cpr
+			"CPR" : cpr,
+			"rolle" : rolle
 		}
-		document.getElementById("demo").innerHTML = id;
+		
+		var myJSON = JSON.stringify(soren);
+		document.getElementById("demo").innerHTML = myJSON;
+		
+/* 		document.getElementById("demo").innerHTML = id;
 		document.getElementById("demo").innerHTML += " " + navn;
 		document.getElementById("demo").innerHTML += " " + ini;
 		document.getElementById("demo").innerHTML += " " + cpr;
-	}
+ */	}
 </script>
 </html>
