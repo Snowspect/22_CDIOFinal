@@ -17,7 +17,7 @@
 			$.ajax({ //Indleder et asynkront ajax kald
 				url : 'front/query', //specificerer endpointet
 				type : 'POST', //Typen af HTTP requestet (GET er default)
-				data: $('#id').val(), 
+				data: $('#id').val(),
 				contentType : 'text/plain',
 			success : function(data) {//Funktion der skal udføres når data er hentet
 					$('#mydiv').html(data); //Manipulerer #mydiv.
@@ -69,16 +69,16 @@
 </body>
 <script>
 			function myFunction() {
-				var id = document.getElementById("ID").value;  
+				var id = document.getElementById("ID").value;
 				var navn = document.getElementById("Brugernavn").value
 				var ini = document.getElementById("ini").value
-				var cpr = document.getElementById("CPR").value 
+				var cpr = document.getElementById("CPR").value
 				
-				var soren = { "ID": id, "Brugernavn" : "Søren", "Initial" : "Srn", "CPR" : 10204920 }
+				var soren = { "ID": id, "Brugernavn" : "Søren", "Initial" : "Srn", "CPR" : 10204920}
 			    document.getElementById("demo").innerHTML = id;
 				document.getElementById("demo").innerHTML += " " + navn;
 				document.getElementById("demo").innerHTML += " " + ini;
 				document.getElementById("demo").innerHTML += " " + cpr;
 				}
-			</script>
+</script>
 </html>
