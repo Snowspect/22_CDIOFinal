@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="Stylish.css">
 <script type="text/javascript" src="jquery-3.3.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript" src="jquery.jquery.serialize-object.js">
+<script type="text/javascript" src="jquery.serialize-object.js">
 
 </script>
 
@@ -19,7 +19,7 @@
 			$.ajax({ //Indleder et asynkront ajax kald
 				url : 'rest/backend/create', //specificerer endpointet
 				type : 'POST', //Typen af HTTP requestet (GET er default)
-				data : 	myJSON
+				data : 	myJSON,
 				contentType : 'application/json',
 				success : function(data) {//Funktion der skal udføres når data er hentet
 					alert(data) //Manipulerer #mydiv.
@@ -47,8 +47,7 @@
 <img src="http://www.dtu.dk/english/-/media/DTU-endk/About%20DTU/PRESS_ROOM/DTU-3.ashx?h=237&la=da&mw=460&w=162"
     alt="http://www.dtu.dk/english/About/PRESS-ROOM/Photos-and-Multimedia/DTU-logo" width="90" height="125">
   </img> -->
-		<form action="" method="post" form enctype='application/json'
-			onclick="myFunction()">
+		<form action="" method="post">
 			<h1>
 				<b>
 					<center>Opret bruger</center>
@@ -108,6 +107,7 @@
 			"Brugernavn" : navn,
 			"Initial" : ini,
 			"CPR" : cpr,
+			"Password" : 0,
 			"rolle" : rolle
 		}
 		
