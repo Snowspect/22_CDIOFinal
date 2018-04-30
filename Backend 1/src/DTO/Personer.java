@@ -8,13 +8,13 @@ public class Personer {
 	private String ini;
 	private String cpr;
 	private String password;
-	private List <String> roles;
+	private String roles;
 	
 	//Stig sagde der også skulle være en tom constructor
 	public Personer() {
 	}
 
-	public Personer(int userId, String userName, String ini, String cpr, String password, List <String> roles) {
+	public Personer(int userId, String userName, String ini, String cpr, String password, String roles) {
 		this.userId = userId;
 		this.userName = userName;
 		this.ini = ini;
@@ -63,11 +63,11 @@ public class Personer {
 		this.password = password;
 	}
 
-	public List<String> getRoles() {
+	public String getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(String roles) {
 		this.roles = roles;
 	}
 	

@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -24,7 +25,7 @@ public class Backend {
 			@FormParam("ini") String ini,
 			@FormParam("cpr") String cpr,
 			@FormParam("password") String password,
-			@FormParam("roles") List <String> roles) {
+			@FormParam("roles") String roles) {
 		
 		//TODO add to list
 		Personer test = new Personer(userId, userName, ini, cpr, password, roles);
@@ -36,6 +37,14 @@ public class Backend {
 		//String result = "The ingredient added has id-number: " + id + " and the name " + name +
 		//		". The amount added was " + amount + ".";
 		return result;
+	}
+
+	@GET
+	@Path("/test")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Personer getUser() {
+		Personer per = new Personer(45, "peter", "pl", "12345678", "password", "admin");
+		return per;
 	}
 	
 	//Notes
@@ -56,4 +65,8 @@ public class Backend {
 //
 //		return result;
 //	}
+	
+	
+	
+	
 }
