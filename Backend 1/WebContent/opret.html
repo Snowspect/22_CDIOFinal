@@ -13,16 +13,41 @@
 </script>
 
 <script>
+function myFunction() {
+	var id = document.getElementById("ID").value;
+	var navn = document.getElementById("Brugernavn").value
+	var ini = document.getElementById("ini").value
+	var cpr = document.getElementById("CPR").value
+	var rolle = document.getElementById("rolle").value
+	
+	var bruger = {
+		"userId" : id,
+		"userName" : navn,
+		"ini" : ini,
+		"cpr" : cpr,
+		"password" : 0,
+		"roles" : rolle
+	}
+	return bruger;
+	//var myJSON = JSON.stringify(bruger);
+	//document.getElementById("demo").innerHTML = myJSON;
+
+}
 	$(function() { // Sikrer sig at dokumentet er indlæst, 
 		// før click handlers håndteres
 		$('#submit').click(function() { //Sætter en click handler på knappen
+					alert("Test");
+		debugger;
+		myJSON = myFunction();
 			$.ajax({ //Indleder et asynkront ajax kald
 				url : 'rest/backend/create', //specificerer endpointet
 				type : 'POST', //Typen af HTTP requestet (GET er default)
-				data : 	myJSON,
+				data : 	JSON.stringify(myJSON),
 				contentType : 'application/json',
 				success : function(data) {//Funktion der skal udføres når data er hentet
-					alert(data) //Manipulerer #mydiv.
+					alert("data"); //Manipulerer #mydiv.
+				}, failure: function(){
+					alert("fail");
 				}
 			});
 			return false; //For at undgå at knappen poster data (default behavior).
@@ -88,36 +113,13 @@
 			<br>
 
 			<center>
-				<input type="submit" value="Opret">
+				<input type="submit" id="submit" value="Opret">
 			</center>
 		</form>
 	</div>
 
 </body>
 <script>
-	function myFunction() {
-		var id = document.getElementById("ID").value;
-		var navn = document.getElementById("Brugernavn").value
-		var ini = document.getElementById("ini").value
-		var cpr = document.getElementById("CPR").value
-		var rolle = document.getElementById("rolle").value
-		
-		var bruger = {
-			"ID" : id,
-			"Brugernavn" : navn,
-			"Initial" : ini,
-			"CPR" : cpr,
-			"Password" : 0,
-			"rolle" : rolle
-		}
-		
-		var myJSON = JSON.stringify(bruger);
-		document.getElementById("demo").innerHTML = myJSON;
-		
-/* 		document.getElementById("demo").innerHTML = id;
-		document.getElementById("demo").innerHTML += " " + navn;
-		document.getElementById("demo").innerHTML += " " + ini;
-		document.getElementById("demo").innerHTML += " " + cpr;
- */	}
+	
 </script>
 </html>

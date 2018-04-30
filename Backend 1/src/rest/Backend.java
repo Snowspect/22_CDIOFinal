@@ -19,17 +19,10 @@ public class Backend {
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUser(
-			@FormParam("userId") int userId,
-			@FormParam("userName") String userName,
-			@FormParam("ini") String ini,
-			@FormParam("cpr") String cpr,
-			@FormParam("password") String password,
-			@FormParam("roles") String roles) {
+	public String createUser(Personer per) {
 		
 		//TODO add to list
-		Personer test = new Personer(userId, userName, ini, cpr, password, roles);
-		System.out.println(test.toString());
+		System.out.println(per.toString());
 		
 		String result = "It works, maybe";
 		
