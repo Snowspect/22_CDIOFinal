@@ -17,12 +17,12 @@
 		// før click handlers håndteres
 		$('#submit').click(function() { //Sætter en click handler på knappen
 			$.ajax({ //Indleder et asynkront ajax kald
-				url : 'front/query', //specificerer endpointet
+				url : 'rest/backend/create', //specificerer endpointet
 				type : 'POST', //Typen af HTTP requestet (GET er default)
-				data : $('#id').val(),
+				data : 	myJSON
 				contentType : 'application/json',
 				success : function(data) {//Funktion der skal udføres når data er hentet
-					$('#mydiv').html(data); //Manipulerer #mydiv.
+					alert(data) //Manipulerer #mydiv.
 				}
 			});
 			return false; //For at undgå at knappen poster data (default behavior).
@@ -103,7 +103,7 @@
 		var cpr = document.getElementById("CPR").value
 		var rolle = document.getElementById("rolle").value
 		
-		var soren = {
+		var bruger = {
 			"ID" : id,
 			"Brugernavn" : navn,
 			"Initial" : ini,
@@ -111,7 +111,7 @@
 			"rolle" : rolle
 		}
 		
-		var myJSON = JSON.stringify(soren);
+		var myJSON = JSON.stringify(bruger);
 		document.getElementById("demo").innerHTML = myJSON;
 		
 /* 		document.getElementById("demo").innerHTML = id;
