@@ -3,12 +3,12 @@ package DTO;
 import java.util.List;
 
 public class Personer {
-	int userId;
-	String userName;
-	String ini;
-	String cpr;
-	String password;
-	List <String> roles;
+	private int userId;
+	private String userName;
+	private String ini;
+	private String cpr;
+	private String password;
+	private List <String> roles;
 	
 	//Stig sagde der også skulle være en tom constructor
 	public Personer() {
