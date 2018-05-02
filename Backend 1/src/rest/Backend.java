@@ -14,19 +14,17 @@ import DTO.Personer;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class Backend {
-//	private ArrayList <Personer> perList = new ArrayList<Personer>();
-	UserList perList = new UserList();
+	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createUser(Personer per) {
-		perList.addPerToList(per);
-		//perList.addPerToList(new Personer(45, "peter", "pl", "12345678", "password", "admin"));
-		//perList.addPerToList(new Personer(22, "Hans", "hs", "87654321", "kode", "admin"));
-		System.out.println(perList.getPerList().toString());
-		
-		//System.out.println(per.toString());
+		perList.add(per);
+		//perList.add(new Personer(45, "peter", "pl", "12345678", "password", "admin"));
+		//perList.add(new Personer(22, "Hans", "hs", "87654321", "kode", "admin"));
+		System.out.println("Created user: " + per.toString());
+		System.out.println("Current list " + perList.toString());
 		
 		String result = "It works, maybe";
 		return result;
@@ -36,9 +34,8 @@ public class Backend {
 	@Path("/test")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Personer> getUsers() {
-		//Personer per = new Personer(45, "peter", "pl", "12345678", "password", "admin");
-		System.out.println("Get list: " + perList.getPerList().toString());
-		return perList.getPerList();
+		System.out.println("Get list: " + perList.toString());
+		return perList;
 	}
 
 }
