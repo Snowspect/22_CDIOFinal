@@ -44,11 +44,18 @@ function myFunction() {
 		
 		
 function toView(){
-        location.href = "ViewUsers.html";
+    $(function(){
+    	$("#transform").load("ViewUsers.html");
+    })
 }
 function toCreate(){
-		location.href = "opret.html"
+	$(function(){
+		$("#transform").load("opret.html").innerhtml;
+	})
 }
+
+
+
 $(function() {
 		$.ajax({ //Indleder et asynkront ajax kald
 			url : 'rest/backend/list', //specificerer endpointet
