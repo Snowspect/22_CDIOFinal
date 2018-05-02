@@ -44,10 +44,10 @@ function myFunction() {
 		
 		
 function toView(){
-        location.href = "opret.html";
+        location.href = "ViewUsers.html";
 }
 function toCreate(){
-		location.href = "ViewUsers.html"
+		location.href = "opret.html"
 }
 $(function() {
 		$.ajax({ //Indleder et asynkront ajax kald
