@@ -31,7 +31,7 @@ public class Backend {
 	}
 
 	@GET
-	@Path("/test")
+	@Path("/list")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Personer> getUsers() {
 		System.out.println("Get list: " + perList.toString());
