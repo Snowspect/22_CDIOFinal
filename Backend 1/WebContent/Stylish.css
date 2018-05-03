@@ -7,10 +7,16 @@ h1 {
     text-align: center;
 }
 
+#buttons_div {
+	display: inline-block;
+	padding-bottom: 30px;
+}
+
 p {
     font-family: verdana;
     font-size: 20px;
 }
+/*
 div{
   padding: 10px;
   position: fixed;
@@ -20,6 +26,7 @@ div{
   width: 400px;
   top: 10%;
 }
+*/
 .divAdmin{
   padding: 10px;
   position: fixed;
@@ -34,12 +41,8 @@ right: 27.5%;
 }
 .divOpret{
   padding: 10px;
-  position: fixed;
-  right: 40%;
   border-width: 2px;
   border-radius: 7px;
-  width: 400px;
-  top: 20%;
 }
 
 tr:nth-of-type(even) {
