@@ -1,9 +1,9 @@
-package rest;
+package user;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.ApplicationPath;
 
-@ApplicationPath("/rest")
+@ApplicationPath("/cargostock")
 public class AppConfig extends Application {
 
 }

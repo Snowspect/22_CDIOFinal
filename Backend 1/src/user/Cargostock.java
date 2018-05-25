@@ -1,4 +1,4 @@
-package rest;
+package user;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -10,10 +10,8 @@ import javax.ws.rs.core.MediaType;
 
 import DTO.Personer;
 
-@Path("/backend")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class Backend {
+@Path("/user")
+public class Cargostock {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 
 	@POST

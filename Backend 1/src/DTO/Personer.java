@@ -10,7 +10,7 @@ public class Personer {
 	private String password;
 	private String roles;
 	
-	//Stig sagde der også skulle være en tom constructor
+	//tom constructor for god ordens skyld
 	public Personer() {
 	}
 

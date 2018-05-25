@@ -1,5 +1,5 @@
-
-function myFunction() {
+//draws person information from html into a "bruger" variable
+function getPersonFromHTML() {
 	var id = document.getElementById("ID").value;
 	var navn = document.getElementById("Brugernavn").value
 	var ini = document.getElementById("ini").value
@@ -22,10 +22,10 @@ function myFunction() {
 	function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
 				alert("Function kaldt");
 	//debugger;
-	myJSON = myFunction();
+	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger" 
 		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'rest/backend/create', //specificerer endpointet
-			type : 'POST', //Typen af HTTP requestet (GET er default)
+			url : 'cargostock/user/create', //specificerer endpointet
+			type : 'POST', //Typen af HTTP requestet
 			data : 	JSON.stringify(myJSON),
 			contentType : 'application/json',
 			//Nedenstående bliver ikke kørt
@@ -55,7 +55,7 @@ function toCreate(){
 
 $(function() {
 		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'rest/backend/list', //specificerer endpointet
+			url : 'cargostock/user/list', //specificerer endpointet
 			type : 'GET', //Typen af HTTP requestet (GET er default)
 			contentType : 'application/json',
 			//Nedenstående bliver ikke kørt
