@@ -2,6 +2,7 @@ package user;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,6 +29,15 @@ public class Cargostock {
 		
 		String result = "It works, maybe";
 		return result;
+	}
+	
+	@DELETE
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String deleteUser(Personer per)
+	{
+		perList.remove(per);
+		return "user deleted";
 	}
 
 	@GET

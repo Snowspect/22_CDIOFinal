@@ -38,6 +38,26 @@ function getPersonFromHTML() {
 		document.getElementById("myForm").reset();	//Clear the form
 		return false; //For at undgå at knappen poster data (default behavior).
 	}
+	
+	function remove() {
+		alert("delete called");
+		myJSON = getPersonFromHTML();
+		$.ajax({
+			url : 'cargostock/user/delete',
+			type : 'DELETE',
+			data : JSON.strinify(myJSON),
+			contentType : 'application/json',
+			success : function(data)
+			{
+				alert("data");
+			}, failure: function(){
+				alert("fail");
+			}
+		})
+		//remove from selected
+		//or refresh list
+		
+	}
 		
 function toView()
 {
