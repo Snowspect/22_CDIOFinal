@@ -11,6 +11,8 @@ import javax.ws.rs.core.MediaType;
 import DTO.Personer;
 
 @Path("/user")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class Cargostock {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 
