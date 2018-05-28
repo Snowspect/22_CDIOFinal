@@ -1,13 +1,33 @@
 
+// Updates a user using POST
+function update() {
+	alert("update called");
+	myJSON = getPersonFromHTML();
+	$.ajax({
+		url : "cargostock/users/" + document.getElementById("ID").value,
+		type : 'POST',
+		data : JSON.stringify(myJSON),
+		contentType : 'application/json',
+		success: function(data) {
+			alert("update succesful");
+			toUpdate();
+		}, failure: function(){
+			alert("fail");
+		}
+	});
+	document.getElementById("myForm").reset();	//Clear the form
+	return false; //For at undgå at knappen poster data (default behavior).
+}
+
 /**
- * Creates a user using POST, uses the cargostock/user/create path
+ * Creates a user using PUT, uses the cargostock/user/create path
  */
 function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	alert("Function kaldt");
 	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
 		$.ajax({ //Indleder et asynkront ajax kald
-			url : "cargostock/users" + document.getElementById("ID").value, //specificerer endpointet
-			type : 'POST', //Typen af HTTP requestet
+			url : "cargostock/users/" + document.getElementById("ID").value, //specificerer endpointet
+			type : 'PUT', //Typen af HTTP requestet
 			data : 	JSON.stringify(myJSON),
 			contentType : 'application/json',
 			//Nedenstående bliver ikke kørt
@@ -32,7 +52,7 @@ function loadUsers(){
     		type : 'GET', //Typen af HTTP requestet (GET er default)
     		contentType : 'application/json',
     		//Nedenstående bliver ikke kørt
-    		success : function(data) 
+    		success : function(data)
     		{//Funktion der skal udføres når data er hentet
     			iterate(data);
     			//alert("data");
@@ -52,18 +72,20 @@ function removeUser() {
 	var id = document.getElementById("ID").value;
 //s	var myObj = null;
 	$.ajax({
-	url : 'cargostock/user/delete',
+	url : "cargostock/users/" + document.getElementById("ID"),
 	type : 'DELETE',
 	data : JSON.stringify(id),
 	contentType: 'application/json',
 	success : function(data)
 		{
 			alert("successful delete");
-			toDelete();
+			toDelete(); //currently called as there is no direct method for emptying a table, 
+						//and as such we reload the html
 		}, failure: function(){
 			alert("failed delete");
 		}
 	});
+	document.getElementById("deleteForm").reset();	//Clear the form
 }
 
 //draws person information from html into a "bruger" variable
@@ -157,4 +179,12 @@ function toView()
     	$("#transform").load("ViewUsers.html");
     });
     loadUsers(); //now not automatically executed once front page loads.
+}
+
+function toUpdate()
+{
+	$(function() {
+		$("#transform").load("UpdateUser.html")
+	});
+	loadUsers();
 }

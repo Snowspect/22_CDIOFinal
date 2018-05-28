@@ -18,6 +18,7 @@ import DTO.Personer;
 public class Cargostock {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 
+	//Inserts new user into system
 	@PUT
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -32,7 +33,7 @@ public class Cargostock {
 		return result;
 	}
 
-	//Gets a list
+	//Gets list of users
 	@GET
 	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -41,12 +42,31 @@ public class Cargostock {
 		return perList;
 	}
 
+	//removes user from list
 	@DELETE
-	@Path("/{id}")
+	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void deleteUser(int id)
 	{
-		
 		perList.removeIf(e-> e.getUserId() == id);
+	}
+	
+	//Updates a user
+	@POST
+	@Path("{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateUser(Personer per)
+	{
+		for (Personer person : perList) {
+			if(person.getUserId() == per.getUserId())
+			{
+				person.setUserId(per.getUserId());
+				person.setUserName(per.getUserName());
+				person.setCpr(per.getCpr());
+				person.setIni(per.getIni());
+				person.setPassword(per.getPassword());
+				person.setRoles(per.getRoles());
+			}
+		}
 	}
 }
