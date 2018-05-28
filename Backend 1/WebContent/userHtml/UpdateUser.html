@@ -1,31 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
 <link rel="stylesheet" type="text/css" href="Stylish.css">
-<script type="text/javascript" src="jquery-3.3.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript" src="functionality.js"></script>
-<script type="text/javascript" src="jquery.serialize-object.js">
-
-
-</script>
-
 </head>
-
 <body>
-	<div class="divOpret">
+	<div class="divUpdate">
 		<!--   <img>
 <img src="http://www.dtu.dk/english/-/media/DTU-endk/About%20DTU/PRESS_ROOM/DTU-3.ashx?h=237&la=da&mw=460&w=162"
     alt="http://www.dtu.dk/english/About/PRESS-ROOM/Photos-and-Multimedia/DTU-logo" width="90" height="125">
   </img> -->
-		<form id="myForm" action="javascript:submit()" method="put">
+		<form id="myForm" action="javascript:update()" method="post">
 			<h1>
 				<b>
-					<center>Opret bruger</center>
+					<center>Rediger bruger</center>
 				</b>
 			</h1>
 
@@ -66,9 +55,21 @@
 			<br>
 
 			<center>
-				<input type="submit" value="Opret">
+				<input type="submit" value="Update">
 			</center>
 		</form>
+	</div>
+		<div id="table">
+		<table id="userTable"> 
+			<tr>
+				<th>BrugerID</th>
+				<th>Brugernavn</th>
+				<th>Initialer</th>
+				<th>CPR</th>
+				<th>Password</th>
+				<th>Rolle</th>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>

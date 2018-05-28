@@ -154,7 +154,7 @@ function insert(id, userName, ini, cpr, passwd, role) {
  */
 function toCreate(){
 	$(function(){
-		$("#transform").load("opret.html");
+		$("#transform").load("userHtml/opret.html");
 	})
 }
 
@@ -164,7 +164,7 @@ function toCreate(){
  */
 function toDelete(){
 	$(function() {
-		$("#transform").load("deleteUser.html");
+		$("#transform").load("userHtml/deleteUser.html");
 	})
 	loadUsers();
 }
@@ -176,7 +176,7 @@ function toDelete(){
 function toView()
 {
     $(function loadViewUsers(){
-    	$("#transform").load("ViewUsers.html");
+    	$("#transform").load("userHtml/ViewUsers.html");
     });
     loadUsers(); //now not automatically executed once front page loads.
 }
@@ -184,7 +184,7 @@ function toView()
 function toUpdate()
 {
 	$(function() {
-		$("#transform").load("UpdateUser.html")
+		$("#transform").load("userHtml/UpdateUser.html")
 	});
 	loadUsers();
 }
