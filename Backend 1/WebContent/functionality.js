@@ -6,7 +6,7 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 	alert("Function kaldt");
 	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
 		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'cargostock/user/create', //specificerer endpointet
+			url : "cargostock/users" + document.getElementById("ID").value, //specificerer endpointet
 			type : 'POST', //Typen af HTTP requestet
 			data : 	JSON.stringify(myJSON),
 			contentType : 'application/json',
@@ -28,7 +28,7 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 function loadUsers(){
     $(function() {
     	$.ajax({ //Indleder et asynkront ajax kald
-    		url : 'cargostock/user/list', //specificerer endpointet
+    		url : 'cargostock/users', //specificerer endpointet
     		type : 'GET', //Typen af HTTP requestet (GET er default)
     		contentType : 'application/json',
     		//Nedenstående bliver ikke kørt

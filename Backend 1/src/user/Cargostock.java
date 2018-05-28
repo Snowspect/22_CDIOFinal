@@ -5,20 +5,21 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.Personer;
 
-@Path("/user")
+@Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class Cargostock {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 
-	@POST
-	@Path("/create")
+	@PUT
+	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createUser(Personer per) {
 		perList.add(per);
@@ -31,8 +32,9 @@ public class Cargostock {
 		return result;
 	}
 
+	//Gets a list
 	@GET
-	@Path("/list")
+	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Personer> getUsers() {
 		System.out.println("Get list: " + perList.toString());
@@ -40,10 +42,11 @@ public class Cargostock {
 	}
 
 	@DELETE
-	@Path("/delete")
+	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void deleteUser(int id)
 	{
+		
 		perList.removeIf(e-> e.getUserId() == id);
 	}
 }
