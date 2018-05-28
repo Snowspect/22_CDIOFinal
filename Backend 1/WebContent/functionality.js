@@ -1,27 +1,9 @@
-//draws person information from html into a "bruger" variable
-function getPersonFromHTML() {
-	var id = document.getElementById("ID").value;
-	var navn = document.getElementById("Brugernavn").value
-	var ini = document.getElementById("ini").value
-	var cpr = document.getElementById("CPR").value
-	var passwd = document.getElementById("password").value
-	var rolle = document.getElementById("rolle").value
-	
-	var bruger = {
-		"userId" : id,
-		"userName" : navn,
-		"ini" : ini,
-		"cpr" : cpr,
-		"password" : passwd,
-		"roles" : rolle
-	}
-	return bruger;
 
-}
-
-	function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
-				alert("Function kaldt");
-	//debugger;
+/**
+ * Creates a user using POST, uses the cargostock/user/create path
+ */
+function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+	alert("Function kaldt");
 	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
 		$.ajax({ //Indleder et asynkront ajax kald
 			url : 'cargostock/user/create', //specificerer endpointet
@@ -37,36 +19,12 @@ function getPersonFromHTML() {
 		});
 		document.getElementById("myForm").reset();	//Clear the form
 		return false; //For at undgå at knappen poster data (default behavior).
-	}
-	
-	function remove() {
-		alert("delete called");
-		myJSON = getPersonFromHTML();
-		$.ajax({
-			url : 'cargostock/user/delete',
-			type : 'DELETE',
-			data : JSON.strinify(myJSON),
-			contentType : 'application/json',
-			success : function(data)
-			{
-				alert("data");
-			}, failure: function(){
-				alert("fail");
-			}
-		})
-		//remove from selected
-		//or refresh list
-		
-	}
-		
-function toView()
-{
-    $(function loadViewUsers(){
-    	$("#transform").load("ViewUsers.html");
-    });
-    loadUsers(); //now not automatically executed once front page loads.
 }
 
+/**
+ * Loads users from list using GET and displays them in table
+ * @returns
+ */
 function loadUsers(){
     $(function() {
     	$.ajax({ //Indleder et asynkront ajax kald
@@ -86,19 +44,69 @@ function loadUsers(){
     });
 }
 
+/**
+ * Removes user from list using DELETE
+ * @returns
+ */
+function removeUser() {
+	var id = document.getElementById("ID").value;
+//s	var myObj = null;
+	$.ajax({
+	url : 'cargostock/user/delete',
+	type : 'DELETE',
+	data : JSON.stringify(id),
+	contentType: 'application/json',
+	success : function(data)
+		{
+			alert("successful delete");
+			toDelete();
+		}, failure: function(){
+			alert("failed delete");
+		}
+	});
+}
 
-function toCreate(){
-	$(function(){
-		$("#transform").load("opret.html").innerhtml;
-	})
+//draws person information from html into a "bruger" variable
+function getPersonFromHTML() {
+	var id = document.getElementById("ID").value;
+	var navn = document.getElementById("Brugernavn").value
+	var ini = document.getElementById("ini").value
+	var cpr = document.getElementById("CPR").value
+	var passwd = document.getElementById("password").value
+	var rolle = document.getElementById("rolle").value
+	
+	var bruger = {
+		"userId" : id,
+		"userName" : navn,
+		"ini" : ini,
+		"cpr" : cpr,
+		"password" : passwd,
+		"roles" : rolle
+	}
+	return bruger;
 }
 		
+/**
+ * Iterates throuch each data instance, first stringifying it into JSON and then parsing it into JSO
+ * calls insert and adds all to the html table
+ * @param data
+ */
 function iterate(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
 		insert(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles);
 });
 }
 	
+/**
+ * Adds each JSO to the html table
+ * @param id
+ * @param userName
+ * @param ini
+ * @param cpr
+ * @param passwd
+ * @param role
+ * @returns
+ */
 function insert(id, userName, ini, cpr, passwd, role) {
 	var table = document.getElementById("userTable");
 	var row = table.insertRow(1);
@@ -116,3 +124,37 @@ function insert(id, userName, ini, cpr, passwd, role) {
 	cell5.innerHTML = passwd;
 	cell6.innerHTML = role;
 	}
+
+
+/**
+ * loads the page that allows you to create a user
+ * @returns
+ */
+function toCreate(){
+	$(function(){
+		$("#transform").load("opret.html");
+	})
+}
+
+/**
+ * Loads the page that allows you to delete a user
+ * @returns
+ */
+function toDelete(){
+	$(function() {
+		$("#transform").load("deleteUser.html");
+	})
+	loadUsers();
+}
+
+/**
+ * Loads the page that allows you to simply view users.
+ * @returns
+ */
+function toView()
+{
+    $(function loadViewUsers(){
+    	$("#transform").load("ViewUsers.html");
+    });
+    loadUsers(); //now not automatically executed once front page loads.
+}

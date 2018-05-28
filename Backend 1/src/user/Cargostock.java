@@ -30,15 +30,6 @@ public class Cargostock {
 		String result = "It works, maybe";
 		return result;
 	}
-	
-	@DELETE
-	@Path("/delete")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String deleteUser(Personer per)
-	{
-		perList.remove(per);
-		return "user deleted";
-	}
 
 	@GET
 	@Path("/list")
@@ -48,4 +39,11 @@ public class Cargostock {
 		return perList;
 	}
 
+	@DELETE
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteUser(int id)
+	{
+		perList.removeIf(e-> e.getUserId() == id);
+	}
 }
