@@ -15,7 +15,7 @@ import DTO.Personer;
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class Cargostock {
+public class UserResources {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 
 	//Inserts new user into system

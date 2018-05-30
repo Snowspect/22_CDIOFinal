@@ -43,7 +43,7 @@ th:nth-of-type(odd) {
 /* background-color:blue; /*not needed? */
 }
 table {
-	table-layout:fixed;
+	table-layout:fixed; /*evenly distributes the field throughout the table */
 	width:100%;
 /*	border-style:solid;
 	border-color:red;*/

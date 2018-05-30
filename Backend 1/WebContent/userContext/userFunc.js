@@ -72,7 +72,7 @@ function removeUser() {
 	var id = document.getElementById("ID").value;
 //s	var myObj = null;
 	$.ajax({
-	url : "cargostock/users/" + document.getElementById("ID"),
+	url : "cargostock/users/" + id,
 	type : 'DELETE',
 	data : JSON.stringify(id),
 	contentType: 'application/json',
@@ -154,7 +154,7 @@ function insert(id, userName, ini, cpr, passwd, role) {
  */
 function toCreate(){
 	$(function(){
-		$("#transform").load("userHtml/opret.html");
+		$("#transform").load("userContext/opret.html");
 	})
 }
 
@@ -164,7 +164,7 @@ function toCreate(){
  */
 function toDelete(){
 	$(function() {
-		$("#transform").load("userHtml/deleteUser.html");
+		$("#transform").load("userContext/deleteUser.html");
 	})
 	loadUsers();
 }
@@ -176,7 +176,7 @@ function toDelete(){
 function toView()
 {
     $(function loadViewUsers(){
-    	$("#transform").load("userHtml/ViewUsers.html");
+    	$("#transform").load("userContext/ViewUsers.html");
     });
     loadUsers(); //now not automatically executed once front page loads.
 }
@@ -184,7 +184,7 @@ function toView()
 function toUpdate()
 {
 	$(function() {
-		$("#transform").load("userHtml/UpdateUser.html")
+		$("#transform").load("userContext/UpdateUser.html")
 	});
 	loadUsers();
 }
