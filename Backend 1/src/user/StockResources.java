@@ -19,7 +19,7 @@ import DTO.RaavareBatch;
 @Produces(MediaType.APPLICATION_JSON)
 public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
-	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
+	
 
 	//*** Ravare ***//
 	//PUT
