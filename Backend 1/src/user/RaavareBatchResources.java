@@ -54,7 +54,6 @@ public class RaavareBatchResources {
 				RavBatch.setRbId(ravBat.getRbId());
 				RavBatch.setRaavareId(ravBat.getRaavareId());
 				RavBatch.setMaengde(ravBat.getMaengde());
-
 			}
 		return "Updated RaavareBatch";
 	}

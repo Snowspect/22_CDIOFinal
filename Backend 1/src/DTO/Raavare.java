@@ -7,7 +7,7 @@ public class Raavare {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -23,7 +23,7 @@ public class Raavare {
 	public void setRavareId(int ravareId) {
 		this.ravareId = ravareId;
 	}
-	
+
 	public String toString()
 	{
 		return "råvareNr: " + ravareId + ", Name: " + name + ", Supplier: " + supplier;
