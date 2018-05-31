@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet" type="text/css" href="Stylish.css">
+<script type="text/javascript" src="jquery-3.3.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript" src="userContext/userFunc.js"></script>
+<script type="text/javascript" src="jquery.serialize-object.js">
+
+
+</script>
+
+</head>
+
+<body>
+	<div class="divOpret">
+		<!--   <img>
+<img src="http://www.dtu.dk/english/-/media/DTU-endk/About%20DTU/PRESS_ROOM/DTU-3.ashx?h=237&la=da&mw=460&w=162"
+    alt="http://www.dtu.dk/english/About/PRESS-ROOM/Photos-and-Multimedia/DTU-logo" width="90" height="125">
+  </img> -->
+		<form id="myForm" action="javascript:submit()" method="put">
+			<h1>
+				<b>
+					<center>Opret bruger</center>
+				</b>
+			</h1>
+
+			<center>BrugerID:</center>
+			<center>
+				<input type="number" id="ID" required pattern="[0-9.]+">
+			</center>
+			<br>
+			<center>Brugernavn</center>
+			<center>
+				<input type="text" id="Brugernavn" required
+					pattern="[a-åA-Å]*">
+			</center>
+			<br>
+			<center>Initial</center>
+			<center>
+				<input type="text" id="ini" required>
+			</center>
+			<br>
+			<center>CPR-nr</center>
+			<center>
+				<input type="text" id="CPR" required>
+			</center>
+			<br>
+			<center>Password</center>
+			<center>
+				<input type="text" id="password" required>
+			</center>
+			<center>
+				<select id=rolle required="required">
+					<option value=""> Vælg rolle </option>
+					<option value="Admin">Admin</option>
+					<option value="Pharmacist">Pharmacist</option>
+					<option value="Produktionsleder">Produktionsleder</option>
+					<option value="Laborant">Laborant</option>
+				</select>
+			</center>
+			<br>
+
+			<center>
+				<input type="submit" value="Opret">
+			</center>
+		</form>
+	</div>
+</body>
+</html>

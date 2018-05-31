@@ -16,6 +16,14 @@ p {
     font-family: verdana;
     font-size: 20px;
 }
+.navigationbutton {
+	color:blue; 
+	border-radius: 10px; 
+	padding:2% 2%; 
+	margin-right:50px; 
+	font-size: 10px;
+}
+
 /*
 div{
   padding: 10px;
@@ -39,7 +47,7 @@ right: 27.5%;
   width: 600px;
   top: 20%;
 }
-.divOpret{
+.divOpret .divUpdate{
   padding: 10px;
   border-width: 2px;
   border-radius: 7px;

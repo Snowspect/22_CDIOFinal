@@ -1,0 +1,50 @@
+@charset "ISO-8859-1";
+
+.leftDivs {
+	float:left;
+	width:30%;
+	margin-left:12.5%;
+	border-style:solid;
+	border-width:thin;
+	border-color: black;
+	border-top-left-radius: 10px; /*rounds the top left corner */
+	border-top-right-radius: 10px;
+}
+.rightDivs{
+	float:left; /*floats the div to the left, that is, moves it as far to the left as allowed and ignores all outer boundaries except if set */
+	width:30%;
+	margin-left:12.5%;
+	margin-right:12.5%;
+	border-style:solid;
+	border-width:thin;
+	border-color: black;
+}
+.outerUpperDiv{
+	overflow:auto; /*to make sure the divs stay inside the parent div when floated */
+/*	border-style:solid;
+	border-color:grey; */
+	clear:right; /* makes sure nothing can appear on the right side of it */
+	height:25em;
+}
+.outerLowerDiv{
+	margin-top:10px;
+	overflow:auto;
+/*	border-style:solid;
+	border-color:red;*/
+	clear:left; /*makes sure nothing can appear on the left side of it.*/
+	height:25em;
+}
+
+tr:nth-of-type(even) {
+ background-color:lightgrey;
+}
+
+th:nth-of-type(odd) {
+/* background-color:blue; /*not needed? */
+}
+table {
+	table-layout:fixed; /*evenly distributes the field throughout the table */
+	width:100%;
+/*	border-style:solid;
+	border-color:red;*/
+}

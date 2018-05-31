@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="Stylish.css">
+</head>
+<body>
+	<form id="deleteForm" action="javascript:removeUser()" method="delete">
+	<h1>
+				<b>
+					<center>Fjern bruger med id:</center>
+				</b>
+			</h1>
+
+			<center>BrugerID:</center>
+			<center>
+				<input type="number" id="ID" required pattern="[0-9.]+">
+			</center>
+			<center>
+				<input type="submit" value="Fjern">
+			</center>
+			</form>
+				<div id="table">
+		<table id="userTable"> 
+			<tr>
+				<th>BrugerID</th>
+				<th>Brugernavn</th>
+				<th>Initialer</th>
+				<th>CPR</th>
+				<th>Password</th>
+				<th>Rolle</th>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

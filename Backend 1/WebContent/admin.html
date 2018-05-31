@@ -3,17 +3,21 @@
 		<head>
 			<meta charset="UTF-8">
 			<title>Administration</title>
+			<link rel="stylesheet" type="text/css" href="Stylish.css">
 			<script type="text/javascript" src="jquery-3.3.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="jquery.serialize-object.js"></script>
-<script type="text/javascript" src="functionality.js"></script>
-		</head>
+<script type="text/javascript" src="userContext/userFunc.js"></script>
+<script type="text/javascript" src="stockFunc.js"></script>
+		</head> 
 	<body>
 	<center>
 		<div id="buttons_div">
 			<h1> Velkommen til dit administrations system </h1>
-				<input type="button" id=create" onClick="toCreate()" value="Opret" style="color:blue; border-radius: 10px; padding:2% 2%; margin-right:50px; font-size: 10px ;">
-				<input type="button" id="view" onClick="toView()" value="Brugere" style="color:blue; border-radius:10px; padding:2% 2%; margin-left:50px; font-size: 10px ;">			
+				<input class="navigationbutton" type="button" id="create" onClick="toCreate()" value="Opret">
+				<input class="navigationbutton" type="button" id="view" onClick="toView()" value="Brugere">			
+				<input class="navigationbutton" type="button" id="delete" onClick="toDelete()" value="Fjern bruger" >
+				<input class="navigationbutton" type="button" id="update" onClick="toUpdate()" value="Update bruger">
 		</div>
 		<div id="transform">
 		</div>
