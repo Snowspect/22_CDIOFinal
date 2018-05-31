@@ -16,7 +16,6 @@ import DTO.RaavareBatch;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
-
 public class RaavareBatchResources {
 
 	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
@@ -55,7 +54,6 @@ public class RaavareBatchResources {
 				RavBatch.setRbId(ravBat.getRbId());
 				RavBatch.setRaavareId(ravBat.getRaavareId());
 				RavBatch.setMaengde(ravBat.getMaengde());
-
 			}
 		return "Updated RaavareBatch";
 	}

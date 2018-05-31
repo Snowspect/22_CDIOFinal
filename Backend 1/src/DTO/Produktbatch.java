@@ -7,10 +7,10 @@ public class Produktbatch {
 	private int receptId;
 	private int status;
 	private ArrayList<Afvejning> afvejning;
-	
-	
-	
-	
+
+
+
+
 	public int getPbId() {
 		return pbId;
 	}

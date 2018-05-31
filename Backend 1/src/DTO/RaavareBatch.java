@@ -7,7 +7,7 @@ public class RaavareBatch {
 	int raavareId;             
 	/** mængde på lager */
 	double maengde;
-	
+
 	public int getRbId() {
 		return rbId;
 	}
