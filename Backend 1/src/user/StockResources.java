@@ -81,44 +81,4 @@ public class StockResources {
 	
 	//DELETE
 	
-	//*** ravareBatch ***//
-	//PUT
-	@PUT
-	@Path("{raavareBatchNr}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(RaavareBatch ravBat)
-	{
-		ravareBatchList.add(ravBat);
-		
-		System.out.println("Created raavareBatch: " + ravBat.toString());
-		System.out.println("Current list " + ravareBatchList.toString());
-		
-		String result = "created ravareBatch";
-		
-		
-		return result;
-	}
-	
-	//GET
-	@GET
-	@Path("")
-	@Produces(MediaType.APPLICATION_JSON)
-	
-	public ArrayList<RaavareBatch> getRaavarebatch(){
-		
-		return ravareBatchList;
-	}
-	
-	//POST
-	
-	//DELETE
-	
-	//*** productBatch ***//
-	//PUT
-	
-	//GET
-	
-	//POST
-	
-	//DELETE
 }
