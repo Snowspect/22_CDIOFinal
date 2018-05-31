@@ -12,12 +12,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.Raavare;
+import DTO.RaavareBatch;
 
 @Path("/stock")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
+	
 
 
 	//*** Ravare ***//
