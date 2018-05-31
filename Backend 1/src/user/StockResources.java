@@ -12,12 +12,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.Raavare;
+import DTO.RaavareBatch;
 
 @Path("/stock")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
+	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
 
 	//*** Ravare ***//
 	//PUT
@@ -81,6 +83,21 @@ public class StockResources {
 	
 	//*** ravareBatch ***//
 	//PUT
+	@PUT
+	@Path("{raavareBatchNr}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String submit(RaavareBatch ravBat)
+	{
+		ravareBatchList.add(ravBat);
+		
+		System.out.println("Created raavareBatch: " + ravBat.toString());
+		System.out.println("Current list " + ravareBatchList.toString());
+		
+		String result = "created ravareBatch";
+		
+		
+		return result;
+	}
 	
 	//GET
 	
