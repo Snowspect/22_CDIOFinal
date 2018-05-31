@@ -47,6 +47,7 @@ public class ReceptResources {
 	//	@Produces(MediaType.APPLICATION_JSON)
 	//	public ArrayList<Recept> getRecept(@PathParam("id") int id)
 	//	{
+	//		should return the body of that path param. //ask tomorrow
 	//		return receptList;
 	//	}
 

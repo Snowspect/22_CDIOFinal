@@ -16,7 +16,6 @@ import DTO.RaavareBatch;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
-
 public class RaavareBatchResources {
 
 	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();

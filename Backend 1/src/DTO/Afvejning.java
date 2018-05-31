@@ -5,8 +5,8 @@ public class Afvejning {
 	private int rbId;
 	private double tara;
 	private double netto;
-	
-	
+
+
 	public int getUserId() {
 		return userId;
 	}
