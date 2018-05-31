@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.Raavare;
+import DTO.Recept;
 
 @Path("/stock")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -92,25 +93,25 @@ public class StockResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Recept> getRecept()
 	{
-		return ravareList;
+		return receptList;
 	}
 	
 	//POST
-	@POST
-	@Path("{receptNr}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String update(Recept rec) {
-		
-		for (Recept recpt : receptList) {
-			if(recpt.getReceptId() == rec.getReceptId())
-			{
-				recpt.setReceptId(rec.getReceptId());
-				recpt.setName(rec.getName());
-				recpt.setSupplier(rec.getSupplier());
-			}
-		}			
-		return "Updated råvare";
-	}
+//	@POST
+//	@Path("{receptNr}")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public String update(Recept rec) {
+//		
+//		for (Recept recpt : receptList) {
+//			if(recpt.getReceptId() == rec.getReceptId())
+//			{
+//				recpt.setReceptId(rec.getReceptId());
+//				recpt.setName(rec.getName());
+//				recpt.setSupplier(rec.getSupplier());
+//			}
+//		}			
+//		return "Updated råvare";
+//	}
 	
 	//DELETE
 	
