@@ -22,7 +22,7 @@ public class ReceptResources {
 	
 	
 	@PUT
-	@Path("{receptNr}")
+//	@Path("{receptNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Recept rec) {
 		receptList.add(rec);
@@ -36,7 +36,7 @@ public class ReceptResources {
 	
 	//GET
 	@GET
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Recept> getRecept()
 	{
