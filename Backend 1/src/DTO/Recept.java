@@ -12,6 +12,10 @@ public class Recept {
 	/** Ingredienser i recept */
 	private ArrayList<Ingrediens> ingrediens;
 
+	
+	
+	
+	
 	public int getReceptId() {
 		return receptId;
 	}

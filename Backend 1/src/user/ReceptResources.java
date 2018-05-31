@@ -1,11 +1,10 @@
 package user;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;  
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,8 +20,8 @@ import DTO.Recept;
 public class ReceptResources {
 	private static ArrayList <Recept> receptList = new ArrayList<>();
 	
-	
-	@PUT
+	//{"receptId": 1, "receptNavn": "Fisk", "ingrediens": [{"raavareId": 24, "nomNetto": 95.9, "tolerance": 2.6}]}
+	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Recept rec) {
 		receptList.add(rec);
@@ -51,8 +50,8 @@ public class ReceptResources {
 //		return receptList;
 //	}
 	
-	//POST
-//	@POST
+	//PUT
+//	@PUT
 //	@Path("{receptNr}")
 //	@Consumes(MediaType.APPLICATION_JSON)
 //	public String update(Recept rec) {

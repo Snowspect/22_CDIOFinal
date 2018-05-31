@@ -1,5 +1,7 @@
 package DTO;
 
+import java.util.ArrayList;
+
 public class Produktbatch {
 	private int pbId;
 	private int receptId;
