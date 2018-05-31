@@ -20,9 +20,8 @@ public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
 
 	//*** Ravare ***//
-	//PUT
-	@PUT
-	@Path("{ravareNr}")
+	@POST
+//	@Path("{ravareNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Raavare rav) {
 		ravareList.add(rav);
@@ -34,18 +33,16 @@ public class StockResources {
 		return result;
 	}
 	
-	//GET
 	@GET
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Raavare> getRavare()
 	{
 		return ravareList;
 	}
 	
-	//POST
-	@POST
-	@Path("{ravareNr}")
+	@PUT
+//	@Path("{ravareNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String update(Raavare rav) {
 		
@@ -60,40 +57,12 @@ public class StockResources {
 		return "Updated ravare";
 	}
 	
-	//DELETE
 	@DELETE
-	@Path("{ravreNr}")
+//	@Path("{ravreNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String delete(int ravareNr)
 	{
 		ravareList.removeIf(e-> e.getRavareId() == ravareNr);
 		return "deleted ravare";
 	}
-	
-	//*** Recept ***//
-	//PUT 
-	
-	//GET
-	
-	//POST
-	
-	//DELETE
-	
-	//*** ravareBatch ***//
-	//PUT
-	
-	//GET
-	
-	//POST
-	
-	//DELETE
-	
-	//*** productBatch ***//
-	//PUT
-	
-	//GET
-	
-	//POST
-	
-	//DELETE
 }
