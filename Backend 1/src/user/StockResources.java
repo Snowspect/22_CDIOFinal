@@ -1,6 +1,6 @@
 package user;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,6 +18,7 @@ import DTO.Raavare;
 @Produces(MediaType.APPLICATION_JSON)
 public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
+
 
 	//*** Ravare ***//
 	@POST
@@ -54,7 +55,7 @@ public class StockResources {
 				ravare.setSupplier(rav.getSupplier());
 			}
 		}			
-		return "Updated ravare";
+		return "Updated råvare";
 	}
 	
 	@DELETE
