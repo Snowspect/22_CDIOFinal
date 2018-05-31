@@ -100,6 +100,14 @@ public class StockResources {
 	}
 	
 	//GET
+	@GET
+	@Path("")
+	@Produces(MediaType.APPLICATION_JSON)
+	
+	public ArrayList<RaavareBatch> getRaavarebatch(){
+		
+		return ravareBatchList;
+	}
 	
 	//POST
 	
