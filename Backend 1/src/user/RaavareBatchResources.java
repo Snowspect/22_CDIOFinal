@@ -66,9 +66,15 @@ public class RaavareBatchResources {
 		}
 		
 		
-		
-		
 		//DELETE
+		@DELETE
+		@Path("{raavareBatchNr}")
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String delete(int rbId)
+		{
+			ravareBatchList.removeIf(e-> e.getRbId() == rbId);
+			return "deleted ravareBatch";
+		}
 		
 		//*** productBatch ***//
 		//PUT
