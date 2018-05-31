@@ -30,7 +30,7 @@ public class UserResources {
 		//perList.add(new Personer(22, "Hans", "hs", "87654321", "kode", "admin"));
 		System.out.println("Created user: " + per.toString());
 		System.out.println("Current list " + perList.toString());
-		
+
 		String result = "It works, maybe";
 		return result;
 	}
@@ -45,7 +45,7 @@ public class UserResources {
 
 	//removes user from list
 	@DELETE
-//	@Path("{id}")
+	//	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	// placed inside the parameter list of deleteUser -- @PathParam("id")
 	public void deleteUser(int id) throws NotFoundException
@@ -56,7 +56,7 @@ public class UserResources {
 			throw new NotFoundException("Brugeren findes ikke");
 		}
 	}
-	
+
 	//Updates a user
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)

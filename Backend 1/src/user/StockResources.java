@@ -19,36 +19,36 @@ import DTO.RaavareBatch;
 @Produces(MediaType.APPLICATION_JSON)
 public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
-	
+
 
 
 	//*** Ravare ***//
 	@POST
-//	@Path("{ravareNr}")
+	//	@Path("{ravareNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Raavare rav) {
 		ravareList.add(rav);
-		
+
 		System.out.println("Created user: " + rav.toString());
 		System.out.println("Current list " + ravareList.toString());
-		
+
 		String result = "created ravare";
 		return result;
 	}
-	
+
 	@GET
-//	@Path("")
+	//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Raavare> getRavare()
 	{
 		return ravareList;
 	}
-	
+
 	@PUT
-//	@Path("{ravareNr}")
+	//	@Path("{ravareNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String update(Raavare rav) {
-		
+
 		for (Raavare ravare : ravareList) {
 			if(ravare.getRavareId() == rav.getRavareId())
 			{
@@ -59,9 +59,9 @@ public class StockResources {
 		}			
 		return "Updated råvare";
 	}
-	
+
 	@DELETE
-//	@Path("{ravreNr}")
+	//	@Path("{ravreNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String delete(int ravareNr)
 	{

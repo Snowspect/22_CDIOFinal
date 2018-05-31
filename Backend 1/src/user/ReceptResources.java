@@ -19,20 +19,20 @@ import DTO.Recept;
 
 public class ReceptResources {
 	private static ArrayList <Recept> receptList = new ArrayList<>();
-	
+
 	//{"receptId": 1, "receptNavn": "Fisk", "ingrediens": [{"raavareId": 24, "nomNetto": 95.9, "tolerance": 2.6}]}
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Recept rec) {
 		receptList.add(rec);
-		
+
 		System.out.println("Created user: " + rec.toString());
 		System.out.println("Current list " + receptList.toString());
-		
+
 		String result = "created recept";
 		return result;
 	}
-	
+
 	//GET
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -40,30 +40,30 @@ public class ReceptResources {
 	{
 		return receptList;
 	}
-	
-//	//GET
-//	@GET
-//	@Path("/{id}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public ArrayList<Recept> getRecept(@PathParam("id") int id)
-//	{
-//		return receptList;
-//	}
-	
+
+	//	//GET
+	//	@GET
+	//	@Path("/{id}")
+	//	@Produces(MediaType.APPLICATION_JSON)
+	//	public ArrayList<Recept> getRecept(@PathParam("id") int id)
+	//	{
+	//		return receptList;
+	//	}
+
 	//PUT
-//	@PUT
-//	@Path("{receptNr}")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String update(Recept rec) {
-//		
-//		for (Recept recpt : receptList) {
-//			if(recpt.getReceptId() == rec.getReceptId())
-//			{
-//				recpt.setReceptId(rec.getReceptId());
-//				recpt.setName(rec.getName());
-//				recpt.setSupplier(rec.getSupplier());
-//			}
-//		}			
-//		return "Updated råvare";
-//	}
+	//	@PUT
+	//	@Path("{receptNr}")
+	//	@Consumes(MediaType.APPLICATION_JSON)
+	//	public String update(Recept rec) {
+	//		
+	//		for (Recept recpt : receptList) {
+	//			if(recpt.getReceptId() == rec.getReceptId())
+	//			{
+	//				recpt.setReceptId(rec.getReceptId());
+	//				recpt.setName(rec.getName());
+	//				recpt.setSupplier(rec.getSupplier());
+	//			}
+	//		}			
+	//		return "Updated råvare";
+	//	}
 }

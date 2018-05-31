@@ -18,70 +18,53 @@ import DTO.RaavareBatch;
 
 
 public class RaavareBatchResources {
-	
-		private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
 
-		//*** ravareBatch ***//
-		//PUT
-		@POST
-		@Consumes(MediaType.APPLICATION_JSON)
-		public String submit(RaavareBatch ravBat)
-		{
-			ravareBatchList.add(ravBat);
-			
-			System.out.println("Created raavareBatch: " + ravBat.toString());
-			System.out.println("Current list " + ravareBatchList.toString());
-			
-			String result = "created ravareBatch";
-			
-			
-			return result;
-		}
-		
-		//GET
-		@GET
-		@Path("")
-		@Produces(MediaType.APPLICATION_JSON)
-		
-		public ArrayList<RaavareBatch> getRaavarebatch(){
-			
-			return ravareBatchList;
-		}
-		
-		//POST
-		@Path("{raavareBatchNr}")
-		@Consumes(MediaType.APPLICATION_JSON)
-		public String update(RaavareBatch ravBat) {
-			
-			for(RaavareBatch RavBatch : ravareBatchList)
-				if(RavBatch.getRbId() == ravBat.getRbId())
-				{
-					RavBatch.setRbId(ravBat.getRbId());
-					RavBatch.setRaavareId(ravBat.getRaavareId());
-					RavBatch.setMaengde(ravBat.getMaengde());
-					
-				}
-			return "Updated RaavareBatch";
-		}
-		
-		
-		//DELETE
-		@DELETE
-		@Path("{raavareBatchNr}")
-		@Consumes(MediaType.APPLICATION_JSON)
-		public String delete(int rbId)
-		{
-			ravareBatchList.removeIf(e-> e.getRbId() == rbId);
-			return "deleted ravareBatch";
-		}
-		
-		//*** productBatch ***//
-		//PUT
-		
-		//GET
-		
-		//POST
-		
-		//DELETE
+	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
+
+	//*** ravareBatch ***//
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String submit(RaavareBatch ravBat)
+	{
+		ravareBatchList.add(ravBat);
+
+		System.out.println("Created raavareBatch: " + ravBat.toString());
+		System.out.println("Current list " + ravareBatchList.toString());
+
+		String result = "created ravareBatch";
+
+
+		return result;
 	}
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public ArrayList<RaavareBatch> getRaavarebatch(){
+
+		return ravareBatchList;
+	}
+
+	//POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String update(RaavareBatch ravBat) {
+
+		for(RaavareBatch RavBatch : ravareBatchList)
+			if(RavBatch.getRbId() == ravBat.getRbId())
+			{
+				RavBatch.setRbId(ravBat.getRbId());
+				RavBatch.setRaavareId(ravBat.getRaavareId());
+				RavBatch.setMaengde(ravBat.getMaengde());
+
+			}
+		return "Updated RaavareBatch";
+	}
+
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String delete(int rbId)
+	{
+		ravareBatchList.removeIf(e-> e.getRbId() == rbId);
+		return "deleted ravareBatch";
+	}
+}

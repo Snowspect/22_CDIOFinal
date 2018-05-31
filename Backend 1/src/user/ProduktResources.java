@@ -18,19 +18,19 @@ import DTO.Produktbatch;
 
 public class ProduktResources {
 	private static ArrayList <Produktbatch> produktList = new ArrayList<>();
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Produktbatch batch) {
 		produktList.add(batch);
-		
+
 		System.out.println("Created user: " + batch.toString());
 		System.out.println("Current list " + produktList.toString());
-		
+
 		String result = "created productbatch";
 		return result;
 	}
-	
+
 	//GET
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -38,5 +38,5 @@ public class ProduktResources {
 	{
 		return produktList;
 	}
-	
+
 }
