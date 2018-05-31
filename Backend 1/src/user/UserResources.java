@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 //import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -43,6 +44,24 @@ public class UserResources {
 		return perList;
 	}
 
+	@POST
+	@Path("{id}/status")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void setUserStatus(@PathParam("id") int id, boolean status)
+	{
+		//code that sets status to active or inactive 
+		// depending on the boolean in the body
+	}
+	
+	@PUT
+	@Path("{id}/status")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void createStatus(@PathParam("id") int id, boolean status) {
+		//code that updates the status of a given id.
+	}
+	
+	
+	/*
 	//removes user from list
 	@DELETE
 	//	@Path("{id}")
@@ -56,6 +75,7 @@ public class UserResources {
 			throw new NotFoundException("Brugeren findes ikke");
 		}
 	}
+	 */
 
 	//Updates a user
 	@PUT
