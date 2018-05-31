@@ -23,8 +23,7 @@ public class RaavareBatchResources {
 
 		//*** ravareBatch ***//
 		//PUT
-		@PUT
-		@Path("{raavareBatchNr}")
+		@POST
 		@Consumes(MediaType.APPLICATION_JSON)
 		public String submit(RaavareBatch ravBat)
 		{
