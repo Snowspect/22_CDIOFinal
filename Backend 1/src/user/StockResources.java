@@ -1,6 +1,6 @@
 package user;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -21,10 +21,10 @@ public class StockResources {
 	private static ArrayList <Raavare> ravareList = new ArrayList<>();
 	
 
+
 	//*** Ravare ***//
-	//PUT
-	@PUT
-	@Path("{ravareNr}")
+	@POST
+//	@Path("{ravareNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Raavare rav) {
 		ravareList.add(rav);
@@ -36,18 +36,16 @@ public class StockResources {
 		return result;
 	}
 	
-	//GET
 	@GET
-	@Path("")
+//	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Raavare> getRavare()
 	{
 		return ravareList;
 	}
 	
-	//POST
-	@POST
-	@Path("{ravareNr}")
+	@PUT
+//	@Path("{ravareNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String update(Raavare rav) {
 		
@@ -59,26 +57,15 @@ public class StockResources {
 				ravare.setSupplier(rav.getSupplier());
 			}
 		}			
-		return "Updated ravare";
+		return "Updated råvare";
 	}
 	
-	//DELETE
 	@DELETE
-	@Path("{ravreNr}")
+//	@Path("{ravreNr}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String delete(int ravareNr)
 	{
 		ravareList.removeIf(e-> e.getRavareId() == ravareNr);
 		return "deleted ravare";
 	}
-	
-	//*** Recept ***//
-	//PUT 
-	
-	//GET
-	
-	//POST
-	
-	//DELETE
-	
 }
