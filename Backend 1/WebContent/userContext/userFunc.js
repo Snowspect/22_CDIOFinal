@@ -63,40 +63,6 @@ function loadUsers(){
 	});
 }
 
-function loadProduktbatch(){
-	$(function() {
-		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'cargostock/produktbatch', //specificerer endpointet
-			type : 'GET', //Typen af HTTP requestet (GET er default)
-			contentType : 'application/json',
-			//Nedenstående bliver ikke kørt
-			success : function(data)
-			{//Funktion der skal udføres når data er hentet
-				iterate(data);
-				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
-			}
-		});
-	});
-}
-function getProduktFromHTML() {
-	var pbId = document.getElementById("pbId").value;
-	var rcpId = document.getElementById("receptId").value
-	var status = document.getElementById("Status").value
-	var antal = document.getElementById("antal").value
-
-	var produktbatch = {
-		"pbId" : pbId,
-		"receptId" : rcpId,
-		"Status" : status,
-		"antal" : antal,
-	}
-	return produktbatch;
-}
-
-
 
 /**
  * Removes user from list using DELETE
@@ -225,16 +191,26 @@ function toUpdate()
 	});
 }
 
-function toCreateProduktbatch(){
+
+function toAdministrator(){
 	$(function(){
-		$("#transform").load("ProduktbatchContext/Produktbatch.html");
+		$("#buttons_div").load("admin.html");
 	})
 }
 
-function toViewProduktbatch()
-{
-	$(function loadViewProduktbatch(){
-		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html");
-		loadUsers(); //now not automatically executed once front page loads.
-	});
+
+function toFarmaceut(){
+	$(function(){
+		$("#buttons_div").load("farmaceut.html");
+	})
 }
+
+
+function toProduktionsleder(){
+	$(function(){
+		$("#buttons_div").load("produktionsleder.html");
+	})
+}
+
+
+

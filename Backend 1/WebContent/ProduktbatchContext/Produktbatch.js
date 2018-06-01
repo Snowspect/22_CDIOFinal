@@ -23,14 +23,17 @@ function getProduktFromHTML() {
 	var rcpId = document.getElementById("receptId").value
 	var status = document.getElementById("Status").value
 	var antal = document.getElementById("antal").value
+	
+	// lav afvejnings inputs
 
-	var produkt = {
+	var produktbatch = {
 		"pbId" : pbId,
 		"receptId" : rcpId,
 		"Status" : status,
 		"antal" : antal,
+	//	"afvejning" : [{"userId": /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
 	}
-	return produkt;
+	return produktbatch;
 }
 
 function loadProducts(){
@@ -71,5 +74,19 @@ function insert(pbId, rcpId, Status, antal) {
 	cell3.innerHTML = Status;
 	cell4.innerHTML = antal;
 
+}
+
+function toCreateProduktbatch(){
+	$(function(){
+		$("#transform").load("ProduktbatchContext/Produktbatch.html");
+	})
+}
+
+function toViewProduktbatch()
+{
+	$(function loadViewProduktbatch(){
+		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html");
+		loadUsers(); //now not automatically executed once front page loads.
+	});
 }
 
