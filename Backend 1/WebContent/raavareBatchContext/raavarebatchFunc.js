@@ -23,10 +23,8 @@
 	 */
 	function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
 		myJSON = getRaavarebatchFromHTML(); //myJSON is an object just like "bruger"
-		alert("hejsa");
-		//debugger;
 		$.ajax({ //Indleder et asynkront ajax kald
-			url : "../cargostock/raavarebatch", //specificerer endpointet
+			url : "cargostock/raavarebatch", //specificerer endpointet
 			type : 'POST', //Typen af HTTP requestet
 			data : 	JSON.stringify(myJSON),
 			contentType : 'application/json',
@@ -35,8 +33,6 @@
 				alert("success"); //Manipulerer #mydiv.
 			}, failure: function(data){
 				alert("fail");
-			}, error : function(data) {
-				alert("Erro");
 			}
 		});
 		document.getElementById("myForm").reset();	//Clear the form
@@ -105,7 +101,7 @@
 	}
 
 	/**
-	 * Iterates throuch each data instance, first stringifying it into JSON and then parsing it into JSO
+	 * Iterates through each data instance, first stringifying it into JSON and then parsing it into JSO
 	 * calls insert and adds all to the html table
 	 * @param data
 	 */
@@ -139,12 +135,20 @@
 	}
 
 
-//	/**
-//	 * loads the page that allows you to create a user
-//	 * @returns
-//	 */
-//	function toCreate(){
-//		$(function(){
-//			$("#transform").load("raavareBatchContext/opretRaavareBatch.html");
-//		})
-//	}
+	/**
+	 * loads the page that allows you to create a user
+	 * @returns
+	 */
+	function toRbCreate(){
+		$(function(){
+			$("#transform").load("raavareBatchContext/opretRaavareBatch.html");
+		})
+	}
+	
+	function toRbView()
+	{
+		$(function loadViewRb(){
+			$("#transform").load("raavareBatchContext/viewRaavareBatch.html");
+			loadRaavareBatch(); //now not automatically executed once front page loads.
+		});
+	}
