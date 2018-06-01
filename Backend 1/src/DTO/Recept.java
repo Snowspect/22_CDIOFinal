@@ -1,6 +1,7 @@
 package DTO;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Recept {
 	/** recept id i området 1-99999999 */
@@ -34,5 +35,9 @@ public class Recept {
 
 	public void setIngrediens(ArrayList<Ingrediens> ingrediens) {
 		this.ingrediens = ingrediens;
+	}
+	public String toString() {
+		return "receptId: " + receptId + ", receptNavn: " + receptNavn + 
+				", ingredienses: " + Arrays.toString(ingrediens.toArray());
 	}
 }

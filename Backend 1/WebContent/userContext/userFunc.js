@@ -63,6 +63,7 @@ function loadUsers(){
 	});
 }
 
+
 /**
  * Removes user from list using DELETE
  * @returns
@@ -71,9 +72,9 @@ function removeUser() {
 	var id = document.getElementById("ID").value;
 //	s	var myObj = null;
 	$.ajax({
-		url : "cargostock/users",
+		url : "cargostock/users/" + id,
 		type : 'DELETE',
-		data : JSON.stringify(id),
+		//data : JSON.stringify(id),
 		contentType: 'application/json',
 		success : function(data)
 		{
@@ -97,12 +98,12 @@ function getPersonFromHTML() {
 	var rolle = document.getElementById("rolle").value
 
 	var bruger = {
-		"userId" : id,
-		"userName" : navn,
-		"ini" : ini,
-		"cpr" : cpr,
-		"password" : passwd,
-		"roles" : rolle
+		userId : id,
+		userName : navn,
+		ini : ini,
+		cpr : cpr,
+		password : passwd,
+		roles : rolle
 	}
 	return bruger;
 }
@@ -189,3 +190,27 @@ function toUpdate()
 		});
 	});
 }
+
+
+function toAdministrator(){
+	$(function(){
+		$("#buttons_div").load("admin.html");
+	})
+}
+
+
+function toFarmaceut(){
+	$(function(){
+		$("#buttons_div").load("farmaceut.html");
+	})
+}
+
+
+function toProduktionsleder(){
+	$(function(){
+		$("#buttons_div").load("produktionsleder.html");
+	})
+}
+
+
+

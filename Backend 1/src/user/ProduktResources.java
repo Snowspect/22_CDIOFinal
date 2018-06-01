@@ -12,29 +12,30 @@ import javax.ws.rs.core.MediaType;
 import DTO.Produktbatch;
 
 @Path("/produktbatch")
+
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
 public class ProduktResources {
 	private static ArrayList <Produktbatch> produktList = new ArrayList<>();
-
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Produktbatch batch) {
 		produktList.add(batch);
-
+		
 		System.out.println("Created user: " + batch.toString());
 		System.out.println("Current list " + produktList.toString());
-
+		
 		String result = "created productbatch";
 		return result;
 	}
-
+	
 	//GET
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Produktbatch> getProduktbatch()
 	{
 		return produktList;
-	}
+	}	
 }
