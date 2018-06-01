@@ -1,13 +1,17 @@
 package DTO;
 
 public class Ingrediens {
-
+	
 	private int raavareId;
 	private double nomNetto;
-
+	
 	/** Convert to %  */
 	private double tolerance;
 
+	
+	
+	
+	
 	public int getRaavareId() {
 		return raavareId;
 	}
