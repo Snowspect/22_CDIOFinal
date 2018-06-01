@@ -4,15 +4,6 @@ import java.util.ArrayList;
 
 public class Recept {
 	/** recept id i området 1-99999999 */
-<<<<<<< HEAD
-	int receptId;
-	
-	/** Receptnavn min. 2 max. 20 karakterer */
-	String receptNavn;
-	
-	/** Ingredienser i recept */
-	ArrayList<Ingrediens> ingrediens;
-=======
 	private int receptId;
 
 	/** Receptnavn min. 2 max. 20 karakterer */
@@ -20,10 +11,6 @@ public class Recept {
 
 	/** Ingredienser i recept */
 	private ArrayList<Ingrediens> ingrediens;
-
-
-
-
 
 	public int getReceptId() {
 		return receptId;
@@ -48,5 +35,4 @@ public class Recept {
 	public void setIngrediens(ArrayList<Ingrediens> ingrediens) {
 		this.ingrediens = ingrediens;
 	}
->>>>>>> origin/Develop
 }

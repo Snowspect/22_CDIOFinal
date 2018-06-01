@@ -1,14 +1,6 @@
 package DTO;
 
 public class Ingrediens {
-<<<<<<< HEAD
-	
-	int raavareId;
-	double nomNetto;
-	
-	/** Convert to %  */
-	double tolerance;
-=======
 
 	private int raavareId;
 	private double nomNetto;
@@ -39,5 +31,4 @@ public class Ingrediens {
 	public void setTolerance(double tolerance) {
 		this.tolerance = tolerance;
 	}
->>>>>>> origin/Develop
 }
