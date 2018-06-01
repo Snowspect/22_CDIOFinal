@@ -15,7 +15,7 @@ function insert(rbId, rId, amount) {
 }
 
 function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
-	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
+	myJSON = getRaavarebatchFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
 		url : "cargostock/raavarebatch/", //specificerer endpointet
 		type : 'POST', //Typen af HTTP requestet
