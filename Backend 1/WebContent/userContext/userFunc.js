@@ -97,12 +97,12 @@ function getPersonFromHTML() {
 	var rolle = document.getElementById("rolle").value
 
 	var bruger = {
-		"userId" : id,
-		"userName" : navn,
-		"ini" : ini,
-		"cpr" : cpr,
-		"password" : passwd,
-		"roles" : rolle
+		userId : id,
+		userName : navn,
+		ini : ini,
+		cpr : cpr,
+		password : passwd,
+		roles : rolle
 	}
 	return bruger;
 }
