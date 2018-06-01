@@ -45,7 +45,7 @@ public class UserResources {
 	}
 
 	@POST
-	@Path("{id}/status")
+	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void setUserStatus(@PathParam("id") int id, boolean status)
 	{
@@ -61,13 +61,13 @@ public class UserResources {
 	}
 	
 	
-	/*
+	
 	//removes user from list
 	@DELETE
-	//	@Path("{id}")
+	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	// placed inside the parameter list of deleteUser -- @PathParam("id")
-	public void deleteUser(int id) throws NotFoundException
+	//placed inside the parameter list of deleteUser -- @PathParam("id")
+	public void deleteUser(@PathParam("id") int id) throws NotFoundException
 	{
 		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
 		if(!removeIf)
@@ -75,7 +75,6 @@ public class UserResources {
 			throw new NotFoundException("Brugeren findes ikke");
 		}
 	}
-	 */
 
 	//Updates a user
 	@PUT
