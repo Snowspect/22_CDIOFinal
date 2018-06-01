@@ -29,20 +29,26 @@ function generateRaavare() {
 
 
 function getDataFromHTML() {
-	var receptId = document.getElementById("ID").value;
-	var receptNavn = document.getElementById("Brugernavn").value
+	var receptId = document.getElementById("receptID").value;
+	var receptNavn = document.getElementById("receptNavn").value
 	
-	
-	var raavareID = document.getElementById("ini").value
-	var cpr = document.getElementById("CPR").value
-	var passwd = document.getElementById("password").value
-	var rolle = document.getElementById("rolle").value
-
 	var recept = {
-		"receptId" : receptId,
-		"receptNavn" : receptNavn,
-		"ingrediens" : [{"raavareId": , "nomNetto": , "tolerance": }]
-		
-	}
+		receptId : receptId,
+		receptNavn : receptNavn,
+		ingrediens : []		
+	};
+	//{"raavareId": 2, "nomNetto": 2, "tolerance": 2}
+	
+	
+	$("tr").each(function(element,index){
+		var ravaareId = document.getElementById("raavareID" + i).value;
+		var nomNetto = document.getElementById("nomNetto" + i).value;
+		var tolerance = document.getElementById("tolerance" + i).value;
+		var obj = {raavareId : ravaareId, nomNEtto: nomNetto, tolerance: tolerance};
+		recept.ingrediens.push(obj);
+	});
+	
+
+
 	return recept;
 }
