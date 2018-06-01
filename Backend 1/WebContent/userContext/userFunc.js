@@ -71,9 +71,9 @@ function removeUser() {
 	var id = document.getElementById("ID").value;
 //	s	var myObj = null;
 	$.ajax({
-		url : "cargostock/users",
+		url : "cargostock/users/" + id,
 		type : 'DELETE',
-		data : JSON.stringify(id),
+		//data : JSON.stringify(id),
 		contentType: 'application/json',
 		success : function(data)
 		{
