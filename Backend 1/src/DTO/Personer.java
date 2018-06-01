@@ -9,7 +9,7 @@ public class Personer {
 	private String cpr;
 	private String password;
 	private String roles;
-	
+
 	//tom constructor for god ordens skyld
 	public Personer() {
 	}
@@ -70,11 +70,11 @@ public class Personer {
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
-	
+
 	public String toString() {
 		String str = null;
 		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles; " + roles;
 		return str;
-		
+
 	}
 }
