@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Recept</title>
+<script type="text/javascript" src="receptFunc.js"></script>
+<script type="text/javascript" src="../jquery-3.3.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript" src="../jquery.serialize-object.js"></script>
+</head>
+<body>
+				<div id="test">
+				<br>
+				<center>RaavareID</center>
+				<center>
+					<input type="number" id="raavareID" required pattern="[0-9.]+">
+				</center>
+				<br>
+				<center>NomNetto i kg</center>
+				<center>
+					<input type="number" id="nomNetto" step="0.01" required pattern="[0-9.]+">
+				</center>
+				<br>
+				<center>Tolerance i %</center>
+				<center>
+					<input type="number" id="tolerance" step="0.01" required pattern="[0-9.]+">
+				</center>
+				</div>
+			<br>
+	
+	
+			<center>Antal raavare</center>
+			<center>
+				<input type="number" id="raavareCount" step="1" min="0" required pattern="[0-9.]+">
+			</center>
+			<center>
+				<button onclick="javascript:generateRaavare()">Tilføj</button>
+			</center>
+	
+	
+	<form id="myForm" action="javascript:submit()" method="post">
+			<h1>
+				<b>
+					<center>Opret recept</center>
+				</b>
+			</h1>
+
+			<center>ReceptID:</center>
+			<center>
+				<input type="number" id="receptID" required pattern="[0-9.]+">
+			</center>
+			<br>
+			<center>Recept navn</center>
+			<center>
+				<input type="text" id="receptNavn" required
+					pattern="[a-åA-Å]*">
+			</center>
+			
+
+			<div id="numberOfRaavare">
+				
+			</div>
+			<br>
+			
+
+			<center>
+				<input type="submit" value="Opret">
+			</center>
+		</form>
+	
+	
+	
+</body>
+</html>
