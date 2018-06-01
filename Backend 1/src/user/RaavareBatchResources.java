@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import DTO.Raavare;
 import DTO.RaavareBatch;
 
-@Path("/raavareBatch")
+@Path("/raavarebatch")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
