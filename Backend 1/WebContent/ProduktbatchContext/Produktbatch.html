@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet" type="text/css" href="Stylish.css">
+<script type="text/javascript" src="ProduktbatchContext/Produktbatch.js"></script>
+
+
+</head>
+
+<body>
+
+	<div class="divOpret">
+		<!--   <img>
+<img src="http://www.dtu.dk/english/-/media/DTU-endk/About%20DTU/PRESS_ROOM/DTU-3.ashx?h=237&la=da&mw=460&w=162"
+    alt="http://www.dtu.dk/english/About/PRESS-ROOM/Photos-and-Multimedia/DTU-logo" width="90" height="125">
+  </img> -->
+		<form id="myForm" action="javascript:submit()" method="post">
+			<h1>
+				<b>
+					<center>Opret produktbatch</center>
+				</b>
+			</h1>
+
+			<center>pbId:</center>
+			<center>
+				<input type="number" id="pbId" required pattern="[0-9.]+">
+			</center>
+			<br>
+			<center>receptId</center>
+			<center>
+				<input type="number" id="receptId" required
+					pattern="[a-åA-Å]*">
+			</center>
+			<br>
+			<center>
+				<select id="Status" required="required">
+					<option value=""> Vælg status </option>
+					<option value=""> Oprettet </option>
+					<option value="Admin">Under produktion</option>
+					<option value="Pharmacist">Afsluttet</option>
+				</select>
+			</center>
+			<br>
+			<center>Antal råvare</center>
+			<center>
+				<input type= "number" id="antal" required>
+			</center>
+			<br>
+			<br>
+
+			<center>
+				<input type="submit" value="Opret">
+			</center>
+		</form>
+	</div>
+</body>
+</html>
