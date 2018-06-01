@@ -27,7 +27,6 @@ function generateRaavare() {
 	}
 }
 
-
 function getDataFromHTML() {
 	var receptId = document.getElementById("receptID").value;
 	var receptNavn = document.getElementById("receptNavn").value
@@ -37,18 +36,38 @@ function getDataFromHTML() {
 		receptNavn : receptNavn,
 		ingrediens : []		
 	};
-	//{"raavareId": 2, "nomNetto": 2, "tolerance": 2}
 	
 	
-	$("tr").each(function(element,index){
-		var ravaareId = document.getElementById("raavareID" + i).value;
-		var nomNetto = document.getElementById("nomNetto" + i).value;
-		var tolerance = document.getElementById("tolerance" + i).value;
-		var obj = {raavareId : ravaareId, nomNEtto: nomNetto, tolerance: tolerance};
+	$("tr").each(function(index,element){
+		//debugger;
+		var ravaareId = document.getElementById("raavareID" + index).value;
+		var nomNetto = document.getElementById("nomNetto" + index).value;
+		var tolerance = document.getElementById("tolerance" + index).value;
+		var obj = {raavareId : ravaareId, nomNetto: nomNetto, tolerance: tolerance};
 		recept.ingrediens.push(obj);
 	});
-	
-
-
 	return recept;
+}
+
+
+
+/**
+ * Creates a user using POST, uses the
+ */
+function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+	myJSON = getDataFromHTML(); //myJSON is an object just like "bruger"
+	$.ajax({ //Indleder et asynkront ajax kald
+		url : "../cargostock/recept", //specificerer endpointet
+		type : 'POST', //Typen af HTTP requestet
+		data : 	JSON.stringify(myJSON),
+		contentType : 'application/json',
+		//Nedenstående bliver ikke kørt
+		success : function(data) {//Funktion der skal udføres når data er hentet
+			alert("success"); //Manipulerer #mydiv.
+		}, failure: function(){
+			alert("fail");
+		}
+	});
+	document.getElementById("myForm").reset();	//Clear the form
+	return false; //For at undgå at knappen poster data (default behavior).
 }
