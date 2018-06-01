@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import DTO.Raavare;
 import DTO.RaavareBatch;
 
-@Path("/raavareBatch")
+@Path("/raavarebatch")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
@@ -24,7 +24,7 @@ public class RaavareBatchResources {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(RaavareBatch ravBat)
-	{
+	{ try {
 		ravareBatchList.add(ravBat);
 
 		System.out.println("Created raavareBatch: " + ravBat.toString());
@@ -34,6 +34,12 @@ public class RaavareBatchResources {
 
 
 		return result;
+	} catch(Exception e) {
+		System.out.println("hejsa2");
+	}finally {
+		System.out.println("hejsa3");
+	}
+	return null;
 	}
 
 	@GET
@@ -44,7 +50,7 @@ public class RaavareBatchResources {
 		return ravareBatchList;
 	}
 
-	//POST
+	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String update(RaavareBatch ravBat) {
 
