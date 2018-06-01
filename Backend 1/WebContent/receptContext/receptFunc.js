@@ -1,7 +1,6 @@
 /**
- * 
+ * Generate n input fields in form depending on number of needed raavare
  */
-
 function generateRaavare() {
 	var number = 0;
 	number = document.getElementById("raavareCount").value;
@@ -26,4 +25,24 @@ function generateRaavare() {
 			
 		$("#numberOfRaavare").append(form);
 	}
+}
+
+
+function getDataFromHTML() {
+	var receptId = document.getElementById("ID").value;
+	var receptNavn = document.getElementById("Brugernavn").value
+	
+	
+	var raavareID = document.getElementById("ini").value
+	var cpr = document.getElementById("CPR").value
+	var passwd = document.getElementById("password").value
+	var rolle = document.getElementById("rolle").value
+
+	var recept = {
+		"receptId" : receptId,
+		"receptNavn" : receptNavn,
+		"ingrediens" : [{"raavareId": , "nomNetto": , "tolerance": }]
+		
+	}
+	return recept;
 }
