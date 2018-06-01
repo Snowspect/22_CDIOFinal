@@ -63,6 +63,7 @@ function loadUsers(){
 	});
 }
 
+
 /**
  * Removes user from list using DELETE
  * @returns
@@ -189,3 +190,27 @@ function toUpdate()
 		});
 	});
 }
+
+
+function toAdministrator(){
+	$(function(){
+		$("#buttons_div").load("admin.html");
+	})
+}
+
+
+function toFarmaceut(){
+	$(function(){
+		$("#buttons_div").load("farmaceut.html");
+	})
+}
+
+
+function toProduktionsleder(){
+	$(function(){
+		$("#buttons_div").load("produktionsleder.html");
+	})
+}
+
+
+
