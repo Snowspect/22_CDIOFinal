@@ -7,21 +7,22 @@ function generateRaavare() {
 	number = document.getElementById("raavareCount").value;
 	
 	for(i = 0; i < number; i++) {
-		var form = '<br>'+
-		'				<center>RaavareID</center>'+
+		var form = '	<tr>' + 
+		'				<td><center>RaavareID</center>'+
 		'				<center>'+
 		'					<input type="number" id="raavareID' + i + '" required pattern="[0-9.]+">'+
-		'				</center>'+
+		'				</center></td>'+
 		'				<br>'+
-		'				<center>NomNetto i kg</center>'+
+		'				<td><center>NomNetto i kg</center>'+
 		'				<center>'+
 		'					<input type="number" id="nomNetto' + i + '" step="0.01" required pattern="[0-9.]+">'+
-		'				</center>'+
+		'				</center></td>'+
 		'				<br>'+
-		'				<center>Tolerance i %</center>'+
+		'				<td><center>Tolerance i %</center>'+
 		'				<center>'+
 		'					<input type="number" id="tolerance' + i + '" step="0.01" required pattern="[0-9.]+">'+
-		'				</center>';
+		'				</center></td>' +
+		'				</tr>';
 			
 		$("#numberOfRaavare").append(form);
 	}
