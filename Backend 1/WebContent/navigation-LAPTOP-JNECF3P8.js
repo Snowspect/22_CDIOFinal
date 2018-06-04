@@ -66,6 +66,22 @@ function toUpdate()
 	});
 }
 
+
+function toRbCreate(){
+	$(function(){
+		$("#transform").load("raavareBatchContext/opretRaavareBatch.html");
+	})
+}
+
+function toRbView()
+{
+	$(function loadViewRb(){
+		$("#transform").load("raavareBatchContext/viewRaavareBatch.html");
+		loadRaavareBatch(); //now not automatically executed once front page loads.
+	});
+}
+
+
 function toAdministrator(){
 	$(function(){
 		$("#buttons_div").load("admin.html");
@@ -83,3 +99,4 @@ function toProduktionsleder(){
 		$("#buttons_div").load("produktionsleder.html");
 	})
 }
+

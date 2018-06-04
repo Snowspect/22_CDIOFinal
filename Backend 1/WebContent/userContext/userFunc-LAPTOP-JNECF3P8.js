@@ -148,7 +148,3 @@ function insert(id, userName, ini, cpr, passwd, role) {
 }
 
 
-
-
-
-
