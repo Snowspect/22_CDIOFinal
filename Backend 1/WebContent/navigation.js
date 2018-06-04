@@ -100,3 +100,26 @@ function toProduktionsleder(){
 	})
 }
 
+function toRUpdate()
+{
+	$(function() {
+		$("#transform").load("RaavareContext/RaavareUpdate.html",null,function() {
+			loadRaavare();
+		});
+	});
+}
+
+
+function toRCreate(){
+	$(function(){
+		$("#transform").load("RaavareContext/Raavare.html");
+	})
+}
+
+function toRView()
+{
+	$(function loadViewRb(){
+		$("#transform").load("RaavareContext/RaavareView.html");
+		loadRaavare(); //now not automatically executed once front page loads.
+	});
+}
