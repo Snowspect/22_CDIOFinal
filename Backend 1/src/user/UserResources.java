@@ -69,7 +69,7 @@ public class UserResources {
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
 	public void deleteUser(@PathParam("id") int id) throws NotFoundException
 	{
-		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
+		boolean removeIf = perList.removeIf(e-> e.getUserId().equals(id));
 		if(!removeIf)
 		{
 			throw new NotFoundException("Brugeren findes ikke");
