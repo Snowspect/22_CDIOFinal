@@ -11,11 +11,11 @@ public class Main {
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		// TODO Auto-generated method stub
-		Afvejning dto = new Afvejning();
+		Afvejning afv = new Afvejning();
 		Personer pers = new Personer();
 		RaavareBatch RaaBa = new RaavareBatch();
 //		TCPSocket tcp = new TCPSocket();
-		Weight_IO io = new Weight_IO(dto);
+		Weight_IO io = new Weight_IO(afv);
 		io.run();
 	}
 
