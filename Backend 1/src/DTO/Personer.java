@@ -3,7 +3,7 @@ package DTO;
 import java.util.List;
 
 public class Personer {
-	private int userId;
+	private String userId;
 	private String userName;
 	private String ini;
 	private String cpr;
@@ -14,7 +14,7 @@ public class Personer {
 	public Personer() {
 	}
 
-	public Personer(int userId, String userName, String ini, String cpr, String password, String roles) {
+	public Personer(String userId, String userName, String ini, String cpr, String password, String roles) {
 		this.userId = userId;
 		this.userName = userName;
 		this.ini = ini;
@@ -23,11 +23,11 @@ public class Personer {
 		this.roles = roles;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

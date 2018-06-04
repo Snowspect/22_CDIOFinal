@@ -17,10 +17,12 @@ public class Weight_IO {
 	private DataOutputStream sendToServer;
 	private BufferedReader getFromServer;
 	private String responseFromServer, messageToServer, name = "Marcus", status = "";
-	private Afvejning dto;
+	private Afvejning afv;
+	private Personer pers;
+	private RaavareBatch raav;
 	
-	public Weight_IO(Afvejning dto) throws UnknownHostException, IOException {
-		this.dto = dto;
+	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
+		this.afv = afv;
 		conn = new Connection("127.0.0.1", 8000);
 		clientSocket = conn.SocketConn();
 		sendToServer = conn.getWriter();
@@ -38,7 +40,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
 		responseFromServer = getFromServer.readLine();		
-		Personer.setUserId(responseFromServer); //saves in DTO
+		pers.setUserId(responseFromServer); //saves in DTO
 		System.out.println(responseFromServer);
 	
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
@@ -51,7 +53,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
 		responseFromServer = getFromServer.readLine();		//Save
-		RaavareBatch.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
+		raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
 		System.out.println(responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
@@ -74,7 +76,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		//Save
 	//	dto.setTaraWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 		responseFromServer = strip(responseFromServer);
-		Afvejning.setTara(Double.parseDouble(responseFromServer));
+		afv.setTara(Double.parseDouble(responseFromServer));
 		System.out.println(responseFromServer);
 		
 		sendToServer.writeBytes("T" + '\n');
@@ -91,7 +93,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		//Save
 	//	dto.setNetWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 		responseFromServer = strip(responseFromServer);
-		Afvejning.setNetto(Double.parseDouble(responseFromServer));
+		afv.setNetto(Double.parseDouble(responseFromServer));
 		System.out.println(responseFromServer);
 		
 		sendToServer.writeBytes("T" + '\n');
@@ -108,7 +110,7 @@ public class Weight_IO {
 	//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 		responseFromServer = getFromServer.readLine();//Save
 		responseFromServer = strip(responseFromServer);
-		Afvejning.setBrutto(Double.parseDouble(responseFromServer));
+		afv.setBrutto(Double.parseDouble(responseFromServer));
 		System.out.println(responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
@@ -120,7 +122,7 @@ public class Weight_IO {
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println(responseFromServer);
-		dto.toString();
+		afv.toString();
 		
 		sendToServer.writeBytes("Q" + '\n');
 		

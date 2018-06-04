@@ -6,7 +6,8 @@ public class Afvejning {
 	private double tara;
 	private double netto;
 	private double brutto;
-
+	private Personer pers;
+	private RaavareBatch raav;
 
 	public double getBrutto() {
 		return brutto;
@@ -40,9 +41,9 @@ public class Afvejning {
 	}
 	
 //	Copied from CDIO 2. Not sure if we need it.
-//	public String toString(){
-//		return "userId: " + Personer.getUserId() + " råvareBathcId: " + RaavareBatch.rbId
-//				+ " taravægt: " + tara + " netto: "+ netto + " brutto: " 
-//				+ brutto;
-//	}
+	public String toString(){
+		return "userId: " + pers.getUserId() + " råvareBatchId: " + raav.getRbId()
+				+ " taravægt: " + tara + " netto: "+ netto + " brutto: " 
+				+ brutto;
+	}
 }
