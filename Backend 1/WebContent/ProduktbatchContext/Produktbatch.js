@@ -134,17 +134,3 @@ function insert(pbId, rcpId, Status, antal) {
 
 }
 
-function toCreateProduktbatch(){
-	$(function(){
-		$("#transform").load("ProduktbatchContext/Produktbatch.html");
-	})
-}
-
-function toViewProduktbatch()
-{
-	$(function loadViewProduktbatch(){
-		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html");
-		loadUsers(); //now not automatically executed once front page loads.
-	});
-}
-

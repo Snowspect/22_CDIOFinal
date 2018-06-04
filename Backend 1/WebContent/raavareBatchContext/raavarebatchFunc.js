@@ -139,16 +139,4 @@
 	 * loads the page that allows you to create a user
 	 * @returns
 	 */
-	function toRbCreate(){
-		$(function(){
-			$("#transform").load("raavareBatchContext/opretRaavareBatch.html");
-		})
-	}
-	
-	function toRbView()
-	{
-		$(function loadViewRb(){
-			$("#transform").load("raavareBatchContext/viewRaavareBatch.html");
-			loadRaavareBatch(); //now not automatically executed once front page loads.
-		});
-	}
+
