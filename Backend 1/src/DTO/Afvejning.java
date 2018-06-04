@@ -1,8 +1,8 @@
 package DTO;
 
 public class Afvejning {
-	private int userId;
-	private int rbId;
+//	private int userId;
+//	private int rbId;
 	private double tara;
 	private double netto;
 	private double brutto;
@@ -14,18 +14,18 @@ public class Afvejning {
 	public void setBrutto(double brutto) {
 		this.brutto = brutto;
 	}
-	public int getUserId() {
-		return userId;
-	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-	public int getRbId() {
-		return rbId;
-	}
-	public void setRbId(int rbId) {
-		this.rbId = rbId;
-	}
+//	public int getUserId() {
+//		return userId;
+//	}
+//	public void setUserId(int userId) {
+//		this.userId = userId;
+//	}
+//	public int getRbId() {
+//		return rbId;
+//	}
+//	public void setRbId(int rbId) {
+//		this.rbId = rbId;
+//	}
 	public double getTara() {
 		return tara;
 	}
@@ -39,10 +39,10 @@ public class Afvejning {
 		this.netto = netto;
 	}
 	
-	//Copied from CDIO 2. Not sure if we need it.
-	public String toString(){
-		return "userId: " + userId + " råvareBathcId: " + rbId
-				+ " taravægt: " + tara + " netto: "+ netto + " brutto: " 
-				+ brutto;
-	}
+//	Copied from CDIO 2. Not sure if we need it.
+//	public String toString(){
+//		return "userId: " + Personer.getUserId() + " råvareBathcId: " + RaavareBatch.rbId
+//				+ " taravægt: " + tara + " netto: "+ netto + " brutto: " 
+//				+ brutto;
+//	}
 }
