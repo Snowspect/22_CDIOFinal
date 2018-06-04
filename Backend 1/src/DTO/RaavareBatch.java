@@ -2,25 +2,25 @@ package DTO;
 
 public class RaavareBatch {
 	/** raavare batch id i området 1-99999999. Vælges af brugerne */  
-	String rbId;                     
+	int rbId;                     
 	/** raavare id i området 1-99999999 vælges af brugerne */
-	String raavareId;             
+	int raavareId;             
 	/** mængde på lager */
 	double maengde;
 	
 	public RaavareBatch() {
 	}
 	
-	public String getRbId() {
+	public int getRbId() {
 		return rbId;
 	}
-	public void setRbId(String rbId) {
+	public void setRbId(int rbId) {
 		this.rbId = rbId;
 	}
-	public String getRaavareId() {
+	public int getRaavareId() {
 		return raavareId;
 	}
-	public void setRaavareId(String raavareId) {
+	public void setRaavareId(int raavareId) {
 		this.raavareId = raavareId;
 	}
 	public double getMaengde() {

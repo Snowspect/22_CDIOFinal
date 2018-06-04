@@ -68,7 +68,7 @@ public class RaavareBatchResources {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String delete(int rbId)
 	{
-		ravareBatchList.removeIf(e-> e.getRbId().equals(rbId));
+		ravareBatchList.removeIf(e-> e.getRbId() == rbId);
 		return "deleted ravareBatch";
 	}
 }

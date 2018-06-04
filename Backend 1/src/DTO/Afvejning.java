@@ -1,8 +1,8 @@
 package DTO;
 
 public class Afvejning {
-//	private int userId;
-//	private int rbId;
+	private int userId;
+	private int rbId;
 	private double tara;
 	private double netto;
 	private double brutto;

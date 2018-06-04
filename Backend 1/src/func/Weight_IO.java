@@ -33,14 +33,14 @@ public class Weight_IO {
 	 * In RM20 8 there needs to be exactly 3 words in the message for some reason
 	 * @throws IOException
 	 */
-	public void run() throws IOException 
+	public void run() throws IOException //Run() skal skrives om.
 	{
 	try {
 		sendToServer.writeBytes("RM20 4 ”Indtast operator nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
 		responseFromServer = getFromServer.readLine();		
-		pers.setUserId(responseFromServer); //saves in DTO
+//		pers.setUserId(responseFromServer); //saves in DTO
 		System.out.println(responseFromServer);
 	
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
@@ -53,7 +53,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
 		responseFromServer = getFromServer.readLine();		//Save
-		raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
+//		raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
 		System.out.println(responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
