@@ -1,6 +1,6 @@
 
 //Updates a user using POST
-function update() {
+function updateUser() {
 	alert("update called");
 	myJSON = getPersonFromHTML();
 	$.ajax({
@@ -22,7 +22,7 @@ function update() {
 /**
  * Creates a user using PUT, uses the cargostock/user/create path
  */
-function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+function submitUser() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
 		url : "cargostock/users/", //specificerer endpointet
@@ -53,7 +53,7 @@ function loadUsers(){
 			//Nedenstående bliver ikke kørt
 			success : function(data)
 			{//Funktion der skal udføres når data er hentet
-				iterate(data);
+				iterateUsers(data);
 				//alert("data");
 			}, failure: function()
 			{
@@ -113,9 +113,9 @@ function getPersonFromHTML() {
  * calls insert and adds all to the html table
  * @param data
  */
-function iterate(data) {
+function iterateUsers(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insert(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles);
+		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles);
 	});
 }
 
@@ -129,7 +129,7 @@ function iterate(data) {
  * @param role
  * @returns
  */
-function insert(id, userName, ini, cpr, passwd, role) {
+function insertIntoUserTable(id, userName, ini, cpr, passwd, role) {
 	var table = document.getElementById("userTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);

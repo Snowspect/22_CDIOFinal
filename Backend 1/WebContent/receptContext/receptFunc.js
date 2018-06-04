@@ -1,9 +1,9 @@
 /**
  * Generate n input fields in form depending on number of needed raavare
  */
-function generateRaavare() {
+function generateRecept() {
 	var number = 0;
-	number = document.getElementById("raavareCount").value;
+	number = document.getElementById("receptCount").value;
 	
 	for(i = 0; i < number; i++) {
 		var form = '	<tr>' + 
@@ -23,7 +23,7 @@ function generateRaavare() {
 		'				</center></td>' +
 		'				</tr>';
 			
-		$("#numberOfRaavare").append(form);
+		$("#numberOfRecept").append(form);
 	}
 }
 
@@ -54,7 +54,7 @@ function getDataFromHTML() {
 /**
  * Creates a user using POST, uses the
  */
-function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+function submitRecept() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getDataFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
 		url : "cargostock/recept", //specificerer endpointet
@@ -72,4 +72,53 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 	return false; //For at undgå at knappen poster data (default behavior).
 }
 
+function loadRecept() {
+	$(function() {
+		$.ajax({ //Indleder et asynkront ajax kald
+			url : 'cargostock/recept', //specificerer endpointet
+			type : 'GET', //Typen af HTTP requestet (GET er default)
+			contentType : 'application/json',
+			//Nedenstående bliver ikke kørt
+			success : function(data)
+			{//Funktion der skal udføres når data er hentet
+				iterateRecept(data);
+				//alert("data");
+			}, failure: function()
+			{
+				alert("fail");
+			}
+		});
+	});
+}
+/**
+ * Iterates throuch each data instance, first stringifying it into JSON and then parsing it into JSO
+ * calls insert and adds all to the html table
+ * @param data
+ */
+function iterateRecept(data) {
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index, element) {  
+		insertIntoRaavareTable(this.receptId, this.receptNavn, this.ingrediens[index].raavareId, this.ingrediens[index].nomNetto, this.ingrediens[index].tolerance);
+	});
+}
+/**
+ * Adds each JSO to the html table
+ * @param RaavareId
+ * @param name
+ * @param supplier
+ * @returns
+ */
+function insertIntoReceptTable(receptId, receptNavn, raavareId, nomNetto, tolerance) {
+	var table = document.getElementById("receptTable");
+	var row = table.insertRow(1);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
 
+	cell1.innerHTML = receptId;
+	cell2.innerHTML = receptNavn;
+	cell3.innerHTML = raavareId;
+	cell4.innerHTML = nomNetto;
+	cell5.innerHTML = tolerance;
+}
