@@ -14,7 +14,7 @@
 				<input type="number" id="produktCount" step="1" min="0" required pattern="[0-9.]+">
 			</center>
 			<center>
-				<button onclick="javascript:generateRaavare()">Tilføj</button>
+				<button onclick="javascript:generateProdukt()">Tilføj</button>
 			</center>
 
 	<div class="divOpret">
@@ -22,7 +22,7 @@
 <img src="http://www.dtu.dk/english/-/media/DTU-endk/About%20DTU/PRESS_ROOM/DTU-3.ashx?h=237&la=da&mw=460&w=162"
     alt="http://www.dtu.dk/english/About/PRESS-ROOM/Photos-and-Multimedia/DTU-logo" width="90" height="125">
   </img> -->
-		<form id="myForm" action="javascript:submit()" method="post">
+		<form id="myForm" action="javascript:submitProduct()" method="post">
 			<h1>
 				<b>
 					<center>Opret produktbatch</center>
@@ -49,12 +49,12 @@
 				</select>
 			</center>
 			<br>
-			<center>Antal råvare</center>
-			<center>
-				<input type= "number" id="antal" required>
-			</center>
-			<br>
-			<br>
+			
+				<div id ="table">
+			<table id="numberOfProductBatch" style="width:100%;">
+				
+			</table>
+				</div>
 
 			<center>
 				<input type="submit" value="Opret">
