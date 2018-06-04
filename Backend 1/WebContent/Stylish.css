@@ -12,6 +12,15 @@ h1 {
 	padding-bottom: 30px;
 }
 
+.login_buttons {
+	color:blue; 
+	margin-bottom: 10px;
+	/*border-radius: 10px;*/ 
+	padding:2% 2%; 
+	margin-right:20px; 
+	font-size: 17px;
+}
+
 p {
     font-family: verdana;
     font-size: 20px;
