@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import DTO.Afvejning ;
+import DTO.Personer;
+import DTO.RaavareBatch;
 import data.socket.Connection;
 
 public class Weight_IO {
@@ -36,7 +38,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
 		responseFromServer = getFromServer.readLine();		
-		Afvejning.setUserId(responseFromServer); //saves in DTO
+		Personer.setUserId(responseFromServer); //saves in DTO
 		System.out.println(responseFromServer);
 	
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
@@ -49,7 +51,7 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
 		responseFromServer = getFromServer.readLine();		//Save
-		Afvejning.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
+		RaavareBatch.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
 		System.out.println(responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
