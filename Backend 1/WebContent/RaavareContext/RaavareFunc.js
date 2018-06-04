@@ -28,7 +28,7 @@ function update() {
 function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getRaavareFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
-		url : "cargostock/raavare/", //specificerer endpointet
+		url : "cargostock/raavare", //specificerer endpointet
 		type : 'POST', //Typen af HTTP requestet
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
@@ -68,15 +68,15 @@ function loadRaavare(){
 
 //draws person information from html into a "bruger" variable
 function getRaavareFromHTML() {
-	var raavareId = document.getElementById("RaavareId").value;
+	var ravareId = document.getElementById("RaavareId").value;
 	var name = document.getElementById("RaavareNavn").value;
 	var supplier = document.getElementById("Supplier").value;
 	
 
 	var raavare = {
-		raavareId : raavareId,
-		raavareNavn : name,
-		leverandoer : supplier
+		ravareId : ravareId,
+		name : name,
+		supplier : supplier
 	}
 	return raavare;
 }
@@ -88,7 +88,7 @@ function getRaavareFromHTML() {
  */
 function iterate(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insert(this.raavareId, this.name, this.supplier);
+		insert(this.ravareId, this.name, this.supplier);
 	});
 }
 
@@ -99,14 +99,14 @@ function iterate(data) {
  * @param supplier
  * @returns
  */
-function insert(raavareId, name, supplier) {
+function insert(ravareId, name, supplier) {
 	var table = document.getElementById("RaavareTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
 
-	cell1.innerHTML = raavareId;
+	cell1.innerHTML = ravareId;
 	cell2.innerHTML = name;
 	cell3.innerHTML = supplier;
 }
