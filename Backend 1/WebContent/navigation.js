@@ -8,7 +8,7 @@ function toViewProduktbatch()
 {
 	$(function loadViewProduktbatch(){
 		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html");
-		loadUsers(); //now not automatically executed once front page loads.
+		loadProducts(); //now not automatically executed once front page loads.
 	});
 }
 
@@ -84,19 +84,19 @@ function toRbView()
 
 function toAdministrator(){
 	$(function(){
-		$("#buttons_div").load("admin.html");
+		$("#buttons_container").load("admin.html");
 	})
 }
 
 function toFarmaceut(){
 	$(function(){
-		$("#buttons_div").load("farmaceut.html");
+		$("#buttons_container").load("farmaceut.html");
 	})
 }
 
 function toProduktionsleder(){
 	$(function(){
-		$("#buttons_div").load("produktionsleder.html");
+		$("#buttons_container").load("produktionsleder.html");
 	})
 }
 
