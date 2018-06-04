@@ -1,9 +1,4 @@
-body {
-    background-color: white;
-}
-
 h1 {
-    color: black;
     text-align: center;
 }
 
@@ -36,17 +31,6 @@ p {
 	
 }
 
-/*
-div{
-  padding: 10px;
-  position: fixed;
-  right: 40%;
-  border-width: 2px;
-  border-radius: 7px;
-  width: 400px;
-  top: 10%;
-}
-*/
 .divAdmin{
   padding: 10px;
   position: fixed;
@@ -59,15 +43,19 @@ right: 27.5%;
   width: 600px;
   top: 20%;
 }
+
+/* Div styling used for creating and updating data */
 .divOpret .divUpdate{
   padding: 10px;
   border-width: 2px;
   border-radius: 7px;
 }
 
+/* colors odd tr's lightgrey */
 tr:nth-of-type(even) {
  background-color:lightgrey;
 }
+
 
 .input{
   border-radius: 5px;
