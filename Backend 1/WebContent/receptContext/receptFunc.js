@@ -71,3 +71,5 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 	document.getElementById("myForm").reset();	//Clear the form
 	return false; //For at undgå at knappen poster data (default behavior).
 }
+
+
