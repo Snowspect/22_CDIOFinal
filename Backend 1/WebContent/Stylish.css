@@ -10,6 +10,7 @@ h1 {
 #buttons_div {
 	display: inline-block;
 	padding-bottom: 30px;
+	width: 100%;
 }
 
 .login_buttons {
@@ -29,7 +30,7 @@ p {
 	color:blue; 
 	margin-bottom: 10px;
 	border-radius: 10px; 
-	padding:2% 2%; 
+	padding:1% 2%; 
 	margin-right:50px; 
 	font-size: 10px;
 	

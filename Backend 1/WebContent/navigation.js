@@ -84,19 +84,19 @@ function toRbView()
 
 function toAdministrator(){
 	$(function(){
-		$("#buttons_div").load("admin.html");
+		$("#buttons_container").load("admin.html");
 	})
 }
 
 function toFarmaceut(){
 	$(function(){
-		$("#buttons_div").load("farmaceut.html");
+		$("#buttons_container").load("farmaceut.html");
 	})
 }
 
 function toProduktionsleder(){
 	$(function(){
-		$("#buttons_div").load("produktionsleder.html");
+		$("#buttons_container").load("produktionsleder.html");
 	})
 }
 
