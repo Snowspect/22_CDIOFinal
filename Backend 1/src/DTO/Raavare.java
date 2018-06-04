@@ -2,8 +2,8 @@ package DTO;
 
 public class Raavare {
 
-	private String name, supplier;
 	private int ravareId;
+	private String name, supplier;
 	public String getName() {
 		return name;
 	}
@@ -26,6 +26,6 @@ public class Raavare {
 
 	public String toString()
 	{
-		return "råvareNr: " + ravareId + ", Name: " + name + ", Supplier: " + supplier;
+		return "ravareId: " + ravareId + ", Name: " + name + ", Supplier: " + supplier;
 	}
 }

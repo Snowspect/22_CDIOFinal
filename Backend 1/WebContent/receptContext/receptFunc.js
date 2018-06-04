@@ -57,7 +57,7 @@ function getDataFromHTML() {
 function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getDataFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
-		url : "../cargostock/recept", //specificerer endpointet
+		url : "cargostock/recept", //specificerer endpointet
 		type : 'POST', //Typen af HTTP requestet
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
@@ -71,3 +71,5 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 	document.getElementById("myForm").reset();	//Clear the form
 	return false; //For at undgå at knappen poster data (default behavior).
 }
+
+

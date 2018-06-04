@@ -1,8 +1,45 @@
+/**
+ * Generate n input fields in form depending on number of needed raavare
+ */
+function generateProdukt() {
+	var number = 0;
+	number = document.getElementById("produktCount").value;
+	
+	for(i = 0; i < number; i++) {
+		var form = '	<tr>' + 
+		'				<td><center>UserID</center>'+
+		'				<center>'+
+		'					<input type="number" id="raavareID' + i + '" required pattern="[0-9.]+">'+
+		'				</center></td>'+
+		'				<br>'+
+		'				<td><center>rbID</center>'+
+		'				<center>'+
+		'					<input type="number" id="nomNetto' + i + '" step="0.01" required pattern="[0-9.]+">'+
+		'				</center></td>'+
+		'				<br>'+
+		'				<td><center>Tara</center>'+
+		'				<center>'+
+		'					<input type="number" id="tolerance' + i + '" step="0.01" required pattern="[0-9.]+">'+
+		'				</center></td>' +
+		'				<td><center>Netto</center>'+
+		'				<center>'+
+		'					<input type="number" id="tolerance' + i + '" step="0.01" required pattern="[0-9.]+">'+
+		'				</center></td>' +
+		'				</tr>';
+		
+			
+		$("#numberOfProductBatch").append(form);
+	}
+}
 
-function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+
+
+
+
+function submitProduct() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getProduktFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
-		url : "cargostock/produktbatch/", //specificerer endpointet
+		url : "../cargostock/produktbatch/", //specificerer endpointet
 		type : 'POST', //Typen af HTTP requestet
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
@@ -22,17 +59,26 @@ function getProduktFromHTML() {
 	var pbId = document.getElementById("pbId").value;
 	var rcpId = document.getElementById("receptId").value
 	var status = document.getElementById("Status").value
-	var antal = document.getElementById("antal").value
 	
 	// lav afvejnings inputs
 
 	var produktbatch = {
-		"pbId" : pbId,
-		"receptId" : rcpId,
-		"Status" : status,
-		"antal" : antal,
+		pbId : pbId,
+		receptId : rcpId,
+		Status : status,
+		afvejning: []
 	//	"afvejning" : [{"userId": /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
-	}
+	};
+	
+	$("tr").each(function(index,element){
+		//debugger;
+		var de = document.getElementById("raavareID" + index).value;
+		var nomNetto = document.getElementById("nomNetto" + index).value;
+		var tolerance = document.getElementById("tolerance" + index).value;
+		var obj = {raavareId : ravaareId, nomNetto: nomNetto, tolerance: tolerance};
+		recept.ingrediens.push(obj);
+	});	
+	
 	return produktbatch;
 }
 
@@ -74,19 +120,5 @@ function insert(pbId, rcpId, Status, antal) {
 	cell3.innerHTML = Status;
 	cell4.innerHTML = antal;
 
-}
-
-function toCreateProduktbatch(){
-	$(function(){
-		$("#transform").load("ProduktbatchContext/Produktbatch.html");
-	})
-}
-
-function toViewProduktbatch()
-{
-	$(function loadViewProduktbatch(){
-		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html");
-		loadUsers(); //now not automatically executed once front page loads.
-	});
 }
 

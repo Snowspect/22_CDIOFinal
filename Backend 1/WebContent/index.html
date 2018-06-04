@@ -8,18 +8,20 @@
 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="jquery.serialize-object.js"></script>
 <script type="text/javascript" src="userContext/userFunc.js"></script>
-<script type="text/javascript" src="stockFunc.js"></script>
-<script type="text/javascript" src= "ProduktbatchContext/Produktbatch.js"></script>
+<script type="text/javascript" src="navigation.js"></script>
 
 		</head> 
 	<body>
 	<center>
-		<div id="buttons_div">
+		<div id="login_buttons">
+			<input class="login_buttons" type="button" id="" onClick="toAdministrator()" value="Admin">
+			<input class="login_buttons" type="button" id="" onClick="toFarmaceut()" value="Farmaceut">			
+			<input class="login_buttons" type="button" id="delete" onClick="toProduktionsleder()" value="Produktionsleder" >	
+		</div>
+		<div id="buttons_container">
 			<h1> Velkommen til dit administrations system </h1>
 			<h1>Login</h1>
-				<input class="navigationbutton" type="button" id="" onClick="toAdministrator()" value="Admin">
-				<input class="navigationbutton" type="button" id="" onClick="toFarmaceut()" value="Farmaceut">			
-				<input class="navigationbutton" type="button" id="delete" onClick="toProduktionsleder()" value="Produktionsleder" >		
+					
 		</div>
 		<div id="transform">
 		</div>
