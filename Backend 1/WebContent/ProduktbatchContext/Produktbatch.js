@@ -9,21 +9,21 @@ function generateProdukt() {
 		var form = '	<tr>' + 
 		'				<td><center>UserID</center>'+
 		'				<center>'+
-		'					<input type="number" id="raavareID' + i + '" required pattern="[0-9.]+">'+
+		'					<input type="number" id="userID' + i + '" required pattern="[0-9.]+">'+
 		'				</center></td>'+
 		'				<br>'+
 		'				<td><center>rbID</center>'+
 		'				<center>'+
-		'					<input type="number" id="nomNetto' + i + '" step="0.01" required pattern="[0-9.]+">'+
+		'					<input type="number" id="rbID' + i + '" step="0.01" required pattern="[0-9.]+">'+
 		'				</center></td>'+
 		'				<br>'+
 		'				<td><center>Tara</center>'+
 		'				<center>'+
-		'					<input type="number" id="tolerance' + i + '" step="0.01" required pattern="[0-9.]+">'+
+		'					<input type="number" id="tara' + i + '" step="0.01" required pattern="[0-9.]+">'+
 		'				</center></td>' +
 		'				<td><center>Netto</center>'+
 		'				<center>'+
-		'					<input type="number" id="tolerance' + i + '" step="0.01" required pattern="[0-9.]+">'+
+		'					<input type="number" id="Netto' + i + '" step="0.01" required pattern="[0-9.]+">'+
 		'				</center></td>' +
 		'				</tr>';
 		
@@ -38,16 +38,16 @@ function generateProdukt() {
 
 function submitProduct() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getProduktFromHTML(); //myJSON is an object just like "bruger"
-	$.ajax({ //Indleder et asynkront ajax kald
-		url : "../cargostock/produktbatch/", //specificerer endpointet
+	$.ajax({ //Indleder et asynkront ajax kald¨
+		url : "cargostock/produktbatch", //specificerer endpointet
 		type : 'POST', //Typen af HTTP requestet
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
 		//Nedenstående bliver ikke kørt
 		success : function(data) {//Funktion der skal udføres når data er hentet
 			alert("success"); //Manipulerer #mydiv.
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -57,26 +57,27 @@ function submitProduct() { //Formen kalder denne function, sikre at alle felter 
 
 function getProduktFromHTML() {
 	var pbId = document.getElementById("pbId").value;
-	var rcpId = document.getElementById("receptId").value
-	var status = document.getElementById("Status").value
+	var rcpId = document.getElementById("receptId").value;
+	var status = document.getElementById("Status").value;
 	
 	// lav afvejnings inputs
 
 	var produktbatch = {
 		pbId : pbId,
 		receptId : rcpId,
-		Status : status,
+		status : status,
 		afvejning: []
-	//	"afvejning" : [{"userId": /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
+	//	"afvejning" : [{"userId"a: /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
 	};
 	
 	$("tr").each(function(index,element){
 		//debugger;
-		var de = document.getElementById("raavareID" + index).value;
-		var nomNetto = document.getElementById("nomNetto" + index).value;
-		var tolerance = document.getElementById("tolerance" + index).value;
-		var obj = {raavareId : ravaareId, nomNetto: nomNetto, tolerance: tolerance};
-		recept.ingrediens.push(obj);
+		var UserID = document.getElementById("userID" + index).value;
+		var rbId = document.getElementById("rbID" + index).value;
+		var tara = document.getElementById("tara" + index).value;
+		var netto = document.getElementById("Netto" + index).value;
+		var obj = {userId : UserID, rbId: rbId, tara: tara, netto: netto};
+		produktbatch.afvejning.push(obj);
 	});	
 	
 	return produktbatch;
@@ -91,34 +92,39 @@ function loadProducts(){
 			//Nedenstående bliver ikke kørt
 			success : function(data)
 			{//Funktion der skal udføres når data er hentet
-				iterate(data);
+				iterateProductTable(data);
 				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
+			}, error: function(message) {
+				alert("Produktbatch get failed");
 			}
 		});
 	});
 }
 
-function iterate(data) {
-	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insert(this.pbId, this.receptId, this.Status, this.antal);
-	});
+function iterateProductTable(data) {
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index,element) {  
+		for(i = 0; i < this.afvejning.length; i++) {
+		insertIntoProductTable(this.pbId, this.receptId, this.status, this.afvejning[i].userId, this.afvejning[i].rbId, this.afvejning[i].tara, this.afvejning[i].netto);
+		}
+	}); 
 }
 
-function insert(pbId, rcpId, Status, antal) {
-	var table = document.getElementById("userTable");
+function insertIntoProductTable(pbId, rcpId, Status, userId, rbId, tara, netto) {
+	var table = document.getElementById("productBatchTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
 	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = pbId;
-	cell2.innerHTML = rcpIp;
+	cell2.innerHTML = rcpId;
 	cell3.innerHTML = Status;
-	cell4.innerHTML = antal;
-
+	cell4.innerHTML = userId;
+	cell5.innerHTML = rbId;
+	cell6.innerHTML = tara;
+	cell7.innerHTML = netto;
 }
-

@@ -20,6 +20,13 @@ function toCreateRecept(){
 	})
 }
 
+function toViewRecept(){
+	$(function(){
+		$("#transform").load("receptContext/ShowRecept.html",null,function() {
+			loadRecept();
+		})
+	})
+}
 
 
 

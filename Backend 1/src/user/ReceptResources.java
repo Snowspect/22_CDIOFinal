@@ -10,6 +10,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import DTO.FoundException;
+import DTO.Raavare;
 import DTO.Recept;
 
 @Path("/recept")
@@ -23,14 +25,25 @@ public class ReceptResources {
 	//{"receptId": 1, "receptNavn": "Fisk", "ingrediens": [{"raavareId": 24, "nomNetto": 95.9, "tolerance": 2.6}]}
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Recept rec) {
+	public String submit(Recept rec) throws FoundException
+	{
+		boolean found = false;
+		for (Recept recept : receptList) {
+			if (rec.getReceptId() == recept.getReceptId()) {
+				found = true;
+			}
+		}
+		if (found) {
+			throw new FoundException("Recepten findes allerede");
+		}
+		
 		receptList.add(rec);
 
 		System.out.println("Created user: " + rec.toString());
 		System.out.println("Current list " + receptList.toString());
 
 		String result = "created recept";
-		return result;
+		return result; 
 	}
 
 	//GET

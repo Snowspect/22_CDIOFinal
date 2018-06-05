@@ -1,18 +1,18 @@
 
 //Updates a user using POST
-function update() {
-	alert("update called");
+function updateUser() {
+//	alert("update called");
 	myJSON = getPersonFromHTML();
 	$.ajax({
-		url : "cargostock/users/",
+		url : "cargostock/users",
 		type : 'PUT',
 		data : JSON.stringify(myJSON),
 		contentType : 'application/json',
 		success: function(data) {
 			alert("update succesful");
 			toUpdate();
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -22,7 +22,7 @@ function update() {
 /**
  * Creates a user using PUT, uses the cargostock/user/create path
  */
-function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+function submitUser() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
 		url : "cargostock/users/", //specificerer endpointet
@@ -32,8 +32,8 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 		//Nedenstående bliver ikke kørt
 		success : function(data) {//Funktion der skal udføres når data er hentet
 			alert("success"); //Manipulerer #mydiv.
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);;
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -53,11 +53,10 @@ function loadUsers(){
 			//Nedenstående bliver ikke kørt
 			success : function(data)
 			{//Funktion der skal udføres når data er hentet
-				iterate(data);
+				iterateUsers(data);
 				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
+			}, error: function(message) {
+				alert("Users get failed");
 			}
 		});
 	});
@@ -103,7 +102,8 @@ function getPersonFromHTML() {
 		ini : ini,
 		cpr : cpr,
 		password : passwd,
-		roles : rolle
+		roles : rolle,
+		status : true
 	}
 	return bruger;
 }
@@ -113,9 +113,9 @@ function getPersonFromHTML() {
  * calls insert and adds all to the html table
  * @param data
  */
-function iterate(data) {
+function iterateUsers(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insert(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles);
+		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles, this.status);
 	});
 }
 
@@ -127,9 +127,10 @@ function iterate(data) {
  * @param cpr
  * @param passwd
  * @param role
+ * @param status
  * @returns
  */
-function insert(id, userName, ini, cpr, passwd, role) {
+function insertIntoUserTable(id, userName, ini, cpr, passwd, role, status) {
 	var table = document.getElementById("userTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
@@ -138,6 +139,7 @@ function insert(id, userName, ini, cpr, passwd, role) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = id;
 	cell2.innerHTML = userName;
@@ -145,6 +147,7 @@ function insert(id, userName, ini, cpr, passwd, role) {
 	cell4.innerHTML = cpr;
 	cell5.innerHTML = passwd;
 	cell6.innerHTML = role;
+	cell7.innerHTML = status;
 }
 
 

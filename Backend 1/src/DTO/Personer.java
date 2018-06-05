@@ -9,6 +9,7 @@ public class Personer {
 	private String cpr;
 	private String password;
 	private String roles;
+	private boolean status;
 
 	//tom constructor for god ordens skyld
 	public Personer() {
@@ -21,6 +22,7 @@ public class Personer {
 		this.cpr = cpr;
 		this.password = password;
 		this.roles = roles;
+		this.status = true;
 	}
 
 	public int getUserId() {
@@ -71,9 +73,17 @@ public class Personer {
 		this.roles = roles;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	public String toString() {
 		String str = null;
-		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles; " + roles;
+		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles " + roles + ", status: " + status;
 		return str;
 
 	}

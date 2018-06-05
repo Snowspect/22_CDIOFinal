@@ -3,13 +3,15 @@ package user;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.Raavare;
 
 @Path("/raavare")
@@ -22,8 +24,18 @@ public class RaavareResources {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Raavare rav)
-	{ try {
+	public String submit(Raavare rav) throws FoundException
+	{
+		boolean found = false;
+		for (Raavare raavare : raavareList) {
+			if (rav.getRavareId() == raavare.getRavareId()) {
+				found = true;
+			}
+		}
+		if (found) {
+			throw new FoundException("Raavaren findes allerede");
+		}
+		
 		raavareList.add(rav);
 
 		System.out.println("Created raavare: " + rav.toString());
@@ -33,12 +45,6 @@ public class RaavareResources {
 
 
 		return result;
-	} catch(Exception e) {
-		System.out.println("hejsa2");
-	}finally {
-		System.out.println("hejsa3");
-	}
-	return null;
 	}
 
 	@GET
@@ -50,17 +56,22 @@ public class RaavareResources {
 	}
 
 	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String update(Raavare rav) {
-
-		for(Raavare Rav : raavareList)
+	@Consumes(MediaType.APPLICATION_JSON) 
+	public void update(Raavare rav) throws NotFoundException {
+		boolean found = false;
+		
+		for(Raavare Rav : raavareList) {
 			if(Rav.getRavareId() == rav.getRavareId())
 			{
 				Rav.setRavareId(rav.getRavareId());
 				Rav.setName(rav.getName());
 				Rav.setSupplier(rav.getSupplier());
+				found = true;
 			}
-		return "Updated Raavare";
+		}
+		if (!found) {
+			throw new NotFoundException("Raavaren findes ikke");
+		}	
 	}
 
 }

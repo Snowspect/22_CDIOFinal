@@ -1,21 +1,18 @@
-/**
- * 
- */
 
 //Updates a user using PUT
-function update() {
-	alert("update called");
+function updateRaavare() {
+//	alert("update called");
 	myJSON = getRaavareFromHTML();
 	$.ajax({
-		url : "cargostock/raavare/",
+		url : "cargostock/raavare",
 		type : 'PUT',
 		data : JSON.stringify(myJSON),
 		contentType : 'application/json',
 		success: function(data) {
 			alert("update succesful");
-			toUpdate();
-		}, failure: function(){
-			alert("fail");
+			toRUpdate();
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -25,7 +22,7 @@ function update() {
 /**
  * Creates a user using POST, uses the cargostock/user/create path
  */
-function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+function submitRaavare() { //Formen kalder denne function, sikre at alle felter er udfyldt
 	myJSON = getRaavareFromHTML(); //myJSON is an object just like "bruger"
 	$.ajax({ //Indleder et asynkront ajax kald
 		url : "cargostock/raavare", //specificerer endpointet
@@ -35,8 +32,8 @@ function submit() { //Formen kalder denne function, sikre at alle felter er udfy
 		//Nedenstående bliver ikke kørt
 		success : function(data) {//Funktion der skal udføres når data er hentet
 			alert("success"); //Manipulerer #mydiv.
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -56,11 +53,10 @@ function loadRaavare(){
 			//Nedenstående bliver ikke kørt
 			success : function(data)
 			{//Funktion der skal udføres når data er hentet
-				iterate(data);
+				iterateRaavare(data);
 				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
+			}, error: function(message) {
+				alert("Raavare get failed");
 			}
 		});
 	});
@@ -86,9 +82,9 @@ function getRaavareFromHTML() {
  * calls insert and adds all to the html table
  * @param data
  */
-function iterate(data) {
+function iterateRaavare(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insert(this.ravareId, this.name, this.supplier);
+		insertIntoRaavareTable(this.ravareId, this.name, this.supplier);
 	});
 }
 
@@ -99,7 +95,7 @@ function iterate(data) {
  * @param supplier
  * @returns
  */
-function insert(ravareId, name, supplier) {
+function insertIntoRaavareTable(ravareId, name, supplier) {
 	var table = document.getElementById("RaavareTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);

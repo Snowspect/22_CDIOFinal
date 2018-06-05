@@ -1,27 +1,7 @@
-	//Updates a user using POST
-	function update() {
-		alert("update called");
-		myJSON = getRaavarebatchFromHTML();
-		$.ajax({
-			url : "cargostock/raavarebatch",
-			type : 'PUT',
-			data : JSON.stringify(myJSON),
-			contentType : 'application/json',
-			success: function(data) {
-				alert("update succesful");
-				toUpdate();
-			}, failure: function(){
-				alert("fail");
-			}
-		});
-		document.getElementById("myForm").reset();	//Clear the form
-		return false; //For at undgå at knappen poster data (default behavior).
-	}
-
 	/**
 	 * Creates a user using PUT, uses the cargostock/user/create path
 	 */
-	function submit() { //Formen kalder denne function, sikre at alle felter er udfyldt
+	function submitRaavareBatch() { //Formen kalder denne function, sikre at alle felter er udfyldt
 		myJSON = getRaavarebatchFromHTML(); //myJSON is an object just like "bruger"
 		$.ajax({ //Indleder et asynkront ajax kald
 			url : "cargostock/raavarebatch", //specificerer endpointet
@@ -31,8 +11,8 @@
 			//Nedenstående bliver ikke kørt
 			success : function(data) {//Funktion der skal udføres når data er hentet
 				alert("success"); //Manipulerer #mydiv.
-			}, failure: function(data){
-				alert("fail");
+			}, error: function(message) {
+				alert(message.responseText);
 			}
 		});
 		document.getElementById("myForm").reset();	//Clear the form
@@ -52,38 +32,13 @@
 				//Nedenstående bliver ikke kørt
 				success : function(data)
 				{//Funktion der skal udføres når data er hentet
-					iterate(data);
+					iterateRaavareBatch(data);
 					//alert("data");
-				}, failure: function()
-				{
-					alert("fail");
+				}, error: function(message) {
+					alert("Raavarebatch get failed");
 				}
 			});
 		});
-	}
-
-	/**
-	 * Removes user from list using DELETE
-	 * @returns
-	 */
-	function removeRaavareBatch() {
-		var id = document.getElementById("rbId").value;
-//		s	var myObj = null;
-		$.ajax({
-			url : 'cargostock/raavarebatch',
-			type : 'DELETE',
-			data : JSON.stringify(id),
-			contentType: 'application/json',
-			success : function(data)
-			{
-				alert("successful delete");
-				toDelete(); //currently called as there is no direct method for emptying a table, 
-				//and as such we reload the html
-			}, error: function(message) {
-				alert(message.responseText);
-			}
-		});
-		document.getElementById("deleteForm").reset();	//Clear the form
 	}
 
 	//draws person information from html into a "bruger" variable
@@ -105,9 +60,9 @@
 	 * calls insert and adds all to the html table
 	 * @param data
 	 */
-	function iterate(data) {
+	function iterateRaavareBatch(data) {
 		$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-			insert(this.rbId, this.raavareId, this.maengde);
+			insertIntoRaavareBatchTable(this.rbId, this.raavareId, this.maengde);
 		});
 	}
 
@@ -121,7 +76,7 @@
 	 * @param role
 	 * @returns
 	 */
-	function insert(rbId, rId, amount) {
+	function insertIntoRaavareBatchTable(rbId, rId, amount) {
 		var table = document.getElementById("raavarebatchTable");
 		var row = table.insertRow(1);
 		var cell1 = row.insertCell(0);
@@ -130,8 +85,7 @@
 	
 		cell1.innerHTML = rbId;
 		cell2.innerHTML = rId;
-		cell3.innerHTML = amount;
-	
+		cell3.innerHTML = amount;	
 	}
 
 

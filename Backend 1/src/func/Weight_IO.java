@@ -10,16 +10,20 @@ import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.RaavareBatch;
 import data.socket.Connection;
+import user.UserResources;
 
 public class Weight_IO {
 	private Connection conn;
 	private Socket clientSocket;
 	private DataOutputStream sendToServer;
 	private BufferedReader getFromServer;
-	private String responseFromServer, messageToServer, name = "Marcus", status = "";
-	private Afvejning afv;
-	private Personer pers;
-	private RaavareBatch raav;
+	private String responseFromServer, messageToServer, name = "Thomas", status = "";
+	private Afvejning afv = new Afvejning();
+	private Personer pers = new Personer ();
+	private RaavareBatch raav = new RaavareBatch();
+	private int id;
+	private UserResources UsRe = new UserResources();
+	
 	
 	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
 		this.afv = afv;
@@ -29,6 +33,7 @@ public class Weight_IO {
 		getFromServer = conn.getReader();
 	}
 	
+	
 	/**
 	 * In RM20 8 there needs to be exactly 3 words in the message for some reason
 	 * @throws IOException
@@ -36,92 +41,109 @@ public class Weight_IO {
 	public void run() throws IOException //Run() skal skrives om.
 	{
 	try {
-		sendToServer.writeBytes("RM20 4 ”Indtast operator nr” ”” ”&3”" + '\n');
+		//Input UserId
+		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n'); //OK
+		responseFromServer = getFromServer.readLine(); //OK		
+		System.out.println("1 " + responseFromServer); //Test
 		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
-		responseFromServer = getFromServer.readLine();		
-//		pers.setUserId(responseFromServer); //saves in DTO
-		System.out.println(responseFromServer);
-	
+		System.out.println("2 " + responseFromServer);
+		System.out.println("3 " + responseFromServer.split(" ")[2]);
+		
+//		//Gets userId from weight-response and converts to int
+//		String tempId = responseFromServer.split(" ")[2];
+//		tempId = tempId.replaceAll("\\D+","");	
+//		int foo = Integer.parseInt(tempId);
+//		System.out.println("52 " + foo);
+//		
+//		//TODO get name from data. OBS Metode virker ikke
+//		name = getUserNameFromId(int foo);
+		
+//		Send name to weight
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
-		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
+		System.out.println("4 " + responseFromServer);
 		
-		sendToServer.writeBytes("RM20 4 ”Indtast batch nr” ”” ”&3”" + '\n');
+		//Approve
+		System.out.println("Tryk OK");
 		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
+		System.out.println("5 " + responseFromServer);
+		
+		//Send Produktbatch to weight
+		sendToServer.writeBytes("RM20 4 ”Indtast Produktbatch nr” ”” ”&3”" + '\n');
+		responseFromServer = getFromServer.readLine();		
+		System.out.println("6 " + responseFromServer);
+		
+		//Input Produktbatch id
 		responseFromServer = getFromServer.readLine();		//Save
 //		raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
-		System.out.println(responseFromServer);
+		System.out.println("7 " + responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("8 " + responseFromServer);
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("9" + responseFromServer);
 		
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("10" + responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Placer venligst tara” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("11" + responseFromServer);
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("12" + responseFromServer);
 		
 		sendToServer.writeBytes("S" + '\n');
 		responseFromServer = getFromServer.readLine();		//Save
 	//	dto.setTaraWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 		responseFromServer = strip(responseFromServer);
 		afv.setTara(Double.parseDouble(responseFromServer));
-		System.out.println(responseFromServer);
+		System.out.println("13" + responseFromServer);
 		
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("14" + responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Placer venligst netto” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("15 " + responseFromServer);
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("16" + responseFromServer);
 		
 		sendToServer.writeBytes("S" + '\n');
 		responseFromServer = getFromServer.readLine();		//Save
 	//	dto.setNetWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 		responseFromServer = strip(responseFromServer);
 		afv.setNetto(Double.parseDouble(responseFromServer));
-		System.out.println(responseFromServer);
+		System.out.println("17" + responseFromServer);
 		
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("18" + responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Fjern venligst brutto” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("19" + responseFromServer);
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("20 " + responseFromServer);
 		
 		sendToServer.writeBytes("S" + '\n');
 	//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 		responseFromServer = getFromServer.readLine();//Save
 		responseFromServer = strip(responseFromServer);
 		afv.setBrutto(Double.parseDouble(responseFromServer));
-		System.out.println(responseFromServer);
+		System.out.println("21 " + responseFromServer);
 		
 		sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("22 " + responseFromServer);
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("23 " + responseFromServer);
 		
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
-		System.out.println(responseFromServer);
+		System.out.println("24 " +responseFromServer);
 		afv.toString();
 		
 		sendToServer.writeBytes("Q" + '\n');
@@ -156,4 +178,17 @@ public class Weight_IO {
 		}
 		return stripped;
 	}
+		
+	
+	//Ikke færdig 
+	public String findUserName (int id) {
+		this.id = id;
+		for (Personer person : UsRe.getPerList()) {
+			
+		}
+		
+		return "h";
+		
+	}
+	
 }

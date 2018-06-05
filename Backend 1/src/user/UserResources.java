@@ -12,23 +12,33 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Personer;
+
+
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResources {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
-
 	//Inserts new user into system
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUser(Personer per) {
-		System.out.println("helllloooooo");
+	public String createUser(Personer per) throws FoundException {
+		boolean found = false;
+		for (Personer person : perList) {
+			if (per.getUserId() == person.getUserId()) {
+				found = true;
+			}
+		}
+		
+		if (found) {
+			throw new FoundException("Brugeren findes allerede");
+		}
+		
 		perList.add(per);
-		//perList.add(new Personer(45, "peter", "pl", "12345678", "password", "admin"));
-		//perList.add(new Personer(22, "Hans", "hs", "87654321", "kode", "admin"));
 		System.out.println("Created user: " + per.toString());
 		System.out.println("Current list " + perList.toString());
 
@@ -43,22 +53,13 @@ public class UserResources {
 		System.out.println("Get list: " + perList.toString());
 		return perList;
 	}
-
-	@POST
-	@Path("{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void setUserStatus(@PathParam("id") int id, boolean status)
-	{
-		//code that sets status to active or inactive 
-		// depending on the boolean in the body
-	}
 	
-	@PUT
-	@Path("{id}/status")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void createStatus(@PathParam("id") int id, boolean status) {
-		//code that updates the status of a given id.
-	}
+//	@PUT
+//	@Path("{id}/status")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public void createStatus(@PathParam("id") int id, boolean status) {
+//		//code that updates the status of a given id.
+//	}
 	
 	
 	
@@ -69,18 +70,35 @@ public class UserResources {
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
 	public void deleteUser(@PathParam("id") int id) throws NotFoundException
 	{
-		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
-		if(!removeIf)
-		{
+		boolean found = false;
+		for (Personer person : perList) {
+			if (id == person.getUserId()) {
+				person.setStatus(false);
+				found = true;
+			}
+		}
+		if (!found) {
 			throw new NotFoundException("Brugeren findes ikke");
 		}
+		
+//		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
+//		if(!removeIf)
+//		{
+//			throw new NotFoundException("Brugeren findes ikke");
+//		}
 	}
+
+	public static ArrayList<Personer> getPerList() {
+		return perList;
+	}
+
 
 	//Updates a user
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateUser(Personer per)
+	public void updateUser(Personer per) throws NotFoundException
 	{
+		boolean found = false;
 		for (Personer person : perList) {
 			if(person.getUserId() == per.getUserId())
 			{
@@ -90,7 +108,11 @@ public class UserResources {
 				person.setIni(per.getIni());
 				person.setPassword(per.getPassword());
 				person.setRoles(per.getRoles());
+				found = true;
 			}
+		}
+		if (!found) {
+			throw new NotFoundException("Brugeren findes ikke");
 		}
 	}
 }

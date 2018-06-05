@@ -15,18 +15,18 @@ public class Afvejning {
 	public void setBrutto(double brutto) {
 		this.brutto = brutto;
 	}
-//	public int getUserId() {
-//		return userId;
-//	}
-//	public void setUserId(int userId) {
-//		this.userId = userId;
-//	}
-//	public int getRbId() {
-//		return rbId;
-//	}
-//	public void setRbId(int rbId) {
-//		this.rbId = rbId;
-//	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public int getRbId() {
+		return rbId;
+	}
+	public void setRbId(int rbId) {
+		this.rbId = rbId;
+	}
 	public double getTara() {
 		return tara;
 	}
