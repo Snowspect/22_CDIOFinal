@@ -83,7 +83,7 @@ public class Personer {
 
 	public String toString() {
 		String str = null;
-		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles; " + roles;
+		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles " + roles + ", status: " + status;
 		return str;
 
 	}
