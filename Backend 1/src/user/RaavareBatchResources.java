@@ -51,25 +51,25 @@ public class RaavareBatchResources {
 		return ravareBatchList;
 	}
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String update(RaavareBatch ravBat) {
+//	@PUT
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public String update(RaavareBatch ravBat) {
+//
+//		for(RaavareBatch RavBatch : ravareBatchList)
+//			if(RavBatch.getRbId() == ravBat.getRbId())
+//			{
+//				RavBatch.setRbId(ravBat.getRbId());
+//				RavBatch.setRaavareId(ravBat.getRaavareId());
+//				RavBatch.setMaengde(ravBat.getMaengde());
+//			}
+//		return "Updated RaavareBatch";
+//	}
 
-		for(RaavareBatch RavBatch : ravareBatchList)
-			if(RavBatch.getRbId() == ravBat.getRbId())
-			{
-				RavBatch.setRbId(ravBat.getRbId());
-				RavBatch.setRaavareId(ravBat.getRaavareId());
-				RavBatch.setMaengde(ravBat.getMaengde());
-			}
-		return "Updated RaavareBatch";
-	}
-
-	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String delete(int rbId)
-	{
-		ravareBatchList.removeIf(e-> e.getRbId() == rbId);
-		return "deleted ravareBatch";
-	}
+//	@DELETE
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public String delete(int rbId)
+//	{
+//		ravareBatchList.removeIf(e-> e.getRbId() == rbId);
+//		return "deleted ravareBatch";
+//	}
 }

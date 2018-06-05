@@ -43,15 +43,6 @@ public class UserResources {
 		System.out.println("Get list: " + perList.toString());
 		return perList;
 	}
-
-//	@POST
-//	@Path("{id}")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public void setUserStatus(@PathParam("id") int id, boolean status)
-//	{
-//		//code that sets status to active or inactive 
-//		// depending on the boolean in the body
-//	}
 	
 //	@PUT
 //	@Path("{id}/status")
@@ -69,11 +60,15 @@ public class UserResources {
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
 	public void deleteUser(@PathParam("id") int id) throws NotFoundException
 	{
-		
+		boolean found = false;
 		for (Personer person : perList) {
 			if (id == person.getUserId()) {
 				person.setStatus(false);
+				found = true;
 			}
+		}
+		if (!found) {
+			throw new NotFoundException("Brugeren findes ikke");
 		}
 		
 //		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
@@ -86,8 +81,9 @@ public class UserResources {
 	//Updates a user
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateUser(Personer per)
+	public void updateUser(Personer per) throws NotFoundException
 	{
+		boolean found = false;
 		for (Personer person : perList) {
 			if(person.getUserId() == per.getUserId())
 			{
@@ -97,7 +93,11 @@ public class UserResources {
 				person.setIni(per.getIni());
 				person.setPassword(per.getPassword());
 				person.setRoles(per.getRoles());
+				found = true;
 			}
+		}
+		if (!found) {
+			throw new NotFoundException("Brugeren findes ikke");
 		}
 	}
 }
