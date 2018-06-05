@@ -1,18 +1,18 @@
 
 //Updates a user using POST
 function updateUser() {
-	alert("update called");
+//	alert("update called");
 	myJSON = getPersonFromHTML();
 	$.ajax({
-		url : "cargostock/users/",
+		url : "cargostock/users",
 		type : 'PUT',
 		data : JSON.stringify(myJSON),
 		contentType : 'application/json',
 		success: function(data) {
 			alert("update succesful");
 			toUpdate();
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -32,8 +32,8 @@ function submitUser() { //Formen kalder denne function, sikre at alle felter er 
 		//Nedenstående bliver ikke kørt
 		success : function(data) {//Funktion der skal udføres når data er hentet
 			alert("success"); //Manipulerer #mydiv.
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);;
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -55,9 +55,8 @@ function loadUsers(){
 			{//Funktion der skal udføres når data er hentet
 				iterateUsers(data);
 				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
+			}, error: function(message) {
+				alert("Users get failed");
 			}
 		});
 	});

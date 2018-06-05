@@ -4,7 +4,7 @@
 
 //Updates a user using PUT
 function updateRaavare() {
-	alert("update called");
+//	alert("update called");
 	myJSON = getRaavareFromHTML();
 	$.ajax({
 		url : "cargostock/raavare",
@@ -13,9 +13,8 @@ function updateRaavare() {
 		contentType : 'application/json',
 		success: function(data) {
 			alert("update succesful");
-			toUpdate();
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -35,8 +34,8 @@ function submitRaavare() { //Formen kalder denne function, sikre at alle felter 
 		//Nedenstående bliver ikke kørt
 		success : function(data) {//Funktion der skal udføres når data er hentet
 			alert("success"); //Manipulerer #mydiv.
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -58,9 +57,8 @@ function loadRaavare(){
 			{//Funktion der skal udføres når data er hentet
 				iterateRaavare(data);
 				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
+			}, error: function(message) {
+				alert("Raavare get failed");
 			}
 		});
 	});

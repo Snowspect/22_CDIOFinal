@@ -11,8 +11,8 @@
 			//Nedenstående bliver ikke kørt
 			success : function(data) {//Funktion der skal udføres når data er hentet
 				alert("success"); //Manipulerer #mydiv.
-			}, failure: function(data){
-				alert("fail");
+			}, error: function(message) {
+				alert(message.responseText);
 			}
 		});
 		document.getElementById("myForm").reset();	//Clear the form
@@ -34,9 +34,8 @@
 				{//Funktion der skal udføres når data er hentet
 					iterateRaavareBatch(data);
 					//alert("data");
-				}, failure: function()
-				{
-					alert("fail");
+				}, error: function(message) {
+					alert("Raavarebatch get failed");
 				}
 			});
 		});

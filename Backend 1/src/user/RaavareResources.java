@@ -54,6 +54,7 @@ public class RaavareResources {
 	@Consumes(MediaType.APPLICATION_JSON) 
 	public String update(Raavare rav) throws NotFoundException {
 		boolean found = false;
+		
 		for(Raavare Rav : raavareList) {
 			if(Rav.getRavareId() == rav.getRavareId())
 			{
@@ -62,9 +63,9 @@ public class RaavareResources {
 				Rav.setSupplier(rav.getSupplier());
 				found = true;
 			}
-			if (!found) {
-				throw new NotFoundException("Raavaren findes ikke");
-			}
+		}
+		if (!found) {
+			throw new NotFoundException("Raavaren findes ikke");
 		}
 		
 		return "Updated Raavare";

@@ -64,8 +64,8 @@ function submitRecept() { //Formen kalder denne function, sikre at alle felter e
 		//Nedenstående bliver ikke kørt
 		success : function(data) {//Funktion der skal udføres når data er hentet
 			alert("success"); //Manipulerer #mydiv.
-		}, failure: function(){
-			alert("fail");
+		}, error: function(message) {
+			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -83,9 +83,8 @@ function loadRecept() {
 			{//Funktion der skal udføres når data er hentet
 				iterateRecept(data);
 				//alert("data");
-			}, failure: function()
-			{
-				alert("fail");
+			}, error: function(message) {
+				alert("Recept get failed");
 			}
 		});
 	});
