@@ -36,12 +36,14 @@ public class Weight_IO {
 	public void run() throws IOException //Run() skal skrives om.
 	{
 	try {
-		sendToServer.writeBytes("RM20 4 ”Indtast operator nr” ”” ”&3”" + '\n');
+		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println(responseFromServer);
+		//TODO Get name of id
+		
 		responseFromServer = getFromServer.readLine();		
 //		pers.setUserId(responseFromServer); //saves in DTO
-		System.out.println(responseFromServer);
+//		System.out.println(responseFromServer);
 	
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
