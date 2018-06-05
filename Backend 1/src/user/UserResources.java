@@ -15,12 +15,13 @@ import javax.ws.rs.core.MediaType;
 import DTO.NotFoundException;
 import DTO.Personer;
 
+
+
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResources {
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
-
 	//Inserts new user into system
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -80,9 +81,6 @@ public class UserResources {
 		return perList;
 	}
 
-	public static void setPerList(ArrayList<Personer> perList) {
-		UserResources.perList = perList;
-	}
 
 	//Updates a user
 	@PUT

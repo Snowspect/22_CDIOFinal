@@ -10,7 +10,7 @@ import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.RaavareBatch;
 import data.socket.Connection;
-import user.UserResources; 
+import user.UserResources;
 
 public class Weight_IO {
 	private Connection conn;
@@ -21,6 +21,8 @@ public class Weight_IO {
 	private Afvejning afv = new Afvejning();
 	private Personer pers = new Personer ();
 	private RaavareBatch raav = new RaavareBatch();
+	private int id;
+	private UserResources UsRe = new UserResources();
 	
 	
 	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
@@ -30,6 +32,7 @@ public class Weight_IO {
 		sendToServer = conn.getWriter();
 		getFromServer = conn.getReader();
 	}
+	
 	
 	/**
 	 * In RM20 8 there needs to be exactly 3 words in the message for some reason
@@ -41,6 +44,7 @@ public class Weight_IO {
 		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("41 " + responseFromServer);
+		//TODO Get name of id
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("44 " + responseFromServer);
 		System.out.println("45 " + responseFromServer.split(" ")[2]);
@@ -49,14 +53,14 @@ public class Weight_IO {
 		tempId = tempId.replaceAll("\\D+","");	
 		int foo = Integer.parseInt(tempId);
 		System.out.println("52 " + foo);
-		System.out.println("54 " + UserResources.getPerList().toString());
 		
 		//TODO get name from data 
 		pers.setUserId(foo); //saves in DTO
 		System.out.println("55 " + pers.getUserName());
 		
 		name = responseFromServer.split(" ")[2];
-	
+//		name = UsRe.getPerList().
+		
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("53 " + responseFromServer);
@@ -170,4 +174,17 @@ public class Weight_IO {
 		}
 		return stripped;
 	}
+		
+	
+	//Ikke færdig 
+	public String findUserName (int id) {
+		this.id = id;
+		for (Personer person : UsRe.getPerList()) {
+			
+		}
+		
+		return "h";
+		
+	}
+	
 }
