@@ -43,7 +43,7 @@ public class ReceptResources {
 		System.out.println("Current list " + receptList.toString());
 
 		String result = "created recept";
-		return result;
+		return result; 
 	}
 
 	//GET
