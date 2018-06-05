@@ -9,7 +9,7 @@ Quick Database setup:
   - CREATE DATABASE [name];
   - mysql -u [username] -p [database_name] <[file path to lab_database2-sql] to get the new database
 
-_______________________________________________________________-
+_______________________________________________________________
 HOW TO: import project ready for commits
 
   - Step 1. Install Maven and tomcat server (use Java EE)
