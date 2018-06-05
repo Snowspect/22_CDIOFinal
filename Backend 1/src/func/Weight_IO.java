@@ -16,10 +16,10 @@ public class Weight_IO {
 	private Socket clientSocket;
 	private DataOutputStream sendToServer;
 	private BufferedReader getFromServer;
-	private String responseFromServer, messageToServer, name = "Marcus", status = "";
-	private Afvejning afv;
-	private Personer pers;
-	private RaavareBatch raav;
+	private String responseFromServer, messageToServer, name, status = "";
+	private Afvejning afv = new Afvejning();
+	private Personer pers = new Personer ();
+	private RaavareBatch raav = new RaavareBatch();
 	
 	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
 		this.afv = afv;
@@ -38,18 +38,27 @@ public class Weight_IO {
 	try {
 		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
+		System.out.println("41 " + responseFromServer);
 		//TODO Get name of id
-		
 		responseFromServer = getFromServer.readLine();		
-//		pers.setUserId(responseFromServer); //saves in DTO
-//		System.out.println(responseFromServer);
+		System.out.println("44 " + responseFromServer);
+		System.out.println("45 " + responseFromServer.split(" ")[2]);
+		//Gets int from weight
+		String tempId = responseFromServer.split(" ")[2];
+		tempId = tempId.replaceAll("\\D+","");	
+		int foo = Integer.parseInt(tempId);
+		System.out.println("52 " + foo);
+		//TODO get name from data 
+		pers.setUserId(foo); //saves in DTO
+		System.out.println("55 " + pers.getUserName());
+		
+		name = responseFromServer.split(" ")[2];
 	
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
+		System.out.println("53 " + responseFromServer);
 		responseFromServer = getFromServer.readLine();		
-		System.out.println(responseFromServer);
+		System.out.println("55 " + responseFromServer);
 		
 		sendToServer.writeBytes("RM20 4 ”Indtast batch nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
