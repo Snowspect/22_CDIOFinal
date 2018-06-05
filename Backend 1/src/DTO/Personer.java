@@ -9,18 +9,20 @@ public class Personer {
 	private String cpr;
 	private String password;
 	private String roles;
+	private boolean status;
 
 	//tom constructor for god ordens skyld
 	public Personer() {
 	}
 
-	public Personer(int userId, String userName, String ini, String cpr, String password, String roles) {
+	public Personer(int userId, String userName, String ini, String cpr, String password, String roles, boolean status) {
 		this.userId = userId;
 		this.userName = userName;
 		this.ini = ini;
 		this.cpr = cpr;
 		this.password = password;
 		this.roles = roles;
+		this.status = status;
 	}
 
 	public int getUserId() {
@@ -69,6 +71,14 @@ public class Personer {
 
 	public void setRoles(String roles) {
 		this.roles = roles;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public String toString() {
