@@ -104,7 +104,9 @@ function loadProducts(){
 
 function iterateProductTable(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index,element) {  
-		insertIntoProductTable(this.pbId, this.receptId, this.status, this.afvejning[index].userId, this.afvejning[index].rbId, this.afvejning[index].tara, this.afvejning[index].netto);
+		for(i = 0; i < this.afvejning.length; i++) {
+		insertIntoProductTable(this.pbId, this.receptId, this.status, this.afvejning[i].userId, this.afvejning[i].rbId, this.afvejning[i].tara, this.afvejning[i].netto);
+		}
 	}); 
 }
 
