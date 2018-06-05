@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Raavare;
 
@@ -23,8 +24,18 @@ public class RaavareResources {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Raavare rav)
-	{ try {
+	public String submit(Raavare rav) throws FoundException
+	{
+		boolean found = false;
+		for (Raavare raavare : raavareList) {
+			if (rav.getRavareId() == raavare.getRavareId()) {
+				found = true;
+			}
+		}
+		if (found) {
+			throw new FoundException("Raavaren findes allerede");
+		}
+		
 		raavareList.add(rav);
 
 		System.out.println("Created raavare: " + rav.toString());
@@ -34,12 +45,6 @@ public class RaavareResources {
 
 
 		return result;
-	} catch(Exception e) {
-		System.out.println("hejsa2");
-	}finally {
-		System.out.println("hejsa3");
-	}
-	return null;
 	}
 
 	@GET
@@ -52,7 +57,7 @@ public class RaavareResources {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON) 
-	public String update(Raavare rav) throws NotFoundException {
+	public void update(Raavare rav) throws NotFoundException {
 		boolean found = false;
 		
 		for(Raavare Rav : raavareList) {
@@ -66,9 +71,7 @@ public class RaavareResources {
 		}
 		if (!found) {
 			throw new NotFoundException("Raavaren findes ikke");
-		}
-		
-		return "Updated Raavare";
+		}	
 	}
 
 }

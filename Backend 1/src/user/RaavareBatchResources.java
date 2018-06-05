@@ -10,6 +10,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import DTO.FoundException;
 import DTO.Raavare;
 import DTO.RaavareBatch;
 
@@ -24,8 +26,18 @@ public class RaavareBatchResources {
 	//*** ravareBatch ***//
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(RaavareBatch ravBat)
-	{ try {
+	public String submit(RaavareBatch ravBat) throws FoundException
+	{
+		boolean found = false;
+		for (RaavareBatch raavareBatch : ravareBatchList) {
+			if (ravBat.getRbId() == raavareBatch.getRbId()) {
+				found = true;
+			}
+		}
+		if (found) {
+			throw new FoundException("RaavareBatchen findes allerede");
+		}
+		
 		ravareBatchList.add(ravBat);
 
 		System.out.println("Created raavareBatch: " + ravBat.toString());
@@ -35,12 +47,6 @@ public class RaavareBatchResources {
 
 
 		return result;
-	} catch(Exception e) {
-		System.out.println("hejsa2");
-	}finally {
-		System.out.println("hejsa3");
-	}
-	return null;
 	}
 
 	@GET

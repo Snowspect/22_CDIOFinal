@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Personer;
 
@@ -24,11 +25,19 @@ public class UserResources {
 	//Inserts new user into system
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUser(Personer per) {
-		System.out.println("helllloooooo");
+	public String createUser(Personer per) throws FoundException {
+		boolean found = false;
+		for (Personer person : perList) {
+			if (per.getUserId() == person.getUserId()) {
+				found = true;
+			}
+		}
+		
+		if (found) {
+			throw new FoundException("Brugeren findes allerede");
+		}
+		
 		perList.add(per);
-		//perList.add(new Personer(45, "peter", "pl", "12345678", "password", "admin"));
-		//perList.add(new Personer(22, "Hans", "hs", "87654321", "kode", "admin"));
 		System.out.println("Created user: " + per.toString());
 		System.out.println("Current list " + perList.toString());
 

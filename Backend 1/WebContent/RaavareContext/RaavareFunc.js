@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 //Updates a user using PUT
 function updateRaavare() {
@@ -13,6 +10,7 @@ function updateRaavare() {
 		contentType : 'application/json',
 		success: function(data) {
 			alert("update succesful");
+			toRUpdate();
 		}, error: function(message) {
 			alert(message.responseText);
 		}

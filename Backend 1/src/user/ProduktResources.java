@@ -9,7 +9,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import DTO.FoundException;
 import DTO.Produktbatch;
+import DTO.Raavare;
 
 @Path("/produktbatch")
 
@@ -21,7 +23,18 @@ public class ProduktResources {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Produktbatch batch) {
+	public String submit(Produktbatch batch) throws FoundException
+	{
+		boolean found = false;
+		for (Produktbatch produktBatch : produktList) {
+			if (batch.getPbId() == produktBatch.getPbId()) {
+				found = true;
+			}
+		}
+		if (found) {
+			throw new FoundException("Produktbatchen findes allerede");
+		}
+		
 		produktList.add(batch);
 		
 		System.out.println("Created user: " + batch.toString());
