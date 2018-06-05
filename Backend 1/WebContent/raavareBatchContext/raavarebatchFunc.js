@@ -1,23 +1,3 @@
-	//Updates a user using POST
-	function updateRaavareBatch() {
-		alert("update called");
-		myJSON = getRaavarebatchFromHTML();
-		$.ajax({
-			url : "cargostock/raavarebatch",
-			type : 'PUT',
-			data : JSON.stringify(myJSON),
-			contentType : 'application/json',
-			success: function(data) {
-				alert("update succesful");
-				toUpdate();
-			}, failure: function(){
-				alert("fail");
-			}
-		});
-		document.getElementById("myForm").reset();	//Clear the form
-		return false; //For at undgå at knappen poster data (default behavior).
-	}
-
 	/**
 	 * Creates a user using PUT, uses the cargostock/user/create path
 	 */
@@ -60,30 +40,6 @@
 				}
 			});
 		});
-	}
-
-	/**
-	 * Removes user from list using DELETE
-	 * @returns
-	 */
-	function removeRaavareBatch() {
-		var id = document.getElementById("rbId").value;
-//		s	var myObj = null;
-		$.ajax({
-			url : 'cargostock/raavarebatch',
-			type : 'DELETE',
-			data : JSON.stringify(id),
-			contentType: 'application/json',
-			success : function(data)
-			{
-				alert("successful delete");
-				toDelete(); //currently called as there is no direct method for emptying a table, 
-				//and as such we reload the html
-			}, error: function(message) {
-				alert(message.responseText);
-			}
-		});
-		document.getElementById("deleteForm").reset();	//Clear the form
 	}
 
 	//draws person information from html into a "bruger" variable
@@ -130,8 +86,7 @@
 	
 		cell1.innerHTML = rbId;
 		cell2.innerHTML = rId;
-		cell3.innerHTML = amount;
-	
+		cell3.innerHTML = amount;	
 	}
 
 
