@@ -97,7 +97,7 @@ function loadRecept() {
  */
 function iterateRecept(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index, element) {  
-		insertIntoRaavareTable(this.receptId, this.receptNavn, this.ingrediens[index].raavareId, this.ingrediens[index].nomNetto, this.ingrediens[index].tolerance);
+		insertIntoReceptTable(this.receptId, this.receptNavn, this.ingrediens[index].raavareId, this.ingrediens[index].nomNetto, this.ingrediens[index].tolerance);
 	});
 }
 /**
