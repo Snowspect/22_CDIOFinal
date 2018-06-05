@@ -15,14 +15,14 @@ public class Personer {
 	public Personer() {
 	}
 
-	public Personer(int userId, String userName, String ini, String cpr, String password, String roles, boolean status) {
+	public Personer(int userId, String userName, String ini, String cpr, String password, String roles) {
 		this.userId = userId;
 		this.userName = userName;
 		this.ini = ini;
 		this.cpr = cpr;
 		this.password = password;
 		this.roles = roles;
-		this.status = status;
+		this.status = true;
 	}
 
 	public int getUserId() {

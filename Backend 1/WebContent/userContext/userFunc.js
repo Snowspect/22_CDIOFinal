@@ -103,7 +103,8 @@ function getPersonFromHTML() {
 		ini : ini,
 		cpr : cpr,
 		password : passwd,
-		roles : rolle
+		roles : rolle,
+		status : true
 	}
 	return bruger;
 }
@@ -115,7 +116,7 @@ function getPersonFromHTML() {
  */
 function iterateUsers(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles);
+		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles, this.status);
 	});
 }
 
@@ -127,9 +128,10 @@ function iterateUsers(data) {
  * @param cpr
  * @param passwd
  * @param role
+ * @param status
  * @returns
  */
-function insertIntoUserTable(id, userName, ini, cpr, passwd, role) {
+function insertIntoUserTable(id, userName, ini, cpr, passwd, role, status) {
 	var table = document.getElementById("userTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
@@ -138,6 +140,7 @@ function insertIntoUserTable(id, userName, ini, cpr, passwd, role) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = id;
 	cell2.innerHTML = userName;
@@ -145,6 +148,7 @@ function insertIntoUserTable(id, userName, ini, cpr, passwd, role) {
 	cell4.innerHTML = cpr;
 	cell5.innerHTML = passwd;
 	cell6.innerHTML = role;
+	cell7.innerHTML = status;
 }
 
 

@@ -44,21 +44,21 @@ public class UserResources {
 		return perList;
 	}
 
-	@POST
-	@Path("{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void setUserStatus(@PathParam("id") int id, boolean status)
-	{
-		//code that sets status to active or inactive 
-		// depending on the boolean in the body
-	}
+//	@POST
+//	@Path("{id}")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public void setUserStatus(@PathParam("id") int id, boolean status)
+//	{
+//		//code that sets status to active or inactive 
+//		// depending on the boolean in the body
+//	}
 	
-	@PUT
-	@Path("{id}/status")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void createStatus(@PathParam("id") int id, boolean status) {
-		//code that updates the status of a given id.
-	}
+//	@PUT
+//	@Path("{id}/status")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public void createStatus(@PathParam("id") int id, boolean status) {
+//		//code that updates the status of a given id.
+//	}
 	
 	
 	
@@ -69,11 +69,18 @@ public class UserResources {
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
 	public void deleteUser(@PathParam("id") int id) throws NotFoundException
 	{
-		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
-		if(!removeIf)
-		{
-			throw new NotFoundException("Brugeren findes ikke");
+		
+		for (Personer person : perList) {
+			if (id == person.getUserId()) {
+				person.setStatus(false);
+			}
 		}
+		
+//		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
+//		if(!removeIf)
+//		{
+//			throw new NotFoundException("Brugeren findes ikke");
+//		}
 	}
 
 	//Updates a user
