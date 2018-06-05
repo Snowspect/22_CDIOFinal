@@ -10,6 +10,7 @@ import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.RaavareBatch;
 import data.socket.Connection;
+import user.UserResources; 
 
 public class Weight_IO {
 	private Connection conn;
@@ -20,6 +21,7 @@ public class Weight_IO {
 	private Afvejning afv = new Afvejning();
 	private Personer pers = new Personer ();
 	private RaavareBatch raav = new RaavareBatch();
+	
 	
 	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
 		this.afv = afv;
@@ -39,7 +41,6 @@ public class Weight_IO {
 		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("41 " + responseFromServer);
-		//TODO Get name of id
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("44 " + responseFromServer);
 		System.out.println("45 " + responseFromServer.split(" ")[2]);
@@ -48,6 +49,8 @@ public class Weight_IO {
 		tempId = tempId.replaceAll("\\D+","");	
 		int foo = Integer.parseInt(tempId);
 		System.out.println("52 " + foo);
+		System.out.println("54 " + UserResources.getPerList().toString());
+		
 		//TODO get name from data 
 		pers.setUserId(foo); //saves in DTO
 		System.out.println("55 " + pers.getUserName());

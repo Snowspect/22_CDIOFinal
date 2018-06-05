@@ -76,6 +76,14 @@ public class UserResources {
 		}
 	}
 
+	public static ArrayList<Personer> getPerList() {
+		return perList;
+	}
+
+	public static void setPerList(ArrayList<Personer> perList) {
+		UserResources.perList = perList;
+	}
+
 	//Updates a user
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
