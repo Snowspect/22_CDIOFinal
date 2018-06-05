@@ -2,15 +2,16 @@
 Made with eclipse
 
 
+______________________________________________________________
+Quick Database setup:
+  - Use:
+  - DROP database [name]; (if necessary)
+  - CREATE DATABASE [name];
+  - mysql -u [username] -p [database_name] <[file path to lab_database2-sql] to get the new database
 
-Use:
-DROP database [name]; (if necessary)
-CREATE DATABASE [name];
-mysql -u [username] -p [database_name] <[file path to lab_database2-sql]
-to get the new database
+_______________________________________________________________-
+HOW TO: import project ready for commits
 
-
-  - HOW TO: import project ready for commits
   - Step 1. Install Maven and tomcat server (use Java EE)
   - Install github desktop
 
