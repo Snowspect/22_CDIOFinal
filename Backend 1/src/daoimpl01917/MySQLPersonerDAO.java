@@ -15,26 +15,52 @@ import DTO.Personer;
 public class MySQLPersonerDAO implements PersonerDAO {
 
 	@Override
-	public Personer getPersoner(int cpr) throws DALException, SQLException {
+	public Personer getPersoner(int cpr, int rolle_id) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement getPerson = null;
+		PreparedStatement getRolle = null;
+		PreparedStatement getOperator = null;
 		ResultSet rs = null;
 		Personer perDTO = null;
 		
-		String getper = "SELECT * FROM personer WHERE opr_id = ?";
+		String getper = "SELECT * FROM personer WHERE cpr = ?";
+		String getopr = "SELECT * FROM operatoer WHERE rolle_id = ?";
+		String getrol = "SELECT * FROM roller WHERE rolle_id = ?";
 		
 		try {
 			getPerson = conn.prepareStatement(getper);
 			getPerson.setInt(1, cpr);
 			rs = getPerson.executeQuery();
-			if (!rs.first()) throw new DALException("Personen " + cpr + " findes ikke");
-			perDTO = new Personer (rs.getString("cpr"), rs.getString("opr_navn"), rs.getString("ini"));   //TODO Fix parameters
+			String Cpr = rs.getString("cpr");
+			String opr_navn = rs.getString("opr_navn");
+			String ini = rs.getString("ini");
+			
+			
+			getRolle = conn.prepareStatement(getrol);
+			getRolle.setInt(1, rolle_id);
+			rs = getRolle.executeQuery();
+			int Rolle_id = rs.getInt("rolle_id");
+//			String Rolle_Cpr = rs.getString("cpr");
+			String Rolle = rs.getString("rolle");
+			
+			
+			getOperator = conn.prepareStatement(getopr);
+			getOperator.setInt(1, rolle_id);
+			rs = getOperator.executeQuery();
+//			String Roller_id = rs.getString("rolle_id");
+			boolean Status = (rs.getInt("opr_status") != 0);
+			
+			
+			if (!rs.first()) throw new DALException("Personen " + cpr + " findes ikke");  //Fix error message
+			perDTO = new Personer (Rolle_id, opr_navn, ini, Cpr, Rolle, Status);   
 		} catch (SQLException e ) {
 			//Do error handling
 			//TODO
 		} finally {
-			if (getPerson != null) {
+			if (getPerson != null) {   //Fix error handling for roller and operator
 				getPerson.close();
+				getRolle.close();
+				getOperator.close();
 	        }
 		}
 		return perDTO;
@@ -45,23 +71,47 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		List<Personer> list = new ArrayList<Personer>();
 
 		Connection conn = Connector.getConn();
-		PreparedStatement getPersonList = null;
+		PreparedStatement getPerson = null;
+		PreparedStatement getRolle = null;
+		PreparedStatement getOperator = null;
 		ResultSet rs = null;
 		
-		String getperList = "SELECT * FROM personer";
+		String getper = "SELECT * FROM personer";
+		String getopr = "SELECT * FROM operatoer";
+		String getrol = "SELECT * FROM roller";
 		
 		try {
-			getPersonList = conn.prepareStatement(getperList);
-			rs = getPersonList.executeQuery();
+			getPerson = conn.prepareStatement(getper);
+			rs = getPerson.executeQuery();
+			String Cpr = rs.getString("cpr");
+			String opr_navn = rs.getString("opr_navn");
+			String ini = rs.getString("ini");
+			
+			
+			getRolle = conn.prepareStatement(getrol);
+			rs = getRolle.executeQuery();
+			int Rolle_id = rs.getInt("rolle_id");
+//			String Rolle_Cpr = rs.getString("cpr");
+			String Rolle = rs.getString("rolle");
+			
+			
+			getOperator = conn.prepareStatement(getopr);
+			rs = getOperator.executeQuery();
+//			String Roller_id = rs.getString("rolle_id");
+			boolean Status = (rs.getInt("opr_status") != 0);
+			
+						
 			while (rs.next()) {
-					list.add(new Personer(rs.getString("cpr"), rs.getString("opr_navn"), rs.getString("ini")));  //TODO Fix parameters
+					list.add(new Personer(Rolle_id, opr_navn, ini, Cpr, Rolle, Status));  //TODO Fix parameters
 				}
 		} catch (SQLException e ) {
 			//Do error handling
 			//TODO
 		} finally {
-			if (getPersonList != null) {
-				getPersonList.close();
+			if (getPerson != null) {
+				getPerson.close();
+				getRolle.close();
+				getOperator.close();
 	        }
 		}
 		return list;

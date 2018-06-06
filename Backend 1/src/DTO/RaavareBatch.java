@@ -11,6 +11,13 @@ public class RaavareBatch {
 	public RaavareBatch() {
 	}
 	
+	public RaavareBatch(int rbId, int raavareId, double maengde) {
+		// TODO Auto-generated constructor stub
+		this.rbId = rbId;
+		this.raavareId = raavareId;
+		this.maengde = maengde;
+	}
+
 	public int getRbId() {
 		return rbId;
 	}
