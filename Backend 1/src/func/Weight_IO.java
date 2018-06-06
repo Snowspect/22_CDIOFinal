@@ -5,29 +5,35 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
 
 import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.RaavareBatch;
-import data.socket.Connection;
+import JDBC.Connector;
 import user.UserResources;
 
 public class Weight_IO {
-	private Connection conn;
+	private data.socket.Connection conn;
 	private Socket clientSocket;
 	private DataOutputStream sendToServer;
 	private BufferedReader getFromServer;
-	private String responseFromServer, messageToServer, name = "Thomas", status = "";
+	private String responseFromServer, messageToServer, status = "";
 	private Afvejning afv = new Afvejning();
 	private Personer pers = new Personer ();
 	private RaavareBatch raav = new RaavareBatch();
 	private int id;
 	private UserResources UsRe = new UserResources();
+
 	
 	
 	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
 		this.afv = afv;
-		conn = new Connection("127.0.0.1", 8000);
+		
+		conn = new data.socket.Connection("127.0.0.1", 8000);
 		clientSocket = conn.SocketConn();
 		sendToServer = conn.getWriter();
 		getFromServer = conn.getReader();
@@ -41,9 +47,11 @@ public class Weight_IO {
 	public void run() throws IOException //Run() skal skrives om.
 	{
 	try {
+		
+		
 		//Send text to weight
 		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
-		responseFromServer = getFromServer.readLine();	
+		responseFromServer = getFromServer.readLine();
 
 		//Input UserId on weight
 		System.out.println("1 " + responseFromServer); //Test
@@ -52,16 +60,16 @@ public class Weight_IO {
 		System.out.println("3 " + responseFromServer.split(" ")[2]);
 		
 //		//Gets userId from weight-response and converts to int
-//		String tempId = responseFromServer.split(" ")[2];
-//		tempId = tempId.replaceAll("\\D+","");	
-//		int foo = Integer.parseInt(tempId);
+		String tempId = responseFromServer.split(" ")[2];
+		tempId = tempId.replaceAll("\\D+","");	
+		int foo = Integer.parseInt(tempId);
 //		System.out.println("52 " + foo);
 //		
 //		//TODO get name from data. OBS Metode virker ikke
-//		name = getUserNameFromId(int foo);
+	//	name = ;
 		
 //		Send name to weight
-		sendToServer.writeBytes("RM20 8 ”t Navn: " + name + "” ”” ”&3”" + '\n');
+		sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("4 " + responseFromServer);
 		
@@ -193,14 +201,35 @@ public class Weight_IO {
 		
 	
 	//Ikke færdig 
-	public String findUserName (int id) {
-		this.id = id;
-		for (Personer person : UsRe.getPerList()) {
-			
+	public String findUserName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+		
+		String name = null;
+		PreparedStatement getUserName = null;
+		ResultSet rs = null;
+		
+		String getName = "SELECT opr_navn FROM Operatoer WHERE oprId = ?";
+		
+		
+		try {
+			getUserName = sqlCon.prepareStatement(getName);
+
+		getUserName.setInt(1, 1);
+		rs = getUserName.executeQuery();
+		if(rs.first()) {
+			name = rs.getString("opr_navn");	
 		}
-		
-		return "h";
-		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(getUserName != null) {
+				getUserName.close();
+			}
+		}
+		return name;
 	}
 	
+	
 }
+
