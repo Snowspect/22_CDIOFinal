@@ -20,13 +20,13 @@ $(function(){
 	$.ajax({
 		url: "cargostock/db",
 		type: 'POST',
-		'application/json',
+		contentType : 'application/json',
 		succes: function(data) {
 			alert("database connection created");
 		}, error: function(message) {
 		alert(message.responseText);
-	})  
-}
+	} 
+}); 
 });
 <!--window.onload = createDB; -->
 </script>

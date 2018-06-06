@@ -100,7 +100,7 @@ public class UserResources {
 				person.setUserName(per.getUserName());
 				person.setCpr(per.getCpr());
 				person.setIni(per.getIni());
-				person.setPassword(per.getPassword());
+//				person.setPassword(per.getPassword());
 				person.setRoles(per.getRoles());
 				found = true;
 			}

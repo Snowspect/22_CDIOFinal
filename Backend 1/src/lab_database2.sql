@@ -121,7 +121,7 @@ INSERT INTO produktbatchkomponent(pb_id, rb_id, tara, netto, rolle_id) VALUES
 (4, 7, 0.5, 0.99, 3);
 
 delimiter //
-create procedure NewEmployee(in oprnavn varchar(29), ini_ varchar(4), opr_status_ int(3), cpr_n varchar(11), rolle_Id int(11), rolle varchar(35))
+create procedure NewEmployee(in oprnavn varchar(29), ini_ varchar(4), opr_status_ boolean, cpr_n varchar(11), rolle_Id int(11), rolle varchar(35))
 begin 
 
 
