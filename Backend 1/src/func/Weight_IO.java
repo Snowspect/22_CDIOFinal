@@ -41,9 +41,11 @@ public class Weight_IO {
 	public void run() throws IOException //Run() skal skrives om.
 	{
 	try {
-		//Input UserId
-		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n'); //OK
-		responseFromServer = getFromServer.readLine(); //OK		
+		//Send text to weight
+		sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
+		responseFromServer = getFromServer.readLine();	
+
+		//Input UserId on weight
 		System.out.println("1 " + responseFromServer); //Test
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("2 " + responseFromServer);
@@ -68,32 +70,40 @@ public class Weight_IO {
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("5 " + responseFromServer);
 		
-		//Send Produktbatch to weight
+		//Send Produktbatch text to weight
 		sendToServer.writeBytes("RM20 4 ”Indtast Produktbatch nr” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();		
 		System.out.println("6 " + responseFromServer);
 		
-		//Input Produktbatch id
+		//Input Produktbatch id on weight
 		responseFromServer = getFromServer.readLine();		//Save
 //		raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
 		System.out.println("7 " + responseFromServer);
 		
+		//Send text to weight
 		sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("8 " + responseFromServer);
+		System.out.println("Tryk OK ");
+		
+		//Press OK on weight
 		responseFromServer = getFromServer.readLine();
 		System.out.println("9" + responseFromServer);
 		
+		//Send text to weight
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("10" + responseFromServer);
 		
+		//Place tara
 		sendToServer.writeBytes("RM20 8 ”Placer venligst tara” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("11" + responseFromServer);
+		
+		//Send tara weight from weight and press OK
 		responseFromServer = getFromServer.readLine();
 		System.out.println("12" + responseFromServer);
-		
+		//Send S to weight to save tara
 		sendToServer.writeBytes("S" + '\n');
 		responseFromServer = getFromServer.readLine();		//Save
 	//	dto.setTaraWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
@@ -104,13 +114,14 @@ public class Weight_IO {
 		sendToServer.writeBytes("T" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("14" + responseFromServer);
-		
+		//Send text to weight
 		sendToServer.writeBytes("RM20 8 ”Placer venligst netto” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("15 " + responseFromServer);
+		//Place netto on weight and press OK
 		responseFromServer = getFromServer.readLine();
 		System.out.println("16" + responseFromServer);
-		
+		//Sav netto
 		sendToServer.writeBytes("S" + '\n');
 		responseFromServer = getFromServer.readLine();		//Save
 	//	dto.setNetWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
@@ -125,6 +136,7 @@ public class Weight_IO {
 		sendToServer.writeBytes("RM20 8 ”Fjern venligst brutto” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("19" + responseFromServer);
+		//remove brutto from weight and press ok
 		responseFromServer = getFromServer.readLine();
 		System.out.println("20 " + responseFromServer);
 		
