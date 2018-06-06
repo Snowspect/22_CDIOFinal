@@ -15,9 +15,27 @@
 <script type="text/javascript" src="userContext/userFunc.js"></script>
 <script type="text/javascript" src= "navigation.js"></script>
 <script type="text/javascript" src="raavareBatchContext/raavarebatchFunc.js"></script>
-
+<script>
+$(function(){
+	$.ajax({
+		url: "cargostock/db",
+		type: 'POST',
+		contentType : 'application/json',
+		succes: function(data) {
+			alert("database connection created");
+		}, error: function(message) {
+		alert(message.responseText);
+	} 
+}); 
+});
+<!--window.onload = createDB; -->
+</script>
 		</head> 
-	<body>
+	<body style="border-style:solid; border-color:green;">
+	<div id="backgroundcolor">
+	</div>
+	<div id="image">
+	
 	<center>
 		<div id="login_buttons">
 			<input class="login_buttons" type="button" id="" onClick="toAdministrator()" value="Admin">
@@ -29,8 +47,11 @@
 			<h1>Login</h1>
 					
 		</div>
+		<!-- <img src="cargo-ship.svg" alt="Kiwi standing on oval"> -->
 		<div id="transform">
 		</div>
 		</center>
+	</div>
+
 	</body>
 </html>

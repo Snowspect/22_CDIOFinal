@@ -2,6 +2,29 @@ h1 {
     text-align: center;
 }
 
+#image{
+	height:100%;
+	width:100%;
+	background: url(backgruond.svg);
+	background-blend-mode: screen;
+	background-repeat:no-repeat;
+}
+
+#backgroundcolor {
+	height:100%;
+	width:100%;
+	opacity:0.5;
+	z-index:-1;
+	background-color:Lightblue;
+	position:absolute;
+}
+
+
+html, body {
+	height:100%;
+	margin:0;
+}
+
 #buttons_div {
 	display: inline-block;
 	padding-bottom: 30px;

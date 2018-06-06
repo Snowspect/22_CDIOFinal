@@ -11,11 +11,11 @@ DROP TABLE IF EXISTS raavare;
 
 CREATE TABLE personer(cpr varchar(11) PRIMARY KEY, opr_navn TEXT, ini TEXT) ENGINE=innoDB;
 
-CREATE TABLE roller(rolle_id INT, cpr varchar(11), rolle ENUM('Admin', 'Pharmacist', 'Foreman', 'Laborant'),
+CREATE TABLE roller(rolle_id INT, cpr varchar(11), rolle varchar(35),
 	PRIMARY KEY (rolle_id, cpr),
 	FOREIGN KEY (cpr) REFERENCES personer(cpr)) ENGINE=innoDB;
  
-CREATE TABLE operatoer(rolle_id INT PRIMARY KEY, password TEXT, FOREIGN KEY (rolle_id) REFERENCES roller(rolle_id)) ENGINE=innoDB;
+CREATE TABLE operatoer(rolle_id INT PRIMARY KEY, opr_status BOOLEAN, FOREIGN KEY (rolle_id) REFERENCES roller(rolle_id)) ENGINE=innoDB;
 
 CREATE TABLE raavare(raavare_id INT PRIMARY KEY, raavare_navn TEXT, leverandoer TEXT) ENGINE=innoDB;
 
@@ -48,10 +48,10 @@ INSERT INTO roller(rolle_id, cpr, rolle) VALUES
 (2, '080880-8008', 'Laborant'),
 (3, '090990-9009', 'Foreman');
 
-INSERT INTO operatoer(rolle_id, password) VALUES
-(1, 'lKje4fa'),
-(2, 'atoJ21v'),
-(3, 'jEfm5aQ');
+INSERT INTO operatoer(rolle_id, opr_status) VALUES
+(1, 1),
+(2, 1),
+(3, 0);
 
 INSERT INTO raavare(raavare_id, raavare_navn, leverandoer) VALUES
 (1, 'dej', 'Wawelka'),
@@ -121,7 +121,7 @@ INSERT INTO produktbatchkomponent(pb_id, rb_id, tara, netto, rolle_id) VALUES
 (4, 7, 0.5, 0.99, 3);
 
 delimiter //
-create procedure NewEmployee(in oprnavn varchar(29), ini_ varchar(4), cpr_n varchar(11), rolle_Id int(11), rolle ENUM('Admin', 'Laborant', 'Foreman', 'Pharmacist'), password_ varchar(12))
+create procedure NewEmployee(in oprnavn varchar(29), ini_ varchar(4), opr_status_ boolean, cpr_n varchar(11), rolle_Id int(11), rolle varchar(35))
 begin 
 
 
@@ -140,13 +140,41 @@ insert into roller
 (rolle_id, cpr, rolle) values(rolle_Id, cpr_n, rolle);
 
 insert into operatoer
-(rolle_id, password) values(rolle_Id, password_);
+(rolle_id, opr_status) values(rolle_Id, opr_status_);
 
 commit;
 end; //
 delimiter ;
  
- 
+delimiter //
+create procedure UpdateEmployee(in oprnavn varchar(29), ini_ varchar(4), cpr_n varchar(11), rolle_Id int(11), rolle varchar(35))
+begin 
+
+
+declare exit handler for sqlexception
+	begin 
+	rollback;
+
+END;
+
+start transaction;
+
+update personer
+set cpr = cpr_n, opr_navn = oprnavn, ini = ini_
+where cpr = cpr_n;
+
+update roller 
+set  rolle = rolle
+where cpr = cpr_n and rolle_id = rolle_Id;
+
+update operatoer
+set rolle_id = rolle_Id
+where rolle_id = rolle_Id;
+
+commit;
+end; //
+delimiter ;
+
 -- Admin 			Check
 -- Pharmasict		Check	- Laver pizza
 -- Foreman			Check	- Holder styr på hvem arbejder og produkter
@@ -168,7 +196,7 @@ natural join raavare;
 
 
 CREATE VIEW ForemanView as 
-select rb_id, rolle_id, pb_id, opr_navn, ini, status, raavare_navn, leverandoer, maengde, recept_id from operatoer
+select rb_id, rolle_id, pb_id, opr_navn, ini, opr_status, status, raavare_navn, leverandoer, maengde, recept_id from operatoer
 natural join personer
 natural join roller
 natural join produktbatchkomponent

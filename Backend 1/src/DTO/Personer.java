@@ -7,7 +7,6 @@ public class Personer {
 	private String userName;
 	private String ini;
 	private String cpr;
-	private String password;
 	private String roles;
 	private boolean status;
 
@@ -15,12 +14,11 @@ public class Personer {
 	public Personer() {
 	}
 
-	public Personer(int userId, String userName, String ini, String cpr, String password, String roles) {
+	public Personer(int userId, String userName, String ini, String cpr, String roles, boolean status) {
 		this.userId = userId;
 		this.userName = userName;
 		this.ini = ini;
 		this.cpr = cpr;
-		this.password = password;
 		this.roles = roles;
 		this.status = true;
 	}
@@ -57,14 +55,6 @@ public class Personer {
 		this.cpr = cpr;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getRoles() {
 		return roles;
 	}
@@ -83,7 +73,7 @@ public class Personer {
 
 	public String toString() {
 		String str = null;
-		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , password: " + password + " , roles " + roles + ", status: " + status;
+		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , roles " + roles + ", status: " + status;
 		return str;
 
 	}
