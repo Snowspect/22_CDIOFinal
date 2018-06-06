@@ -13,6 +13,12 @@ public class Recept {
 	/** Ingredienser i recept */
 	private ArrayList<Ingrediens> ingrediens;
 
+	public Recept(int receptId, String receptNavn) {
+		// TODO Auto-generated constructor stub
+		this.receptId = receptId;
+		this.receptNavn = receptNavn;
+	}
+
 	public int getReceptId() {
 		return receptId;
 	}

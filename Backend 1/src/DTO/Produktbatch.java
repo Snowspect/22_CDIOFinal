@@ -11,6 +11,12 @@ public class Produktbatch {
 
 
 
+	public Produktbatch(int pbId, int receptId, int status) {
+		// TODO Auto-generated constructor stub
+		this.pbId = pbId;
+		this.receptId = receptId;
+		this.status = status;
+	}
 	public int getPbId() {
 		return pbId;
 	}
