@@ -161,11 +161,11 @@ start transaction;
 
 update personer
 set opr_navn = oprnavn, ini = ini_
-where cpr = (select cpr from roller where rolle_id = rolle_Id);
+where cpr = cpr_n;
 
 update roller 
 set  rolle = rolle
-where cpr = (select cpr from roller where rolle_id = rolle_Id) and rolle_id = rolle_Id;
+where cpr = cpr_n and rolle_id = rolle_Id;
 
 commit;
 end; //
