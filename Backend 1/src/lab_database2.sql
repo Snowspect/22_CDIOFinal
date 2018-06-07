@@ -175,6 +175,26 @@ commit;
 end; //
 delimiter ;
 
+delimiter //
+create procedure CreateProduktBatchKomp(in pbId int(11), rbId int(11), Tara double, Netto double, oprId int(11))
+begin 
+
+
+declare exit handler for sqlexception
+	begin 
+	rollback;
+
+END;
+
+start transaction;
+
+INSERT INTO produktbatchkomponent
+(pb_id, rb_id, tara, netto, rolle_id) VALUES (pbId, rbId, Tara, Netto, oprId);
+
+commit;
+end; //
+delimiter ;
+
 -- Admin 			Check
 -- Pharmasict		Check	- Laver pizza
 -- Foreman			Check	- Holder styr på hvem arbejder og produkter
