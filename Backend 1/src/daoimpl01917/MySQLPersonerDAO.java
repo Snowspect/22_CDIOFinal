@@ -173,16 +173,15 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
-		String updatePer = "CALL UpdateEmployee(?,?,?,?,?)";
+		String updatePer = "CALL UpdateEmployee(?,?,?,?)";
 		
 		try {
 			updatePerson = conn.prepareStatement(updatePer);
 			
 			updatePerson.setString(1, per.getUserName());
 			updatePerson.setString(2, per.getIni());
-			updatePerson.setString(3, per.getCpr());
-			updatePerson.setInt(4, per.getUserId());
-			updatePerson.setString(5, per.getRoles());
+			updatePerson.setInt(3, per.getUserId());
+			updatePerson.setString(4, per.getRoles());
 			updatePerson.executeUpdate();
 		} catch (SQLException e ) {
 			//Do error handling
