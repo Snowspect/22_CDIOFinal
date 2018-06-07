@@ -4,9 +4,10 @@ Made with eclipse
 
 ______________________________________________________________
 Quick Database setup:
-  - Use:
+Use:
   - DROP database [name]; (if necessary)
   - CREATE DATABASE [name];
+  - exit
   - mysql -u [username] -p [database_name] <[file path to lab_database2-sql] to get the new database
 
 _______________________________________________________________
