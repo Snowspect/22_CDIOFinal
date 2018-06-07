@@ -194,4 +194,24 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		}
 	}
 
+	public void deletePersoner(int id) throws DALException, SQLException {
+		
+		Connection conn = Connector.getConn();
+		PreparedStatement deletePerson = null;
+		String deletePer = "UPDATE operatoer SET opr_status = 0 WHERE rolle_id = ?;";
+		try {
+			deletePerson = conn.prepareStatement(deletePer);
+			deletePerson.setInt(1, id);
+			deletePerson.executeUpdate();
+		} catch (SQLException e ) {
+			//Do error handling
+			//TODO
+		} finally {
+			if (deletePerson != null) {
+				deletePerson.close();
+	        }
+		}
+
+	}
+	
 }
