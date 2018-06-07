@@ -97,6 +97,7 @@ function loadRecept() {
 function iterateRecept(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index, element) {  
 		for(i = 0; i < this.ingrediens.length; i++) {
+			console.log("hhellll");
 		insertIntoReceptTable(this.receptId, this.receptNavn, this.ingrediens[i].raavareId, this.ingrediens[i].nomNetto, this.ingrediens[i].tolerance);
 		}
 	});

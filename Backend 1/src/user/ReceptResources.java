@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;  
 
 import javax.ws.rs.Consumes;
@@ -13,6 +14,8 @@ import javax.ws.rs.core.MediaType;
 import DTO.FoundException;
 import DTO.Raavare;
 import DTO.Recept;
+import daoimpl01917.MySQLReceptDAO;
+import daointerfaces01917.DALException;
 
 @Path("/recept")
 
@@ -21,63 +24,24 @@ import DTO.Recept;
 
 public class ReceptResources {
 	private static ArrayList <Recept> receptList = new ArrayList<>();
-
+	MySQLReceptDAO test = new MySQLReceptDAO();
 	//{"receptId": 1, "receptNavn": "Fisk", "ingrediens": [{"raavareId": 24, "nomNetto": 95.9, "tolerance": 2.6}]}
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Recept rec) throws FoundException
+	public String submit(Recept rec) throws FoundException, DALException, SQLException
 	{
-		boolean found = false;
-		for (Recept recept : receptList) {
-			if (rec.getReceptId() == recept.getReceptId()) {
-				found = true;
-			}
-		}
-		if (found) {
-			throw new FoundException("Recepten findes allerede");
-		}
-		
-		receptList.add(rec);
 
-		System.out.println("Created user: " + rec.toString());
-		System.out.println("Current list " + receptList.toString());
+		test.createRecept(rec);
 
 		String result = "created recept";
-		return result; 
+		return result;
 	}
 
 	//GET
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Recept> getRecept()
+	public ArrayList<Recept> getRecept() throws DALException, SQLException
 	{
-		return receptList;
+		return (ArrayList<Recept>) test.getReceptList();
 	}
-
-	//	//GET
-	//	@GET
-	//	@Path("/{id}")
-	//	@Produces(MediaType.APPLICATION_JSON)
-	//	public ArrayList<Recept> getRecept(@PathParam("id") int id)
-	//	{
-	//		should return the body of that path param. //ask tomorrow
-	//		return receptList;
-	//	}
-
-	//PUT
-	//	@PUT
-	//	@Path("{receptNr}")
-	//	@Consumes(MediaType.APPLICATION_JSON)
-	//	public String update(Recept rec) {
-	//		
-	//		for (Recept recpt : receptList) {
-	//			if(recpt.getReceptId() == rec.getReceptId())
-	//			{
-	//				recpt.setReceptId(rec.getReceptId());
-	//				recpt.setName(rec.getName());
-	//				recpt.setSupplier(rec.getSupplier());
-	//			}
-	//		}			
-	//		return "Updated råvare";
-	//	}
 }

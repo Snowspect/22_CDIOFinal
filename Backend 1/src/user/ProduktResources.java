@@ -29,6 +29,11 @@ public class ProduktResources {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Produktbatch batch) throws FoundException, DALException, SQLException
 	{
+		for(int i = 0; i < batch.getProduktBatchKomponent().size(); i++)
+		{
+			System.out.println("pb: " + batch.getPbId() + " ,rbId: " + batch.getReceptId() + ", status: " + batch.getStatus());
+			System.out.println(batch.getProduktBatchKomponent().get(i).toString());
+		}
 		proConn.createProduktBatch(batch);
 		
 		String result = "created productbatch";

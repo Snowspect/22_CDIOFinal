@@ -44,12 +44,14 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 		createProBaKomponent = conn.prepareStatement(createProBaKomp);
 		for(int i = 0; i < pb.getProduktBatchKomponent().size(); i++)
 		{
-			try {
+			MySQLProduktBatchKompDAO t = new MySQLProduktBatchKompDAO();
+			t.createProduktBatchKomp(pb.getProduktBatchKomponent().get(i));
+			/*try {
 				createProBaKomponent.setInt(1, pb.getProduktBatchKomponent().get(i).getPbId());
 				createProBaKomponent.setInt(2, pb.getProduktBatchKomponent().get(i).getRbId());
 				createProBaKomponent.setDouble(3, pb.getProduktBatchKomponent().get(i).getTara());
 				createProBaKomponent.setDouble(4, pb.getProduktBatchKomponent().get(i).getNetto());
-				createProBaKomponent.setInt(5, pb.getProduktBatchKomponent().get(i).getRolleId());
+				createProBaKomponent.setInt(5, pb.getProduktBatchKomponent().get(i).getRolle_id());
 				createProBaKomponent.executeUpdate();
 			} catch (SQLException e) { 
 				System.out.println(e.getMessage());
@@ -58,7 +60,7 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 				if (createProBatch != null) { //does what?
 					createProBatch.close();
 				}
-			}
+			}*/
 		}
 	}
 

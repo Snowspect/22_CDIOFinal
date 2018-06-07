@@ -171,27 +171,32 @@ commit;
 end; //
 delimiter ;
 
-delimiter //
-create procedure CreateProduktBatchKomp(in pbId int(11), rbId int(11), Tara double, Netto double, oprId int(11))
-begin 
 
+
+
+
+delimiter //
+create procedure CreateProduktBatchKomp(in pbId int(11), rbId int(11), tara double, netto double, oprId int(11))
+begin 
 
 declare exit handler for sqlexception
 	begin 
 	rollback;
-
 END;
-
 
 delimiter //
 start transaction;
 
 INSERT INTO produktbatchkomponent
-(pb_id, rb_id, tara, netto, rolle_id) VALUES (pbId, rbId, Tara, Netto, oprId);
+(pb_id, rb_id, tara, netto, rolle_id) VALUES (pbId, rbId, tara, netto, oprId);
 
 commit;
 end; //
 delimiter ;
+
+
+
+
 
 delimiter //
 create procedure MakeProBaKompRow(in par_pb_id int(8), par_rb_id int(8), par_tara double(4,2), par_netto double(4,2), par_rolle_id int(3))

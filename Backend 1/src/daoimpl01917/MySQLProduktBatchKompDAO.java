@@ -10,16 +10,16 @@ import java.util.List;
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.ProduktBatchKompDAO;
-import DTO.ProduktBatchKompDTO;
+import DTO.produktBatchKompDTO;
 
 public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 
 	@Override
-	public ProduktBatchKompDTO getProduktBatchKomp(int pbId, int rbId) throws DALException, SQLException {
+	public produktBatchKompDTO getProduktBatchKomp(int pbId, int rbId) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement getProBatchKomp = null;
 		ResultSet rs = null;
-		ProduktBatchKompDTO PbkDTO = null;
+		produktBatchKompDTO PbkDTO = null;
 
 		String getProBaKo = "SELECT * FROM produktbatchkomponent WHERE pb_id = ? AND rb_id = ?";
 
@@ -29,7 +29,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			getProBatchKomp.setInt(2, rbId);
 			rs = getProBatchKomp.executeQuery();
 			if (!rs.first()) throw new DALException("Produktbatchkomponent ID: " + pbId + "eller Raavarebatch ID: " + rbId + " findes ikke");
-			PbkDTO = new ProduktBatchKompDTO (rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id"));
+			PbkDTO = new produktBatchKompDTO (rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id"));
 		} catch (SQLException e) {
 			//do error handling
 			//TODO
@@ -43,8 +43,8 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 
 
 	@Override
-	public List<ProduktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException {
-		List<ProduktBatchKompDTO> list = new ArrayList<ProduktBatchKompDTO>();
+	public List<produktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException {
+		List<produktBatchKompDTO> list = new ArrayList<produktBatchKompDTO>();
 
 		Connection conn = Connector.getConn();
 		PreparedStatement getProdBatchKompList = null;
@@ -59,7 +59,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			rs = getProdBatchKompList.executeQuery();
 			while (rs.next())
 			{
-				list.add(new ProduktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id")));
+				list.add(new produktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id")));
 			}
 		} catch (SQLException e) {
 			//Do error handling
@@ -74,8 +74,8 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 
 
 	@Override
-	public List<ProduktBatchKompDTO> getProduktBatchKompList() throws DALException, SQLException {
-		List<ProduktBatchKompDTO> list = new ArrayList<ProduktBatchKompDTO>();
+	public List<produktBatchKompDTO> getProduktBatchKompList() throws DALException, SQLException {
+		List<produktBatchKompDTO> list = new ArrayList<produktBatchKompDTO>();
 		
 		Connection conn = Connector.getConn();
 		PreparedStatement getProdBatchListKomp = null;
@@ -88,7 +88,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			rs = getProdBatchListKomp.executeQuery();
 			while (rs.next()) 
 			{
-				list.add(new ProduktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id")));
+				list.add(new produktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id")));
 			}
 		} catch (SQLException e) { 
 			//throw new DALException(e);
@@ -117,7 +117,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 //	}
 
 	@Override
-	public void createProduktBatchKomp(ProduktBatchKompDTO produktbatchkomponent) throws DALException, SQLException {
+	public void createProduktBatchKomp(produktBatchKompDTO produktbatchkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createProBatchKomp = null;
 		
@@ -130,7 +130,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			createProBatchKomp.setInt(2, produktbatchkomponent.getRbId());
 			createProBatchKomp.setDouble(3, produktbatchkomponent.getTara());
 			createProBatchKomp.setDouble(4, produktbatchkomponent.getNetto());
-			createProBatchKomp.setInt(5, produktbatchkomponent.getRolleId());
+			createProBatchKomp.setInt(5, produktbatchkomponent.getRolle_id());
 			createProBatchKomp.executeUpdate();
 		} catch (SQLException e) {
 			//Do error handling
@@ -150,7 +150,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 //	}
 
 	@Override
-	public void updateProduktBatchKomp(ProduktBatchKompDTO produktbatchkomponent) throws DALException, SQLException {
+	public void updateProduktBatchKomp(produktBatchKompDTO produktbatchkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement updateProBatchKomp = null;
 
@@ -163,7 +163,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			updateProBatchKomp.setInt(2, produktbatchkomponent.getRbId());
 			updateProBatchKomp.setDouble(3, produktbatchkomponent.getTara());
 			updateProBatchKomp.setDouble(4, produktbatchkomponent.getNetto());
-			updateProBatchKomp.setInt(5, produktbatchkomponent.getRolleId());
+			updateProBatchKomp.setInt(5, produktbatchkomponent.getRolle_id());
 			updateProBatchKomp.setInt(6, produktbatchkomponent.getPbId());
 			updateProBatchKomp.setInt(7, produktbatchkomponent.getRbId());
 			updateProBatchKomp.executeUpdate();
@@ -177,10 +177,3 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 		}
 	}
 }
-//		Connector.doUpdate(
-//				"UPDATE produktbatchkomponent SET  pb_id = " + produktbatchkomponent.getPbId() + ", rb_id =  " + produktbatchkomponent.getRbId() + 
-//				", tara = " + produktbatchkomponent.getTara() + ", netto = " + produktbatchkomponent.getNetto() + ", opr_id = " + produktbatchkomponent.getOprId() + 
-//				"WHERE pb_id = " + produktbatchkomponent.getPbId() +" AND rb_id = " + produktbatchkomponent.getRbId());
-//	}
-//
-//}

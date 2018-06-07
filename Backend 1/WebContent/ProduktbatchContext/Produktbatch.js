@@ -56,27 +56,27 @@ function submitProduct() { //Formen kalder denne function, sikre at alle felter 
 
 
 function getProduktFromHTML() {
-	var pbId = document.getElementById("pbId").value;
-	var rcpId = document.getElementById("receptId").value;
-	var status = document.getElementById("Status").value;
+	var pbIdT = document.getElementById("pbId").value;
+	var rcpIdT = document.getElementById("receptId").value;
+	var statusT = document.getElementById("Status").value;
 	
 	// lav afvejnings inputs
 
 	var produktbatch = {
-		pbId : pbId,
-		receptId : rcpId,
-		status : status,
+		pbId : pbIdT,
+		receptId : rcpIdT,
+		status : statusT,
 		produktBatchKomponent: []
-	//	"afvejning" : [{"userId"a: /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
 	};
 	
 	$("tr").each(function(index,element){
 		//debugger;
-		var rolle_id = document.getElementById("rolle_id" + index).value;
-		var rbId = document.getElementById("rbID" + index).value;
-		var tara = document.getElementById("tara" + index).value;
-		var netto = document.getElementById("Netto" + index).value;
-		var obj = {pbId : pbId, rbId: rbId, tara: tara, netto: netto, rolle_id: rolle_id};
+		var pbIdA = pbIdT;
+		var rbIdA = document.getElementById("rbID" + index).value;
+		var taraA = document.getElementById("tara" + index).value;
+		var nettoA = document.getElementById("Netto" + index).value;
+		var rolle_idA = document.getElementById("rolle_id" + index).value;
+		var obj = {pbId : pbIdA, rbId: rbIdA, tara: taraA, netto: nettoA, rolle_id: rolle_idA};
 		produktbatch.produktBatchKomponent.push(obj);
 	});	
 	
