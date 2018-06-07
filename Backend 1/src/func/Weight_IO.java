@@ -208,13 +208,13 @@ public class Weight_IO {
 		PreparedStatement getUserName = null;
 		ResultSet rs = null;
 		
-		String getName = "SELECT opr_navn FROM Operatoer WHERE oprId = ?";
+		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?";
 		
 		
 		try {
 			getUserName = sqlCon.prepareStatement(getName);
 
-		getUserName.setInt(1, 1);
+		getUserName.setInt(1, id);
 		rs = getUserName.executeQuery();
 		if(rs.first()) {
 			name = rs.getString("opr_navn");	
