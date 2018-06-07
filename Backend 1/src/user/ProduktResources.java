@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -11,7 +12,9 @@ import javax.ws.rs.core.MediaType;
 
 import DTO.FoundException;
 import DTO.Produktbatch;
-import DTO.Raavare;
+import daoimpl01917.MySQLPersonerDAO;
+import daoimpl01917.MySQLProduktBatchDAO;
+import daointerfaces01917.DALException;
 
 @Path("/produktbatch")
 
@@ -19,14 +22,15 @@ import DTO.Raavare;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class ProduktResources {
-	private static ArrayList <Produktbatch> produktList = new ArrayList<>();
+	MySQLProduktBatchDAO proConn = new MySQLProduktBatchDAO();
+	private static ArrayList <Produktbatch> proConnList = new ArrayList<>();
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Produktbatch batch) throws FoundException
 	{
 		boolean found = false;
-		for (Produktbatch produktBatch : produktList) {
+		for (Produktbatch produktBatch : proConnList) {
 			if (batch.getPbId() == produktBatch.getPbId()) {
 				found = true;
 			}
@@ -35,10 +39,18 @@ public class ProduktResources {
 			throw new FoundException("Produktbatchen findes allerede");
 		}
 		
-		produktList.add(batch);
+		try {
+			proConn.createProduktBatch(batch);
+		} catch (DALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		System.out.println("Created user: " + batch.toString());
-		System.out.println("Current list " + produktList.toString());
+		System.out.println("Current list " + proConnList.toString());
 		
 		String result = "created productbatch";
 		return result;
@@ -49,6 +61,7 @@ public class ProduktResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Produktbatch> getProduktbatch()
 	{
-		return produktList;
+		
+		return proConnList;
 	}	
 }
