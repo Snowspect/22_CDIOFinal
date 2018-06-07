@@ -9,7 +9,7 @@ function generateProdukt() {
 		var form = '	<tr>' + 
 		'				<td><center>UserID</center>'+
 		'				<center>'+
-		'					<input type="number" id="userID' + i + '" required pattern="[0-9.]+">'+
+		'					<input type="number" id="rolle_id' + i + '" required pattern="[0-9.]+">'+
 		'				</center></td>'+
 		'				<br>'+
 		'				<td><center>rbID</center>'+
@@ -66,18 +66,18 @@ function getProduktFromHTML() {
 		pbId : pbId,
 		receptId : rcpId,
 		status : status,
-		afvejning: []
+		produktBatchKomponent: []
 	//	"afvejning" : [{"userId"a: /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
 	};
 	
 	$("tr").each(function(index,element){
 		//debugger;
-		var UserID = document.getElementById("userID" + index).value;
+		var rolle_id = document.getElementById("rolle_id" + index).value;
 		var rbId = document.getElementById("rbID" + index).value;
 		var tara = document.getElementById("tara" + index).value;
 		var netto = document.getElementById("Netto" + index).value;
-		var obj = {userId : UserID, rbId: rbId, tara: tara, netto: netto};
-		produktbatch.afvejning.push(obj);
+		var obj = {pbId : pbId, rbId: rbId, tara: tara, netto: netto, rolle_id: rolle_id};
+		produktbatch.produktBatchKomponent.push(obj);
 	});	
 	
 	return produktbatch;
@@ -102,14 +102,14 @@ function loadProducts(){
 }
 
 function iterateProductTable(data) {
-	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index,element) {  
-		for(i = 0; i < this.afvejning.length; i++) {
-		insertIntoProductTable(this.pbId, this.receptId, this.status, this.afvejning[i].userId, this.afvejning[i].rbId, this.afvejning[i].tara, this.afvejning[i].netto);
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
+		for(i = 0; i < this.produktBatchKomponent.length; i++) {
+		insertIntoProductTable(this.pbId, this.receptId, this.status, this.produktBatchKomponent[i].rolle_id, this.produktBatchKomponent[i].rbId, this.produktBatchKomponent[i].tara, this.produktBatchKomponent[i].netto);
 		}
 	}); 
 }
 
-function insertIntoProductTable(pbId, rcpId, Status, userId, rbId, tara, netto) {
+function insertIntoProductTable(pbId, rcpId, Status, rolle_id, rbId, tara, netto) {
 	var table = document.getElementById("productBatchTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
@@ -123,7 +123,7 @@ function insertIntoProductTable(pbId, rcpId, Status, userId, rbId, tara, netto) 
 	cell1.innerHTML = pbId;
 	cell2.innerHTML = rcpId;
 	cell3.innerHTML = Status;
-	cell4.innerHTML = userId;
+	cell4.innerHTML = rolle_id;
 	cell5.innerHTML = rbId;
 	cell6.innerHTML = tara;
 	cell7.innerHTML = netto;
