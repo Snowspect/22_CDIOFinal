@@ -13,6 +13,7 @@ import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.RaavareDAO;
 import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.Raavare;
 
 public class MySQLRaavareDAO implements RaavareDAO{
@@ -57,10 +58,10 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			getRaavareList = conn.prepareStatement(getRaaList);
 			rs = getRaavareList.executeQuery();
 			while (rs.next()) {
-					list.add(new Raavare(rs.getInt("raavare_id"),rs.getString("raavare_leverandoer"),rs.getString("raavare_navn")));
+					list.add(new Raavare(rs.getInt("raavare_id"),rs.getString("leverandoer"),rs.getString("raavare_navn")));
 				}
 		} catch (SQLException e ) {
-			//Do error handling
+			System.out.println(e);
 			//TODO
 		} finally {
 			if (getRaavareList != null) {
@@ -99,25 +100,31 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		
 
 	@Override
-	public void updateRaavare(Raavare raavare) throws DALException, SQLException {
+	public String updateRaavare(Raavare raavare) throws DALException, SQLException, NotFoundException{
 		Connection conn = Connector.getConn();
-		PreparedStatement updateRaavare = null;
-		
-		String updateRaa = "UPDATE raavare SET raavare_navn = ? , raavare_leverandoer = ? WHERE raavare_id = ?";
-		
+		PreparedStatement updateRaavare = null;		
+				
+		System.out.println("heoo");
+		String updateRaa = "UPDATE raavare SET raavare_navn = ? , leverandoer = ? WHERE raavare_id = ?";
+		int NumberOfRows = -1;
 		try {
 			updateRaavare = conn.prepareStatement(updateRaa);
 			updateRaavare.setString(1, raavare.getName());
 			updateRaavare.setString(2, raavare.getSupplier());
 			updateRaavare.setInt(3, raavare.getRavareId());
-			updateRaavare.executeUpdate();
+			NumberOfRows = updateRaavare.executeUpdate();
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+				System.out.println(e);
+				return "sql fejl ikke relateret til mangel på eksistens af raavare, se consol";
 		} finally {
 			if (updateRaavare != null) {
 				updateRaavare.close();
 	        }
 		}
+		if(NumberOfRows == 0)
+		{
+			throw new NotFoundException("Raavaren eksisterer ikke");
+		}
+		return "Raavaren er opdateret";
 	}
 }

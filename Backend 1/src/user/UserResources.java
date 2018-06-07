@@ -80,6 +80,7 @@ public class UserResources {
 		boolean found = false;
 		for (Personer person : perConn.getPersonerList()) {
 			if (id == person.getUserId()) {
+				System.out.println("Detele person ID: " + id);
 				perConn.deletePersoner(id);
 				found = true;
 			}
@@ -106,9 +107,10 @@ public class UserResources {
 	public void updateUser(Personer per) throws NotFoundException, DALException, SQLException
 	{
 		boolean found = false;
-		for (Personer person : perList) {
+		for (Personer person : perConn.getPersonerList()) {
 			if(person.getUserId() == per.getUserId())
 			{
+				System.out.println("Updatere person ID: " + per.getUserId());
 				perConn.updatePersoner(per);
 				found = true;
 			}

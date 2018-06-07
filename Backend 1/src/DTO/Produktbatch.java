@@ -6,9 +6,10 @@ public class Produktbatch {
 	private int pbId;
 	private int receptId;
 	private int status;
-	private ArrayList<Afvejning> afvejning;
+	private ArrayList<ProduktBatchKompDTO> produktBatchKomponent;
 
-
+	public Produktbatch() {
+	}{};
 
 
 	public Produktbatch(int pbId, int receptId, int status) {
@@ -35,10 +36,10 @@ public class Produktbatch {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public ArrayList<Afvejning> getAfvejning() {
-		return afvejning;
+	public ArrayList<ProduktBatchKompDTO> getProduktBatchKomponent() {
+		return produktBatchKomponent;
 	}
-	public void setAfvejning(ArrayList<Afvejning> afvejning) {
-		this.afvejning = afvejning;
+	public void setProduktBatchKomponent(ArrayList<ProduktBatchKompDTO> produktBaKo) {
+		this.produktBatchKomponent = produktBaKo;
 	} 
 }

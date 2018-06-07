@@ -14,38 +14,12 @@ import DTO.Produktbatch;
 import daointerfaces01917.ProduktBatchDAO;
 
 public class MySQLProduktBatchDAO implements ProduktBatchDAO {
-	@Override
-	public Produktbatch getProduktBatch(int pbId) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement getProBatch = null;
-		ResultSet rs = null;
-		Produktbatch PbDTO = null;
-		
-		String getProBa = "SELECT * FROM produktbatch WHERE pb_id = ?";
-		
-		try {
-			getProBatch = conn.prepareStatement(getProBa);
-			getProBatch.setInt(1, pbId);
-			rs = getProBatch.executeQuery();
-			if (!rs.first()) throw new DALException("Produktbatchet " + pbId + " findes ikke");
-			PbDTO = new Produktbatch (rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recept_id"));
-		} catch (SQLException e) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getProBatch != null) {
-				getProBatch.close();
-			}
-		}
-		return PbDTO;
-	}
-	
 
-	
 	@Override
 	public void createProduktBatch(Produktbatch pb) throws DALException, SQLException {		
 		Connection conn = Connector.getConn();
 		PreparedStatement createProBatch = null;
+		PreparedStatement createProBaKomponent = null;
 
 		String createProBa = "INSERT INTO produktbatch(pb_id, status, recept_id) VALUES " + 
 				"(?, ?, ?)";
@@ -58,35 +32,32 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 			createProBatch.setInt(3, pb.getReceptId());
 			createProBatch.executeUpdate();
 		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
 		} finally {
 			if (createProBatch != null) {
 				createProBatch.close();
 			}
 		}
-	}
-	@Override
-	public void updateProduktBatch(Produktbatch pb) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement updateProBatch = null;
-
-		String updateProBa = "UPDATE produktbatch SET pb_id = ? , status = ? , recept_id = ? WHERE pr_id = ?";
-
-		try {
-			updateProBatch = conn.prepareStatement(updateProBa);
-
-			updateProBatch.setInt(1, pb.getPbId());
-			updateProBatch.setInt(2, pb.getStatus());
-			updateProBatch.setInt(3, pb.getReceptId());
-			updateProBatch.setInt(4, pb.getPbId());
-			updateProBatch.executeUpdate();
-		} catch (SQLException e) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (updateProBatch != null) {
-				updateProBatch.close();
+		
+		String createProBaKomp = "INSERT INTO produktbatchkomponent(pb_id, rb_id,tara,netto,rolle_id) VALUES" +
+				"(?,?,?,?,?)";
+		createProBaKomponent = conn.prepareStatement(createProBaKomp);
+		for(int i = 0; i < pb.getProduktBatchKomponent().size(); i++)
+		{
+			try {
+				createProBaKomponent.setInt(1, pb.getProduktBatchKomponent().get(i).getPbId());
+				createProBaKomponent.setInt(2, pb.getProduktBatchKomponent().get(i).getRbId());
+				createProBaKomponent.setDouble(3, pb.getProduktBatchKomponent().get(i).getTara());
+				createProBaKomponent.setDouble(4, pb.getProduktBatchKomponent().get(i).getNetto());
+				createProBaKomponent.setInt(5, pb.getProduktBatchKomponent().get(i).getRolleId());
+				createProBaKomponent.executeUpdate();
+			} catch (SQLException e) { 
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			} finally {
+				if (createProBatch != null) { //does what?
+					createProBatch.close();
+				}
 			}
 		}
 	}
@@ -109,9 +80,7 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 				list.add(new Produktbatch(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recept_id")));
 			}
 		} catch (SQLException e) { 
-			//throw new DALException(e);
-			//Do error handling
-			//TODO
+			System.out.println(e);
 		} finally {
 			if (getProdBatchList != null) {
 				getProdBatchList.close();

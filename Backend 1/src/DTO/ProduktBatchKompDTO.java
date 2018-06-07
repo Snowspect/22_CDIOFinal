@@ -9,6 +9,8 @@ public class ProduktBatchKompDTO
 	int rolle_id;					// operatoer-nummer
 
 	
+	public ProduktBatchKompDTO() {}
+	
 	public ProduktBatchKompDTO(int pbId, int rbId, double tara, double netto, int oprId)
 	{
 		this.pbId = pbId;

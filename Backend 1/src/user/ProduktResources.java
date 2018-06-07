@@ -27,41 +27,20 @@ public class ProduktResources {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Produktbatch batch) throws FoundException
+	public String submit(Produktbatch batch) throws FoundException, DALException, SQLException
 	{
-		boolean found = false;
-		for (Produktbatch produktBatch : proConnList) {
-			if (batch.getPbId() == produktBatch.getPbId()) {
-				found = true;
-			}
-		}
-		if (found) {
-			throw new FoundException("Produktbatchen findes allerede");
-		}
-		
-		try {
-			proConn.createProduktBatch(batch);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println("Created user: " + batch.toString());
-		System.out.println("Current list " + proConnList.toString());
+		proConn.createProduktBatch(batch);
 		
 		String result = "created productbatch";
 		return result;
 	}
 	
-	//GET
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Produktbatch> getProduktbatch()
+	public ArrayList<Produktbatch> getProduktbatch() throws DALException, SQLException
 	{
-		
+
+		proConnList = (ArrayList<Produktbatch>) proConn.getProduktBatchList();
 		return proConnList;
 	}	
 }
