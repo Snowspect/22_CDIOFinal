@@ -6,7 +6,7 @@ public class ProduktBatchKompDTO
 	int rbId;        // i omraadet 1-99999999
 	double tara;
 	double netto;
-	int oprId;					// operatoer-nummer
+	int rolle_id;					// operatoer-nummer
 
 	
 	public ProduktBatchKompDTO(int pbId, int rbId, double tara, double netto, int oprId)
@@ -15,7 +15,7 @@ public class ProduktBatchKompDTO
 		this.rbId = rbId;
 		this.tara = tara;
 		this.netto = netto;
-		this.oprId = oprId;
+		this.rolle_id = oprId;
 	}
 	
 	public int getPbId() { return pbId; }
@@ -26,9 +26,9 @@ public class ProduktBatchKompDTO
 	public void setTara(double tara) { this.tara = tara; }
 	public double getNetto() { return netto; }
 	public void setNetto(double netto) { this.netto = netto; }
-	public int getOprId() { return oprId; }
-	public void setOprId(int oprId) { this.oprId = oprId; }
+	public int getRolleId() { return rolle_id; }
+	public void setRolleId(int rolle_id) { this.rolle_id = rolle_id; }
 	public String toString() { 
-		return pbId + "\t" + rbId +"\t" + tara +"\t" + netto + "\t" + oprId ; 
+		return pbId + "\t" + rbId +"\t" + tara +"\t" + netto + "\t" + rolle_id ; 
 	}
 }
