@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -11,9 +12,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mysql.jdbc.Connection;
+
 import DTO.FoundException;
 import DTO.Raavare;
 import DTO.RaavareBatch;
+import daoimpl01917.MySQLRaavareBatchDAO;
+import daointerfaces01917.DALException;
 
 @Path("/raavarebatch")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -22,13 +27,17 @@ import DTO.RaavareBatch;
 public class RaavareBatchResources {
 
 	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
-
 	//*** ravareBatch ***//
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(RaavareBatch ravBat) throws FoundException
-	{
-		boolean found = false;
+	public String submit(RaavareBatch ravBat) throws FoundException, DALException, SQLException
+	{		
+//		GET liste først og derefter tjekkke? eller kør den direkte ind og kør exception handling der?
+//				- dvs gør hvert felt unikt men ikke en auto increment.
+		MySQLRaavareBatchDAO test = new MySQLRaavareBatchDAO();
+		String result = test.createRaavareBatch(ravBat);
+		
+	 /* boolean found = false;
 		for (RaavareBatch raavareBatch : ravareBatchList) {
 			if (ravBat.getRbId() == raavareBatch.getRbId()) {
 				found = true;
@@ -36,27 +45,24 @@ public class RaavareBatchResources {
 		}
 		if (found) {
 			throw new FoundException("RaavareBatchen findes allerede");
-		}
+		}*/
 		
-		ravareBatchList.add(ravBat);
+		// ravareBatchList.add(ravBat);
 
 		System.out.println("Created raavareBatch: " + ravBat.toString());
 		System.out.println("Current list " + ravareBatchList.toString());
-
-		String result = "created ravareBatch";
-
 
 		return result;
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-
-	public ArrayList<RaavareBatch> getRaavarebatch(){
-
+	public ArrayList<RaavareBatch> getRaavarebatch() throws DALException, SQLException{
+		MySQLRaavareBatchDAO test = new MySQLRaavareBatchDAO();
+		ravareBatchList = (ArrayList<RaavareBatch>) test.getRaavareBatchList();
 		return ravareBatchList;
 	}
-
+	
 //	@PUT
 //	@Consumes(MediaType.APPLICATION_JSON)
 //	public String update(RaavareBatch ravBat) {

@@ -78,8 +78,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 	}
 
 	@Override
-	public List<Personer> getPersonerList() throws DALException, SQLException {
-		List<Personer> list = new ArrayList<Personer>();
+	public ArrayList<Personer> getPersonerList() throws DALException, SQLException {
+		ArrayList<Personer> list = new ArrayList<Personer>();
 
 		Connection conn = Connector.getConn();
 		PreparedStatement getPerson = null;
