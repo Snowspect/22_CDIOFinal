@@ -121,7 +121,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 		Connection conn = Connector.getConn();
 		PreparedStatement createProBatchKomp = null;
 		
-		String createProBaKo = "INSERT INTO produktbatchkomponent(pb_id, rb_id, tara, netto, opr_id) VALUES " + "(?, ?, ?, ?, ?)";
+		String createProBaKo = "CALL CreateProduktBatchKomp(?,?,?,?,?)";
 		
 		try {
 			createProBatchKomp = conn.prepareStatement(createProBaKo);
@@ -130,7 +130,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			createProBatchKomp.setInt(2, produktbatchkomponent.getRbId());
 			createProBatchKomp.setDouble(3, produktbatchkomponent.getTara());
 			createProBatchKomp.setDouble(4, produktbatchkomponent.getNetto());
-			createProBatchKomp.setInt(5, produktbatchkomponent.getOprId());
+			createProBatchKomp.setInt(5, produktbatchkomponent.getRolleId());
 			createProBatchKomp.executeUpdate();
 		} catch (SQLException e) {
 			//Do error handling
@@ -163,7 +163,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			updateProBatchKomp.setInt(2, produktbatchkomponent.getRbId());
 			updateProBatchKomp.setDouble(3, produktbatchkomponent.getTara());
 			updateProBatchKomp.setDouble(4, produktbatchkomponent.getNetto());
-			updateProBatchKomp.setInt(5, produktbatchkomponent.getOprId());
+			updateProBatchKomp.setInt(5, produktbatchkomponent.getRolleId());
 			updateProBatchKomp.setInt(6, produktbatchkomponent.getPbId());
 			updateProBatchKomp.setInt(7, produktbatchkomponent.getRbId());
 			updateProBatchKomp.executeUpdate();
