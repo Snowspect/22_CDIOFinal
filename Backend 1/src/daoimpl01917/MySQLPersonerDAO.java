@@ -119,7 +119,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			rs = getOperator.executeQuery();
 			while(rs.next())
 			{
-				status.add((rs.getBoolean("opr_status")));				
+				status.add(rs.getBoolean("opr_status"));
+				System.out.println(rs.getBoolean("opr_status"));
 			}
 //			rs = null;
 			
@@ -173,7 +174,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
-		String updatePer = "CALL UpdateEmployee(?,?,?,?)";
+		String updatePer = "CALL UpdateEmployee(?,?,?,?,?)";
 		
 		try {
 			updatePerson = conn.prepareStatement(updatePer);
@@ -182,10 +183,13 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			updatePerson.setString(2, per.getIni());
 			updatePerson.setInt(3, per.getUserId());
 			updatePerson.setString(4, per.getRoles());
+			updatePerson.setString(5, per.getCpr());		//false cpr needed but not used
 			updatePerson.executeUpdate();
 		} catch (SQLException e ) {
 			//Do error handling
 			//TODO
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			if (updatePerson != null) {
 				updatePerson.close();

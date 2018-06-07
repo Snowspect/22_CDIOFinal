@@ -2,7 +2,7 @@
 //Updates a user using POST
 function updateUser() {
 //	alert("update called");
-	myJSON = getPersonFromHTML();
+	myJSON = getPersonFromUpdateHTML();
 	$.ajax({
 		url : "cargostock/users",
 		type : 'PUT',
@@ -100,6 +100,23 @@ function getPersonFromHTML() {
 		userName : navn,
 		ini : ini,
 		cpr : cpr,
+		roles : rolle,
+		status : true
+	}
+	return bruger;
+}
+
+function getPersonFromUpdateHTML() {
+	var id = document.getElementById("ID").value;
+	var navn = document.getElementById("Brugernavn").value
+	var ini = document.getElementById("ini").value
+	var rolle = document.getElementById("rolle").value
+	
+	var bruger = {
+		userId : id,
+		userName : navn,
+		ini : ini,
+		cpr : 666,
 		roles : rolle,
 		status : true
 	}

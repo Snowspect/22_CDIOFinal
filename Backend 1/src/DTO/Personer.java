@@ -20,7 +20,7 @@ public class Personer {
 		this.ini = ini;
 		this.cpr = cpr;
 		this.roles = roles;
-		this.status = true;
+		this.status = status;
 	}
 
 	public int getUserId() {
