@@ -147,7 +147,7 @@ end; //
 delimiter ;
  
 delimiter //
-create procedure UpdateEmployee(in oprnavn varchar(29), ini_ varchar(4), cpr_n varchar(11), rolle_Id int(11), rolle varchar(35))
+create procedure UpdateEmployee(in oprnavn varchar(29), ini_ varchar(4), rolle_Id int(11), rolle varchar(35))
 begin 
 
 
@@ -160,16 +160,12 @@ END;
 start transaction;
 
 update personer
-set cpr = cpr_n, opr_navn = oprnavn, ini = ini_
-where cpr = cpr_n;
+set opr_navn = oprnavn, ini = ini_
+where cpr = (select cpr from roller where rolle_id = rolle_Id);
 
 update roller 
 set  rolle = rolle
-where cpr = cpr_n and rolle_id = rolle_Id;
-
-update operatoer
-set rolle_id = rolle_Id
-where rolle_id = rolle_Id;
+where cpr = (select cpr from roller where rolle_id = rolle_Id) and rolle_id = rolle_Id;
 
 commit;
 end; //
