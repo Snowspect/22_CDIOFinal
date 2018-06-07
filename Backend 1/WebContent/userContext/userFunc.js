@@ -93,7 +93,6 @@ function getPersonFromHTML() {
 	var navn = document.getElementById("Brugernavn").value
 	var ini = document.getElementById("ini").value
 	var cpr = document.getElementById("CPR").value
-	var passwd = document.getElementById("password").value
 	var rolle = document.getElementById("rolle").value
 
 	var bruger = {
@@ -101,7 +100,6 @@ function getPersonFromHTML() {
 		userName : navn,
 		ini : ini,
 		cpr : cpr,
-		password : passwd,
 		roles : rolle,
 		status : true
 	}
@@ -115,7 +113,7 @@ function getPersonFromHTML() {
  */
 function iterateUsers(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.password, this.roles, this.status);
+		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.roles, this.status);
 	});
 }
 
@@ -125,12 +123,11 @@ function iterateUsers(data) {
  * @param userName
  * @param ini
  * @param cpr
- * @param passwd
  * @param role
  * @param status
  * @returns
  */
-function insertIntoUserTable(id, userName, ini, cpr, passwd, role, status) {
+function insertIntoUserTable(id, userName, ini, cpr, role, status) {
 	var table = document.getElementById("userTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
@@ -139,15 +136,13 @@ function insertIntoUserTable(id, userName, ini, cpr, passwd, role, status) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
-	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = id;
 	cell2.innerHTML = userName;
 	cell3.innerHTML = ini;
 	cell4.innerHTML = cpr;
-	cell5.innerHTML = passwd;
-	cell6.innerHTML = role;
-	cell7.innerHTML = status;
+	cell5.innerHTML = role;
+	cell6.innerHTML = status;
 }
 
 

@@ -58,7 +58,7 @@ public class UserResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Personer> getUsers() throws DALException, SQLException {
 		System.out.println("Get list: " + perConn.getPersonerList().toString());
-		return perList;
+		return perConn.getPersonerList();
 	}
 	
 //	@PUT
