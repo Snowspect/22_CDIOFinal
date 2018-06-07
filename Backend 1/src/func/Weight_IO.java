@@ -63,10 +63,6 @@ public class Weight_IO {
 		String tempId = responseFromServer.split(" ")[2];
 		tempId = tempId.replaceAll("\\D+","");	
 		int foo = Integer.parseInt(tempId);
-//		System.out.println("52 " + foo);
-//		
-//		//TODO get name from data. OBS Metode virker ikke
-	//	name = ;
 		
 //		Send name to weight
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
