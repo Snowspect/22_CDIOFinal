@@ -75,12 +75,12 @@ public class UserResources {
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
-	public void deleteUser(@PathParam("id") int id) throws NotFoundException
+	public void deleteUser(@PathParam("id") int id) throws NotFoundException, DALException, SQLException
 	{
 		boolean found = false;
-		for (Personer person : perList) {
+		for (Personer person : perConn.getPersonerList()) {
 			if (id == person.getUserId()) {
-				person.setStatus(false);
+				perConn.deletePersoner(id);
 				found = true;
 			}
 		}
