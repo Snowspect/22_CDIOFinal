@@ -30,54 +30,26 @@ public class RaavareResources {
 	public String submit(Raavare rav) throws FoundException, DALException, SQLException
 	{
 		
-		System.out.println("FUCKING TEEEESTT!!!! FEESST!");
 		String result = test.createRaavare(rav);
-		/*
-		boolean found = false;
-		for (Raavare raavare : raavareList) {
-			if (rav.getRavareId() == raavare.getRavareId()) {
-				found = true;
-			}
-		}
-		if (found) {
-			throw new FoundException("Raavaren findes allerede");
-		}
-		
-		raavareList.add(rav);
-		*/
-		System.out.println("Created raavare: " + rav.toString());
-		System.out.println("Current list " + raavareList.toString());
+//		System.out.println("Created raavare: " + rav.toString());
+//		System.out.println("Current list " + raavareList.toString());
 
-//		String result = "hallo";
-		
 		return result;
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 
-	public ArrayList<Raavare> getRaavare(){
-
+	public ArrayList<Raavare> getRaavare() throws DALException, SQLException{
+		raavareList = (ArrayList<Raavare>) test.getRaavareList();
 		return raavareList;
 	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON) 
-	public void update(Raavare rav) throws NotFoundException {
-		boolean found = false;
+	public String update(Raavare rav) throws NotFoundException, DALException, SQLException {
 		
-		for(Raavare Rav : raavareList) {
-			if(Rav.getRavareId() == rav.getRavareId())
-			{
-				Rav.setRavareId(rav.getRavareId());
-				Rav.setName(rav.getName());
-				Rav.setSupplier(rav.getSupplier());
-				found = true;
-			}
-		}
-		if (!found) {
-			throw new NotFoundException("Raavaren findes ikke");
-		}	
+		String result = test.updateRaavare(rav);
+		return result;
 	}
-
 }
