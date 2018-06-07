@@ -64,7 +64,7 @@ public class Weight_IO {
 //		tempId = tempId.replaceAll("\\D+","");	
 //		int foo = Integer.parseInt(tempId);
 		
-		int foo = retriveIdAsInt(responseFromServer);
+		int foo = retrieveIdAsInt(responseFromServer);
 		
 //		Send name to weight
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
@@ -83,12 +83,14 @@ public class Weight_IO {
 		
 		//Input Produktbatch id on weight
 		responseFromServer = getFromServer.readLine();		//Save
-
+		String str = findReceptName(retrieveIdAsInt(responseFromServer));
+		System.out.println("recept navn " + str);
+		
 		//raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
 		System.out.println("7 " + responseFromServer);
 		
 		//Send text to weight
-		sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
+		sendToServer.writeBytes("RM20 8 ”Recept navn: " + findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
 		responseFromServer = getFromServer.readLine();
 		System.out.println("8 " + responseFromServer);
 		System.out.println("Tryk OK ");
@@ -229,7 +231,7 @@ public class Weight_IO {
 		return name;
 	}
 	
-	public int retriveIdAsInt(String ServerResponse) {
+	public int retrieveIdAsInt(String ServerResponse) {
 		String tempId = ServerResponse.split(" ")[2];
 		tempId = tempId.replaceAll("\\D+","");	
 		int foo = Integer.parseInt(tempId);
@@ -237,5 +239,36 @@ public class Weight_IO {
 		
 	}
 	
+	
+			public String findReceptName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+		
+		String recept = null;
+		PreparedStatement getReceptName = null;
+		ResultSet rs = null;
+		
+		String getRecept = "Select recept_navn from produktbatch NATURAL JOIN recept where recept_id = ? group by recept_navn";
+		
+		
+		try {
+			getReceptName = sqlCon.prepareStatement(getRecept);
+
+		getReceptName.setInt(1, id);
+		rs = getReceptName.executeQuery();
+		if(rs.first()) {
+			recept = rs.getString("recept_navn");	
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(getReceptName != null) {
+				getReceptName.close();
+			}
+		}
+		return recept;
+	}
+			
+			
 }
 
