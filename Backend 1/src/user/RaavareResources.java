@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -13,6 +14,8 @@ import javax.ws.rs.core.MediaType;
 import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Raavare;
+import daoimpl01917.MySQLRaavareDAO;
+import daointerfaces01917.DALException;
 
 @Path("/raavare")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -21,11 +24,15 @@ import DTO.Raavare;
 public class RaavareResources {
 
 	private static ArrayList <Raavare> raavareList = new ArrayList<>();
-	
+	MySQLRaavareDAO test = new MySQLRaavareDAO();	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Raavare rav) throws FoundException
+	public String submit(Raavare rav) throws FoundException, DALException, SQLException
 	{
+		
+		System.out.println("FUCKING TEEEESTT!!!! FEESST!");
+		String result = test.createRaavare(rav);
+		/*
 		boolean found = false;
 		for (Raavare raavare : raavareList) {
 			if (rav.getRavareId() == raavare.getRavareId()) {
@@ -37,13 +44,12 @@ public class RaavareResources {
 		}
 		
 		raavareList.add(rav);
-
+		*/
 		System.out.println("Created raavare: " + rav.toString());
 		System.out.println("Current list " + raavareList.toString());
 
-		String result = "created ravare";
-
-
+//		String result = "hallo";
+		
 		return result;
 	}
 

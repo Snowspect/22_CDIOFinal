@@ -5,6 +5,8 @@ public class Raavare {
 	private int ravareId;
 	private String name, supplier;
 	
+	public Raavare() {}
+	
 	public Raavare(int ravareId, String name, String supplier) {
 		// TODO Auto-generated constructor stub
 		this.ravareId = ravareId;

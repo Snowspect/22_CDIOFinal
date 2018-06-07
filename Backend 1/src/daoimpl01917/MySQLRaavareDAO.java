@@ -7,14 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.RaavareDAO;
+import DTO.FoundException;
 import DTO.Raavare;
 
 public class MySQLRaavareDAO implements RaavareDAO{
 
-	@Override
+/*	@Override
 	public Raavare getRaavare(int raavareId) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement getraavare = null;
@@ -39,7 +42,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		}
 		return raaDTO;
 	}
-
+*/
 	@Override
 	public List<Raavare> getRaavareList() throws DALException, SQLException {
 		List<Raavare> list = new ArrayList<Raavare>();
@@ -68,11 +71,11 @@ public class MySQLRaavareDAO implements RaavareDAO{
 	}
 
 	@Override
-	public void createRaavare(Raavare raavare) throws DALException, SQLException {	
+	public String createRaavare(Raavare raavare) throws DALException, SQLException, FoundException {	
 		Connection conn = Connector.getConn();
 		PreparedStatement createRaavare = null;
 		
-		String createRaa = "INSERT INTO raavare(raavare_id, raavare_navn, raavare_leverandoer) VALUES ( ? , ? , ? )";
+		String createRaa = "INSERT INTO raavare(raavare_id, raavare_navn, leverandoer) VALUES ( ? , ? , ? )";
 
 		try {
 			createRaavare = conn.prepareStatement(createRaa);
@@ -81,14 +84,17 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			createRaavare.setString(2, raavare.getName());
 			createRaavare.setString(3, raavare.getSupplier());
 			createRaavare.executeUpdate();
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			throw new FoundException("RaavareBatchen findes allerede");
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			return "sql fejl ikke relateret til eksisterende id, tjek consol";
 		} finally {
 			if (createRaavare != null) {
 				createRaavare.close();
 	        }
 		}
+		return "raavare oprettet";
 	}
 		
 
