@@ -7,39 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.RaavareBatchDAO;
+import DTO.FoundException;
 import DTO.RaavareBatch;
 
 public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
-
-	@Override
-	public RaavareBatch getRaavareBatch(int rbId) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement getraavareBatch = null;
-		ResultSet rs = null;
-		RaavareBatch raaBaDTO = null;
-		
-		String getraaBa = "SELECT * FROM raavarebatch WHERE rbId_id = ?";
-		
-		try {
-			getraavareBatch = conn.prepareStatement(getraaBa);
-			getraavareBatch.setInt(1, rbId);
-			rs = getraavareBatch.executeQuery();
-			if (!rs.first()) throw new DALException("RaavareBatchen med id:  " + rbId + " findes ikke");
-			raaBaDTO = new RaavareBatch (rs.getInt("rb_id"), rs.getInt("raavare_id"), rs.getDouble("maengde"));
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getraavareBatch != null) {
-				getraavareBatch.close();
-	        }
-		}
-		return raaBaDTO;
-	}
-
 
 	@Override
 	public List<RaavareBatch> getRaavareBatchList() throws DALException, SQLException {
@@ -68,34 +44,7 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 	}
 
 	@Override
-	public List<RaavareBatch> getRaavareBatchList(int raavareId) throws DALException, SQLException {
-		List<RaavareBatch> list = new ArrayList<RaavareBatch>();
-		Connection conn = Connector.getConn();
-		PreparedStatement getRaavareBatchList = null;
-		ResultSet rs = null;
-		
-		String getRaaBaList = "SELECT * FROM raavarebatch WHERE raavareId = ?";
-		
-		try {
-			getRaavareBatchList = conn.prepareStatement(getRaaBaList);
-			getRaavareBatchList.setInt(1, raavareId);
-			rs = getRaavareBatchList.executeQuery();
-			while (rs.next()) {
-					list.add(new RaavareBatch(rs.getInt("rb_id"), rs.getInt("raavare_id"), rs.getDouble("maengde")));
-				}
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getRaavareBatchList != null) {
-				getRaavareBatchList.close();
-	        }
-		}
-		return list;
-	}
-
-	@Override
-	public void createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException {
+	public String createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException, FoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRaavareBatch = null;
 		
@@ -108,36 +57,19 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 			createRaavareBatch.setInt(2, raavarebatch.getRaavareId());
 			createRaavareBatch.setDouble(3, raavarebatch.getMaengde());
 			createRaavareBatch.executeUpdate();
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			throw new FoundException("RaavareBatchen findes allerede");	
+		}
+		catch (SQLException e) {
+			//i tvivl om hvorvidt dette nogensinde bliver udført grundet vores input handling gennem html
+			//også i tvivl om den kan finde ud af at køre begge to eller den stoppe efter sout.(system out print)
+			System.out.println(e);
+			return "Error ikke relateret til allerede eksisterende id - se consol output";
 		} finally {
 			if (createRaavareBatch != null) {
 				createRaavareBatch.close();
 	        }
 		}
-	}
-
-	@Override
-	public void updateRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement updateRaavareBatch = null;
-		
-		String updateRaaBa = "UPDATE raavarebatch SET maengde = ? WHERE rb_id = ?";
-		
-		try {
-			updateRaavareBatch = conn.prepareStatement(updateRaaBa);
-			updateRaavareBatch.setDouble(1, raavarebatch.getMaengde());
-			updateRaavareBatch.setInt(2, raavarebatch.getRbId());
-			updateRaavareBatch.setInt(3, raavarebatch.getRaavareId());
-			updateRaavareBatch.executeUpdate();
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (updateRaavareBatch != null) {
-				updateRaavareBatch.close();
-	        }
-		}
+		return "raavareBatch oprettet";
 	}
 }
