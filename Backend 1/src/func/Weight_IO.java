@@ -100,9 +100,13 @@ public class Weight_IO {
 			responseFromServer = getFromServer.readLine();
 			System.out.println("9" + responseFromServer);
 			
+			
 			int tempStat = setStatus(tempId);
 			System.out.println("Status blev sat til " + tempStat);
-			
+			if (tempStat == 2) {
+				System.out.println("Ikke tilladt");
+			//break i løkke
+			}
 			
 			//Send text to weight
 			sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
@@ -132,8 +136,16 @@ public class Weight_IO {
 			//	dto.setTaraWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 			responseFromServer = strip(responseFromServer);
 			afv.setTara(Double.parseDouble(responseFromServer));
-			System.out.println("13" + responseFromServer);
+			System.out.println("12.5 " + afv.getTara());
+			System.out.println("13 " + responseFromServer);
 
+			sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
+			responseFromServer = getFromServer.readLine();
+			responseFromServer = getFromServer.readLine();
+			afv.setRbId(retrieveIdAsInt(responseFromServer));
+			System.out.println("13.5" + afv.getRbId());
+			
+			
 			sendToServer.writeBytes("T" + '\n');
 			responseFromServer = getFromServer.readLine();
 			System.out.println("14" + responseFromServer);
@@ -151,6 +163,7 @@ public class Weight_IO {
 			responseFromServer = strip(responseFromServer);
 			afv.setNetto(Double.parseDouble(responseFromServer));
 			System.out.println("17" + responseFromServer);
+			System.out.println("17.5" + afv.getNetto());
 
 			sendToServer.writeBytes("T" + '\n');
 			responseFromServer = getFromServer.readLine();
@@ -163,18 +176,28 @@ public class Weight_IO {
 			responseFromServer = getFromServer.readLine();
 			System.out.println("20 " + responseFromServer);
 
-			sendToServer.writeBytes("S" + '\n');
-			//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
-			responseFromServer = getFromServer.readLine();//Save
-			responseFromServer = strip(responseFromServer);
-			afv.setBrutto(Double.parseDouble(responseFromServer));
-			System.out.println("21 " + responseFromServer);
+//			sendToServer.writeBytes("S" + '\n');
+//			//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
+//			responseFromServer = getFromServer.readLine();//Save
+//			responseFromServer = strip(responseFromServer);
+//			afv.setBrutto(Double.parseDouble(responseFromServer));
+//			System.out.println("21 " + responseFromServer);
 
+			
+			if(checkTolerance(afv.getNetto(), afv.getRbId())) {
+				//sql transaction
+				insertProBaKomRow(tempId, afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
+				System.out.println("Success");
+			} else {
+				//break loop
+				System.out.println("Fejl");
+			}
+			
 			sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
 			responseFromServer = getFromServer.readLine();
 			System.out.println("22 " + responseFromServer);
 			responseFromServer = getFromServer.readLine();
-			System.out.println("23 " + responseFromServer);
+//			System.out.println("23 " + responseFromServer);
 
 			sendToServer.writeBytes("T" + '\n');
 			responseFromServer = getFromServer.readLine();
@@ -320,9 +343,71 @@ public class Weight_IO {
 			}
 		}
 		return status;
-
 	}
 
+	public boolean checkTolerance(double netto, int rb_id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
 
+		double tolerance = 0.0;
+		PreparedStatement checkTolerance = null;
+		ResultSet rs = null;
+		int update;
+
+		String checkRaavareTolerance = "SELECT tolerance FROM raavarebatch NATURAL JOIN receptkomponent WHERE rb_id = ? GROUP BY rb_id";
+
+		try {
+			checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
+
+			checkTolerance.setInt(2,rb_id);
+			rs = checkTolerance.executeQuery();
+			if(rs.first()) {
+				tolerance = rs.getDouble(3);
+				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
+				checkTolerance.setInt(2, rb_id);
+				if (netto * (1 - tolerance) <= netto && netto <= netto * (1 + tolerance) ) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(checkTolerance != null) {
+				checkTolerance.close();
+			}
+		}
+		return false;
+	}
+
+	public void insertProBaKomRow(int pd_id, int rb_id, double tara, double netto, int oprId) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+
+		PreparedStatement row = null;
+		ResultSet rs = null;
+
+		String insertRow = "CALL MakeProBaKompRow(?,?,?,?,?) ";
+
+		try {
+			row = sqlCon.prepareStatement(insertRow);
+
+			row.setInt(1,pd_id);
+			row.setInt(2,rb_id);
+			row.setDouble(3,tara);
+			row.setDouble(4,netto);
+			row.setInt(5,oprId);
+			
+			row.execute();
+			if(rs.first()) {
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(row != null) {
+				row.close();
+			}
+		}
+	}
+	
 }
 

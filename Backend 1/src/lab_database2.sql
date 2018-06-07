@@ -182,6 +182,8 @@ declare exit handler for sqlexception
 
 END;
 
+
+delimiter //
 start transaction;
 
 INSERT INTO produktbatchkomponent
@@ -190,6 +192,30 @@ INSERT INTO produktbatchkomponent
 commit;
 end; //
 delimiter ;
+
+delimiter //
+create procedure MakeProBaKompRow(in par_pb_id int(8), par_rb_id int(8), par_tara double(4,2), par_netto double(4,2), par_rolle_id int(3))
+begin 
+
+
+declare exit handler for sqlexception
+	begin 
+	rollback;
+
+END;
+
+start transaction;
+
+insert into produktbatchkomponent; 
+(pb_id, rb_id, tara, netto, rolle_id) values(par_pb_id, par_rb_id, par_tara, par_netto, par_rolle_id);
+
+update raavarebatch set maengde -= par_netto where rb_id = par_rb_id;
+
+
+commit;
+end; //
+
+
 
 -- Admin 			Check
 -- Pharmasict		Check	- Laver pizza
