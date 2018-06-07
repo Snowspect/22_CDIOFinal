@@ -1,4 +1,5 @@
 package user;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -15,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Personer;
+import daoimpl01917.MySQLPersonerDAO;
+import daointerfaces01917.DALException;
 
 
 
@@ -22,13 +25,15 @@ import DTO.Personer;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResources {
+	MySQLPersonerDAO perConn = new MySQLPersonerDAO();
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
+	
 	//Inserts new user into system
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUser(Personer per) throws FoundException {
+	public String createUser(Personer per) throws FoundException, DALException, SQLException {
 		boolean found = false;
-		for (Personer person : perList) {
+		for (Personer person : perConn.getPersonerList()) {
 			if (per.getUserId() == person.getUserId()) {
 				found = true;
 			}
@@ -38,9 +43,11 @@ public class UserResources {
 			throw new FoundException("Brugeren findes allerede");
 		}
 		
-		perList.add(per);
+		perConn.createPersoner(per);		//from DB
+		
+//		perList.add(per);		//from arrayList
 		System.out.println("Created user: " + per.toString());
-		System.out.println("Current list " + perList.toString());
+		System.out.println("Current list " + perConn.getPersonerList().toString());
 
 		String result = "It works, maybe";
 		return result;
@@ -49,8 +56,8 @@ public class UserResources {
 	//Gets list of users
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Personer> getUsers() {
-		System.out.println("Get list: " + perList.toString());
+	public ArrayList<Personer> getUsers() throws DALException, SQLException {
+		System.out.println("Get list: " + perConn.getPersonerList().toString());
 		return perList;
 	}
 	
@@ -96,18 +103,13 @@ public class UserResources {
 	//Updates a user
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateUser(Personer per) throws NotFoundException
+	public void updateUser(Personer per) throws NotFoundException, DALException, SQLException
 	{
 		boolean found = false;
 		for (Personer person : perList) {
 			if(person.getUserId() == per.getUserId())
 			{
-				person.setUserId(per.getUserId());
-				person.setUserName(per.getUserName());
-				person.setCpr(per.getCpr());
-				person.setIni(per.getIni());
-//				person.setPassword(per.getPassword());
-				person.setRoles(per.getRoles());
+				perConn.updatePersoner(per);
 				found = true;
 			}
 		}
