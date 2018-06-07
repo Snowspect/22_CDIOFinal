@@ -42,10 +42,10 @@ public class ProduktResources {
 		try {
 			proConn.createProduktBatch(batch);
 		} catch (DALException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
