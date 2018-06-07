@@ -60,9 +60,11 @@ public class Weight_IO {
 		System.out.println("3 " + responseFromServer.split(" ")[2]);
 		
 //		//Gets userId from weight-response and converts to int
-		String tempId = responseFromServer.split(" ")[2];
-		tempId = tempId.replaceAll("\\D+","");	
-		int foo = Integer.parseInt(tempId);
+//		String tempId = responseFromServer.split(" ")[2];
+//		tempId = tempId.replaceAll("\\D+","");	
+//		int foo = Integer.parseInt(tempId);
+		
+		int foo = retriveIdAsInt(responseFromServer);
 		
 //		Send name to weight
 		sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
@@ -76,12 +78,13 @@ public class Weight_IO {
 		
 		//Send Produktbatch text to weight
 		sendToServer.writeBytes("RM20 4 ”Indtast Produktbatch nr” ”” ”&3”" + '\n');
-		responseFromServer = getFromServer.readLine();		
+		responseFromServer = getFromServer.readLine();
 		System.out.println("6 " + responseFromServer);
 		
 		//Input Produktbatch id on weight
 		responseFromServer = getFromServer.readLine();		//Save
-//		raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
+
+		//raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
 		System.out.println("7 " + responseFromServer);
 		
 		//Send text to weight
@@ -196,7 +199,7 @@ public class Weight_IO {
 	}
 		
 	
-	//Ikke færdig 
+	//Finds the username in the database with the ID given from the weight.
 	public String findUserName (int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 		
@@ -226,6 +229,13 @@ public class Weight_IO {
 		return name;
 	}
 	
+	public int retriveIdAsInt(String ServerResponse) {
+		String tempId = ServerResponse.split(" ")[2];
+		tempId = tempId.replaceAll("\\D+","");	
+		int foo = Integer.parseInt(tempId);
+		return foo;
+		
+	}
 	
 }
 
