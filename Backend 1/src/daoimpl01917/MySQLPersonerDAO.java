@@ -173,7 +173,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
-		String updatePer = "UPDATE personer SET opr_navn = ?, ini = ? WHERE cpr = ?";
+		String updatePer = "CALL UpdateEmployee(?,?,?,?,?)";
 		
 		try {
 			updatePerson = conn.prepareStatement(updatePer);
@@ -181,6 +181,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			updatePerson.setString(1, per.getUserName());
 			updatePerson.setString(2, per.getIni());
 			updatePerson.setString(3, per.getCpr());
+			updatePerson.setInt(4, per.getUserId());
+			updatePerson.setString(5, per.getRoles());
 			updatePerson.executeUpdate();
 		} catch (SQLException e ) {
 			//Do error handling
@@ -192,4 +194,24 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		}
 	}
 
+	public void deletePersoner(int id) throws DALException, SQLException {
+		
+		Connection conn = Connector.getConn();
+		PreparedStatement deletePerson = null;
+		String deletePer = "UPDATE operatoer SET opr_status = 0 WHERE rolle_id = ?;";
+		try {
+			deletePerson = conn.prepareStatement(deletePer);
+			deletePerson.setInt(1, id);
+			deletePerson.executeUpdate();
+		} catch (SQLException e ) {
+			//Do error handling
+			//TODO
+		} finally {
+			if (deletePerson != null) {
+				deletePerson.close();
+	        }
+		}
+
+	}
+	
 }
