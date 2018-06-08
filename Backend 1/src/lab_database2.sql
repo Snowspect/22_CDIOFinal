@@ -33,10 +33,10 @@ CREATE TABLE produktbatch(pb_id INT PRIMARY KEY, status INT, recept_id INT,
    FOREIGN KEY (recept_id) REFERENCES recept(recept_id)) ENGINE=innoDB;
 
 CREATE TABLE produktbatchkomponent(pb_id INT, rb_id INT, tara REAL, netto REAL, rolle_id INT, 
-   PRIMARY KEY (pb_id), 
+   PRIMARY KEY (pb_id. rb_id), 
    FOREIGN KEY (pb_id) REFERENCES produktbatch(pb_id), 
    FOREIGN KEY (rb_id) REFERENCES raavarebatch(rb_id), 
-   FOREIGN KEY (rolle_id) REFERENCES operatoer(rolle_id)) ENGINE=innoDB;
+   FOREIGN KEY (rolle_id) REFERENCES operatoer(rolle_id)) ENGINE=innoDB; 
 
 INSERT INTO personer(cpr, opr_navn, ini) VALUES
 ('070770-7007', 'Angelo A', 'AA' ),

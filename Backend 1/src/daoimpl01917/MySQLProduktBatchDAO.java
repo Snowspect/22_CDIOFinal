@@ -40,14 +40,6 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 				createProBatch.close();
 			}
 		}
-		String createDefaultKomponent = "INSERT INTO produktbatchkomponent VALUES(?,?" + null + "," + null + "," + null + ")";
-		
-		try {
-			createProBaKomponent = conn.prepareStatement(createDefaultKomponent);	
-			createProBaKomponent.setInt(1, pb.getPbId());
-		} catch(SQLException e) {
-			
-		}
 		}
 
 	@Override

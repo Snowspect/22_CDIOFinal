@@ -6,7 +6,7 @@ public class Produktbatch {
 	private int pbId;
 	private int receptId;
 	private int status;
-	private ArrayList<produktBatchKompDTO> produktBatchKomponent;
+	private ArrayList<produktBatchKompDTO> produktBatchKomponent = new ArrayList<>();
 
 	public Produktbatch() {
 	}{};
