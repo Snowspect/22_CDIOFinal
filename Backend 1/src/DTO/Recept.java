@@ -11,7 +11,7 @@ public class Recept {
 	private String receptNavn;
 
 	/** Ingredienser i recept */
-	private ArrayList<Ingrediens> ingrediens;
+	private ArrayList<ReceptKompDTO> receptKomponent;
 
 	public Recept() {}
 	
@@ -19,6 +19,12 @@ public class Recept {
 		// TODO Auto-generated constructor stub
 		this.receptId = receptId;
 		this.receptNavn = receptNavn;
+	}
+
+
+	public String toString() {
+		return "receptId: " + receptId + ", receptNavn: " + receptNavn + 
+				", recept komponents: " + Arrays.toString(receptKomponent.toArray());
 	}
 
 	public int getReceptId() {
@@ -37,15 +43,11 @@ public class Recept {
 		this.receptNavn = receptNavn;
 	}
 
-	public ArrayList<Ingrediens> getIngrediens() {
-		return ingrediens;
+	public ArrayList<ReceptKompDTO> getReceptKomponent() {
+		return receptKomponent;
 	}
 
-	public void setIngrediens(ArrayList<Ingrediens> ingrediens) {
-		this.ingrediens = ingrediens;
-	}
-	public String toString() {
-		return "receptId: " + receptId + ", receptNavn: " + receptNavn + 
-				", ingredienses: " + Arrays.toString(ingrediens.toArray());
+	public void setReceptKomponent(ArrayList<ReceptKompDTO> receptKomponent) {
+		this.receptKomponent = receptKomponent;
 	}
 }

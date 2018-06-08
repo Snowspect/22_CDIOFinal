@@ -34,17 +34,18 @@ function getDataFromHTML() {
 	var recept = {
 		receptId : receptId,
 		receptNavn : receptNavn,
-		ingrediens : []		
+		receptKomponent : []		
 	};
 	
 	
 	$("tr").each(function(index,element){
 		//debugger;
-		var ravaareId = document.getElementById("raavareID" + index).value;
-		var nomNetto = document.getElementById("nomNetto" + index).value;
-		var tolerance = document.getElementById("tolerance" + index).value;
-		var obj = {raavareId : ravaareId, nomNetto: nomNetto, tolerance: tolerance};
-		recept.ingrediens.push(obj);
+		var receptIdT = receptId;
+		var ravaareIdT = document.getElementById("raavareID" + index).value;
+		var nomNettoT = document.getElementById("nomNetto" + index).value;
+		var toleranceT = document.getElementById("tolerance" + index).value;
+		var obj = {receptId: receptIdT, raavareId : ravaareIdT, nomNetto: nomNettoT, tolerance: toleranceT};
+		recept.receptKomponent.push(obj);
 	});
 	return recept;
 }
@@ -98,7 +99,7 @@ function iterateRecept(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index, element) {  
 		for(i = 0; i < this.ingrediens.length; i++) {
 			console.log("hhellll");
-		insertIntoReceptTable(this.receptId, this.receptNavn, this.ingrediens[i].raavareId, this.ingrediens[i].nomNetto, this.ingrediens[i].tolerance);
+		insertIntoReceptTable(this.receptId, this.receptNavn, this.receptKomponent[i].raavareId, this.receptKomponent[i].nomNetto, this.receptKomponent[i].tolerance);
 		}
 	});
 }

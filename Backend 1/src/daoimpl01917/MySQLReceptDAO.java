@@ -64,6 +64,10 @@ public class MySQLReceptDAO implements ReceptDAO {
 				createRec.close();
 			}
 		}
+		MySQLReceptKompDAO t = new MySQLReceptKompDAO();
+		for(int j = 0; j == recept.getReceptKomponent().size();j++) {
+		t.createReceptKomp(recept.getReceptKomponent().get(j));
+		}
 	}
 }
 

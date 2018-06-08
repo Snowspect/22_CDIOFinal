@@ -7,6 +7,8 @@ public class ReceptKompDTO
 	double nomNetto;            // skal vaere positiv og passende stor
 	double tolerance;           // skal vaere positiv og passende stor
 	
+	public ReceptKompDTO() {}
+	
 	public ReceptKompDTO(int receptId, int raavareId, double nomNetto, double tolerance)
 	{
 		this.receptId = receptId;
