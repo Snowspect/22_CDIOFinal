@@ -25,14 +25,19 @@ import daointerfaces01917.DALException;
 public class ReceptResources {
 	private static ArrayList <Recept> receptList = new ArrayList<>();
 	MySQLReceptDAO test = new MySQLReceptDAO();
-	//{"receptId": 1, "receptNavn": "Fisk", "ingrediens": [{"raavareId": 24, "nomNetto": 95.9, "tolerance": 2.6}]}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Recept rec) throws FoundException, DALException, SQLException
 	{
-
-		test.createRecept(rec);
-
+		try {
+			test.createRecept(rec);
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
 		String result = "created recept";
 		return result;
 	}

@@ -7,9 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.ReceptDAO;
+import DTO.FoundException;
 import DTO.Recept;
 
 public class MySQLReceptDAO implements ReceptDAO {
@@ -44,30 +47,45 @@ public class MySQLReceptDAO implements ReceptDAO {
 	}
 
 	@Override
-	public void createRecept(Recept recept) throws DALException, SQLException {
+	public String createRecept(Recept recept) throws DALException, SQLException, FoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRec = null;
 		
-		String createRcpt = "INSERT INTO recept(recept_id, recept_navn) VALUES " + "(?, ?,)";
-		
+		System.out.println("so far so good");
+		System.out.println(recept.getReceptId() + " : " + recept.getReceptNavn() + " : " + recept.getReceptKomponent().get(0).getRaavareId());
+		String createRecept = "INSERT INTO recept (recept_id, recept_navn) VALUES (?,?)";
 		try {
-			createRec = conn.prepareStatement(createRcpt);
+			createRec = conn.prepareStatement(createRecept);
 
 			createRec.setInt(1, recept.getReceptId());
 			createRec.setString(2, recept.getReceptNavn());
 			createRec.executeUpdate();
-		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println("we got to here");
+		} catch(MySQLIntegrityConstraintViolationException e)
+		{
+			throw new FoundException("Recept Id already exists");
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (createRec != null) {
 				createRec.close();
 			}
 		}
 		MySQLReceptKompDAO t = new MySQLReceptKompDAO();
-		for(int j = 0; j == recept.getReceptKomponent().size();j++) {
-		t.createReceptKomp(recept.getReceptKomponent().get(j));
+		System.out.println("Just before calling the components insertion");
+		try 
+		{		
+			for(int j = 0; j < recept.getReceptKomponent().size(); j++) {
+				t.createReceptKomp(recept.getReceptKomponent().get(j));
+				System.out.println("we finished this part as well!");
+			}
+		}catch(SQLException e)
+		{
+			System.out.println(e);
+			e.printStackTrace();
 		}
+		return "Recept oprettet";
 	}
 }
-

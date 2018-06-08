@@ -124,4 +124,4 @@ function insertIntoReceptTable(receptId, receptNavn, raavareId, nomNetto, tolera
 	cell3.innerHTML = raavareId;
 	cell4.innerHTML = nomNetto;
 	cell5.innerHTML = tolerance;
-}
+} 

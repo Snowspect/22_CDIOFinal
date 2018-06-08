@@ -129,6 +129,7 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 	public void createReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRecKomp = null;
+		System.out.println("inhere");
 		
 		String createRcptKo = "INSERT INTO receptkomponent(recept_id, raavare_id, nom_netto, tolerance) VALUES " + "(?, ?, ?, ?)";
 		
@@ -141,8 +142,8 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 			createRecKomp.setDouble(4, receptkomponent.getTolerance());
 			createRecKomp.executeUpdate();
 		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (createRecKomp != null) {
 				createRecKomp.close();
