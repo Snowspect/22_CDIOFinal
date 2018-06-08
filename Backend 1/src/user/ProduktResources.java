@@ -34,6 +34,7 @@ public class ProduktResources {
 			System.out.println("pb: " + batch.getPbId() + " ,rbId: " + batch.getReceptId() + ", status: " + batch.getStatus());
 			System.out.println(batch.getProduktBatchKomponent().get(i).toString());
 		}
+
 		proConn.createProduktBatch(batch);
 		
 		String result = "created productbatch";

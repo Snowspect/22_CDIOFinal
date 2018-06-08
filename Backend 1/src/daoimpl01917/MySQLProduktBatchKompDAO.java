@@ -133,8 +133,8 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			createProBatchKomp.setInt(5, produktbatchkomponent.getRolle_id());
 			createProBatchKomp.executeUpdate();
 		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (createProBatchKomp != null) {
 				createProBatchKomp.close();

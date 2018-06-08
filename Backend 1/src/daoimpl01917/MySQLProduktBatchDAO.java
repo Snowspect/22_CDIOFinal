@@ -44,8 +44,10 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 		createProBaKomponent = conn.prepareStatement(createProBaKomp);
 		for(int i = 0; i < pb.getProduktBatchKomponent().size(); i++)
 		{
+			System.out.println("We got here!! + just before produktbatchKompDAO call!!");
 			MySQLProduktBatchKompDAO t = new MySQLProduktBatchKompDAO();
 			t.createProduktBatchKomp(pb.getProduktBatchKomponent().get(i));
+			System.out.println("We got after the first call, i wonder if i will be run");
 			/*try {
 				createProBaKomponent.setInt(1, pb.getProduktBatchKomponent().get(i).getPbId());
 				createProBaKomponent.setInt(2, pb.getProduktBatchKomponent().get(i).getRbId());
