@@ -199,6 +199,7 @@ public class Weight_IO {
 			} else {
 				//break loop
 				System.out.println("Fejl");
+				System.out.println("Nom_netto: " + getNom_netto(afv.getRbId(), tempId));
 			}
 
 			sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
@@ -406,8 +407,8 @@ public class Weight_IO {
 		try {
 
 			getWeighed = sqlCon.prepareStatement(getWeighedItems);
-			getToWeigh.setInt(1,id);
-			rs1 = getToWeigh.executeQuery();
+			getWeighed.setInt(1,id);
+			rs1 = getWeighed.executeQuery();
 			
 			
 			while(rs1.next()) {
@@ -417,7 +418,7 @@ public class Weight_IO {
 
 			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
 			getToWeigh.setInt(1,id);
-			getToWeigh.execute();
+			getToWeigh.executeQuery();
 
 			while(rs2.next()) {
 				checker2 = rs2.getArray(1);
@@ -442,7 +443,7 @@ public class Weight_IO {
 		} finally {
 			if( getWeighed != null || getToWeigh != null) {
 				getWeighed.close();
-				getToWeigh.close();
+//				getToWeigh.close();
 			}
 		}
 		return false;
@@ -551,8 +552,8 @@ public class Weight_IO {
 		PreparedStatement getNom_netto = null;
 		ResultSet rs = null;
 
-		String getNetto = "SELECT nom_netto FROM receptkompoent WHERE rb_id = ? AND pb_id = ?";
-
+		String getNetto = "SELECT nom_netto FROM receptkomponent NATURAL JOIN produktbatch NATURAL JOIN raavarebatch WHERE rb_id=? AND pb_id = ?";
+		
 
 		try {
 			getNom_netto = sqlCon.prepareStatement(getNetto);
@@ -562,6 +563,7 @@ public class Weight_IO {
 			rs = getNom_netto.executeQuery();
 			if(rs.first()) {
 				netto = rs.getDouble(1);	
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -572,6 +574,7 @@ public class Weight_IO {
 			}
 		}
 		return netto;
+		
 	}
 
 
