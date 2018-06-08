@@ -33,7 +33,7 @@ CREATE TABLE produktbatch(pb_id INT PRIMARY KEY, status INT, recept_id INT,
    FOREIGN KEY (recept_id) REFERENCES recept(recept_id)) ENGINE=innoDB;
 
 CREATE TABLE produktbatchkomponent(pb_id INT, rb_id INT, tara REAL, netto REAL, rolle_id INT, 
-   PRIMARY KEY (pb_id, rb_id), 
+   PRIMARY KEY (pb_id), 
    FOREIGN KEY (pb_id) REFERENCES produktbatch(pb_id), 
    FOREIGN KEY (rb_id) REFERENCES raavarebatch(rb_id), 
    FOREIGN KEY (rolle_id) REFERENCES operatoer(rolle_id)) ENGINE=innoDB;
@@ -176,7 +176,7 @@ delimiter ;
 
 
 delimiter //
-create procedure CreateProduktBatchKomp(in pbId int(11), rbId int(11), tara double, netto double, oprId int(11))
+create procedure CreateProduktBatchKomp(in pb_id int(11), rb_id int(11), tara double, netto double, rolle_id int(11))
 begin 
 
 declare exit handler for sqlexception
@@ -184,11 +184,10 @@ declare exit handler for sqlexception
 	rollback;
 END;
 
-delimiter //
 start transaction;
 
 INSERT INTO produktbatchkomponent
-(pb_id, rb_id, tara, netto, rolle_id) VALUES (pbId, rbId, tara, netto, oprId);
+(pb_id, rb_id, tara, netto, rolle_id) VALUES (pb_id, rb_id, tara, netto, rolle_id);
 
 commit;
 end; //
@@ -202,24 +201,21 @@ delimiter //
 create procedure MakeProBaKompRow(in par_pb_id int(8), par_rb_id int(8), par_tara double(4,2), par_netto double(4,2), par_rolle_id int(3))
 begin 
 
-
 declare exit handler for sqlexception
 	begin 
 	rollback;
-
 END;
 
 start transaction;
 
-insert into produktbatchkomponent; 
+insert into produktbatchkomponent  
 (pb_id, rb_id, tara, netto, rolle_id) values(par_pb_id, par_rb_id, par_tara, par_netto, par_rolle_id);
 
-update raavarebatch set maengde -= par_netto where rb_id = par_rb_id;
-
+update raavarebatch set maengde = (maengde - par_netto) where rb_id = par_rb_id;
 
 commit;
 end; //
-
+delimiter ;
 
 
 -- Admin 			Check

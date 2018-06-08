@@ -64,8 +64,8 @@ function getProduktFromHTML() {
 	var produktbatch = {
 		pbId : pbIdT,
 		receptId : rcpIdT,
-		status : "Oprettet"
-//		produktBatchKomponent: []
+		status : 0,
+		produktBatchKomponent: []
 	};
 //	
 //	$("tr").each(function(index,element){
