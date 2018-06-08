@@ -184,7 +184,7 @@ public class Weight_IO {
 //			System.out.println("21 " + responseFromServer);
 
 			
-			if(checkTolerance(afv.getNetto(), afv.getRbId())) {
+			if(checkTolerance(afv.getRbId(), afv.getNetto())) {
 				//sql transaction
 				insertProBaKomRow(tempId, afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 				System.out.println("Success");
@@ -345,7 +345,7 @@ public class Weight_IO {
 		return status;
 	}
 
-	public boolean checkTolerance(double netto, int rb_id) throws SQLException {
+	public boolean checkTolerance(int rb_id, double netto) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 
 		double tolerance = 0.0;
@@ -353,17 +353,17 @@ public class Weight_IO {
 		ResultSet rs = null;
 		int update;
 
-		String checkRaavareTolerance = "SELECT tolerance FROM raavarebatch NATURAL JOIN receptkomponent WHERE rb_id = ? GROUP BY rb_id";
+		String checkRaavareTolerance = "SELECT DISTINCT tolerance FROM raavarebatch NATURAL JOIN receptkomponent WHERE rb_id = ?;";
 
 		try {
 			checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
 
-			checkTolerance.setInt(2,rb_id);
+			checkTolerance.setInt(1, rb_id);
 			rs = checkTolerance.executeQuery();
 			if(rs.first()) {
-				tolerance = rs.getDouble(3);
+				tolerance = rs.getDouble(1);
 				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
-				checkTolerance.setInt(2, rb_id);
+//				checkTolerance.setInt(1, rb_id);
 				if (netto * (1 - tolerance) <= netto && netto <= netto * (1 + tolerance) ) {
 					return true;
 				}
