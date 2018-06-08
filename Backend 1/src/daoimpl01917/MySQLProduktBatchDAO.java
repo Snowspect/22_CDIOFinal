@@ -38,33 +38,7 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 				createProBatch.close();
 			}
 		}
-		
-		String createProBaKomp = "INSERT INTO produktbatchkomponent(pb_id, rb_id,tara,netto,rolle_id) VALUES" +
-				"(?,?,?,?,?)";
-		createProBaKomponent = conn.prepareStatement(createProBaKomp);
-		for(int i = 0; i < pb.getProduktBatchKomponent().size(); i++)
-		{
-			System.out.println("We got here!! + just before produktbatchKompDAO call!!");
-			MySQLProduktBatchKompDAO t = new MySQLProduktBatchKompDAO();
-			t.createProduktBatchKomp(pb.getProduktBatchKomponent().get(i));
-			System.out.println("We got after the first call, i wonder if i will be run");
-			/*try {
-				createProBaKomponent.setInt(1, pb.getProduktBatchKomponent().get(i).getPbId());
-				createProBaKomponent.setInt(2, pb.getProduktBatchKomponent().get(i).getRbId());
-				createProBaKomponent.setDouble(3, pb.getProduktBatchKomponent().get(i).getTara());
-				createProBaKomponent.setDouble(4, pb.getProduktBatchKomponent().get(i).getNetto());
-				createProBaKomponent.setInt(5, pb.getProduktBatchKomponent().get(i).getRolle_id());
-				createProBaKomponent.executeUpdate();
-			} catch (SQLException e) { 
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			} finally {
-				if (createProBatch != null) { //does what?
-					createProBatch.close();
-				}
-			}*/
 		}
-	}
 
 	@Override
 	public List<Produktbatch> getProduktBatchList() throws DALException, SQLException {
