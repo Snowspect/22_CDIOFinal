@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Array;
 import java.sql.Connection;
 
 import DTO.Afvejning ;
@@ -96,22 +97,22 @@ public class Weight_IO {
 			System.out.println("8 " + responseFromServer);
 			System.out.println("Tryk OK ");
 
-			
+
 			//Start loop
-			
-			
+
+
 			//Press OK on weight
 			responseFromServer = getFromServer.readLine();
 			System.out.println("9" + responseFromServer);
-			
-			
+
+
 			int tempStat = checkStatus(tempId);
 			System.out.println("Status blev sat til " + tempStat);
 			if (tempStat == 2) {
 				System.out.println("Ikke tilladt");
-			//break i løkke
+				//break i løkke
 			}
-			
+
 			//Send text to weight
 			sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
 			responseFromServer = getFromServer.readLine();
@@ -148,8 +149,8 @@ public class Weight_IO {
 			responseFromServer = getFromServer.readLine();
 			afv.setRbId(retrieveIdAsInt(responseFromServer));
 			System.out.println("13.5" + afv.getRbId());
-			
-			
+
+
 			sendToServer.writeBytes("T" + '\n');
 			responseFromServer = getFromServer.readLine();
 			System.out.println("14" + responseFromServer);
@@ -180,16 +181,16 @@ public class Weight_IO {
 			responseFromServer = getFromServer.readLine();
 			System.out.println("20 " + responseFromServer);
 
-			
-			
-//			sendToServer.writeBytes("S" + '\n');
-//			//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
-//			responseFromServer = getFromServer.readLine();//Save
-//			responseFromServer = strip(responseFromServer);
-//			afv.setBrutto(Double.parseDouble(responseFromServer));
-//			System.out.println("21 " + responseFromServer);
 
-			
+
+			//			sendToServer.writeBytes("S" + '\n');
+			//			//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
+			//			responseFromServer = getFromServer.readLine();//Save
+			//			responseFromServer = strip(responseFromServer);
+			//			afv.setBrutto(Double.parseDouble(responseFromServer));
+			//			System.out.println("21 " + responseFromServer);
+
+
 			if(checkTolerance(afv.getRbId(), afv.getNetto())) {
 				//sql transaction
 				insertProBaKomRow(tempId, afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
@@ -198,22 +199,22 @@ public class Weight_IO {
 				//break loop
 				System.out.println("Fejl");
 			}
-			
+
 			sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
 			responseFromServer = getFromServer.readLine();
 			System.out.println("22 " + responseFromServer);
 			responseFromServer = getFromServer.readLine();
-//			System.out.println("23 " + responseFromServer);
+			//			System.out.println("23 " + responseFromServer);
 
-			
+
 			//Stop loop
-			
-			
+
+
 			sendToServer.writeBytes("T" + '\n');
 			responseFromServer = getFromServer.readLine();
 			System.out.println("24 " +responseFromServer);
-		
-//			afv.toString();
+
+			//			afv.toString();
 
 			sendToServer.writeBytes("Q" + '\n');
 
@@ -348,51 +349,137 @@ public class Weight_IO {
 		}
 		return status;
 	}
-	
-	public int updateStatus(int id) throws SQLException {
+
+	public void setStatus(int id, int stat) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 
 		int status = 0;
 		int update = 0;
-		PreparedStatement updateStatus1 = null;
-		PreparedStatement updateStatus2 = null;
-		ResultSet rs = null;
+		PreparedStatement setStatus1 = null;
+		PreparedStatement setStatus2 = null;
 
-		String updateProduktStatus1 = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?";
-		String updateProduktStatus2 = "UPDATE produktbatch SET status = 2 WHERE pb_id = ?";
-		
-		//Det vi har vejet
-//		SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);
+		String setProduktStatus1 = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?";
+		String setProduktStatus2 = "UPDATE produktbatch SET status = 2 WHERE pb_id = ?";
 
-		//Det vi skal veje
-//		SELECT raavare_id FROM receptkomponent WHERE recept_id = ?;
 
 		try {
-			
-			
-			updateStatus = sqlCon.prepareStatement(updateProduktStatus);
-			
-			updateStatus.setInt(1,id);
-			rs = updateStatus.executeQuery();
-			if(rs.first()) {
-				status = rs.getInt("status");	
-				if (status != 2) {
-					updateStatus = sqlCon.prepareStatement(updateProduktStatus);
-					updateStatus.setInt(1, id);
-					update = updateStatus.executeUpdate();
-				}
+			if(stat == 1) {
+				setStatus1 = sqlCon.prepareStatement(setProduktStatus1);
+				setStatus1.setInt(1,id);
+				setStatus1.execute();
+			} else {
+				setStatus2 = sqlCon.prepareStatement(setProduktStatus2);
+				setStatus2.setInt(1,id);
+				setStatus2.execute();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if(updateStatus != null) {
-				updateStatus.close();
+			if(setStatus1 != null || setStatus2 != null) {
+				setStatus1.close();
+				setStatus2.close();
 			}
 		}
-		return update;
 	}
-	
+
+	public boolean checkIfDone(int pb_id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+
+		PreparedStatement getWeighed = null;
+		PreparedStatement getToWeigh = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+		Array checker1 = null;
+		Array checker2 = null;
+		int [] checkerArr1 = null;
+		int [] checkerArr2 = null;
+		int count = 0;
+		
+		//Det vi har vejet	
+		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?";
+		//Det vi skal veje
+		String getToWeighItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?";
+
+
+		try {
+
+			getWeighed = sqlCon.prepareStatement(getWeighedItems);
+			getToWeigh.setInt(1,id);
+			rs1 = getToWeigh.executeQuery();
+			
+			
+			while(rs1.next()) {
+				checker1 = rs1.getArray(1);
+				checkerArr1 = (int []) checker1.getArray();
+			}
+
+			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
+			getToWeigh.setInt(1,id);
+			getToWeigh.execute();
+
+			while(rs2.next()) {
+				checker2 = rs2.getArray(1);
+				checkerArr2 = (int []) checker2.getArray();
+			}
+			
+			for (int i = 0; i < checkerArr1.length; i++) {
+				for(int j = 0; j < checkerArr2.length; j++) {
+					if(checkerArr1[i] == checkerArr2[j]) {
+						count ++;
+					}
+					
+				}
+			}
+			if(count == checkerArr2.length) {
+				return true;
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if( getWeighed != null || getToWeigh != null) {
+				getWeighed.close();
+				getToWeigh.close();
+			}
+		}
+		return false;
+	}
+
+
+
+	public void updateStatus(int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+
+
+
+		try {
+			switch (checkStatus(id)) {
+			case 0:
+				setStatus(id,1);				
+				break;
+			case 1:
+				if (checkIfDone(id)){
+					//					updateStatus2 = sqlCon.prepareStatement(updateProduktStatus2);
+					//					updateStatus2.setInt(1,id);
+					//					rs = updateStatus2.executeQuery();	
+					setStatus(id, 2);
+				} 
+				break;
+			case 2:
+				break;
+			default:
+				System.out.println("WHAT!!??");
+			}
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	public boolean checkTolerance(int rb_id, double netto) throws SQLException {
 		Connection sqlCon = Connector.getConn();
@@ -412,7 +499,7 @@ public class Weight_IO {
 			if(rs.first()) {
 				tolerance = rs.getDouble(1);
 				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
-//				checkTolerance.setInt(1, rb_id);
+				//				checkTolerance.setInt(1, rb_id);
 				if (netto * (1 - tolerance) <= getNom_netto(rb_id, afv.getUserId()) && getNom_netto(rb_id, afv.getUserId()) <= netto * (1 + tolerance) ) {
 					flag = true;
 					return flag;
@@ -445,7 +532,7 @@ public class Weight_IO {
 			row.setDouble(3,tara);
 			row.setDouble(4,netto);
 			row.setInt(5,oprId);
-			
+
 			row.execute();
 			if(rs.first()) {
 			}
@@ -488,7 +575,7 @@ public class Weight_IO {
 		}
 		return netto;
 	}
-	
-	
+
+
 }
 
