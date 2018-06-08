@@ -159,8 +159,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			createPerson.setString(6, per.getRoles());
 			createPerson.executeUpdate();
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (createPerson != null) {
 				createPerson.close();

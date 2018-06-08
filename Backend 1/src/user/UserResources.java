@@ -32,7 +32,7 @@ public class UserResources {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createUser(Personer per) throws FoundException, DALException, SQLException {
-		boolean found = false;
+/*		boolean found = false;
 		for (Personer person : perConn.getPersonerList()) {
 			if (per.getUserId() == person.getUserId()) {
 				found = true;
@@ -41,8 +41,9 @@ public class UserResources {
 		
 		if (found) {
 			throw new FoundException("Brugeren findes allerede");
-		}
+		}*/
 		
+		System.out.println("foer createPersoner");
 		perConn.createPersoner(per);		//from DB
 		
 //		perList.add(per);		//from arrayList
