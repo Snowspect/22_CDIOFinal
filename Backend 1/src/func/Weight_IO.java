@@ -99,6 +99,7 @@ public class Weight_IO {
 
 
 			//Start loop
+			
 
 
 			//Press OK on weight
@@ -106,7 +107,7 @@ public class Weight_IO {
 			System.out.println("9" + responseFromServer);
 
 
-			int tempStat = checkStatus(tempId);
+			int tempStat = updateStatus(tempId);
 			System.out.println("Status blev sat til " + tempStat);
 			if (tempStat == 2) {
 				System.out.println("Ikke tilladt");
@@ -449,23 +450,19 @@ public class Weight_IO {
 
 
 
-	public void updateStatus(int id) throws SQLException {
+	public int updateStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
-
-
+		
 
 		try {
 			switch (checkStatus(id)) {
 			case 0:
-				setStatus(id,1);				
+				setStatus(id, 1);			
 				break;
 			case 1:
 				if (checkIfDone(id)){
-					//					updateStatus2 = sqlCon.prepareStatement(updateProduktStatus2);
-					//					updateStatus2.setInt(1,id);
-					//					rs = updateStatus2.executeQuery();	
 					setStatus(id, 2);
-				} 
+					} 
 				break;
 			case 2:
 				break;
@@ -478,6 +475,7 @@ public class Weight_IO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return checkStatus(id);
 	}
 
 
