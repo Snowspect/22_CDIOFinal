@@ -7,7 +7,7 @@ function generateProdukt() {
 	
 	for(i = 0; i < number; i++) {
 		var form = '	<tr>' + 
-		'				<td><center>UserID</center>'+
+		'				<td><center>Bruger ID</center>'+
 		'				<center>'+
 		'					<input type="number" id="rolle_id' + i + '" required pattern="[0-9.]+">'+
 		'				</center></td>'+
@@ -58,14 +58,13 @@ function submitProduct() { //Formen kalder denne function, sikre at alle felter 
 function getProduktFromHTML() {
 	var pbIdT = document.getElementById("pbId").value;
 	var rcpIdT = document.getElementById("receptId").value;
-	var statusT = document.getElementById("Status").value;
 	
 	// lav afvejnings inputs
 
 	var produktbatch = {
 		pbId : pbIdT,
 		receptId : rcpIdT,
-		status : statusT,
+		status : "Oprettet",
 		produktBatchKomponent: []
 	};
 	
