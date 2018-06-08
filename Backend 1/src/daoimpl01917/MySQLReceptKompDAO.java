@@ -60,8 +60,8 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 			{
 				list.add(new ReceptKompDTO(rs.getInt("recept_id"), rs.getInt("raavare_id"), rs.getDouble("nom_netto"), rs.getDouble("tolerance")));			}
 		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (getRecepKompList != null) {
 				getRecepKompList.close();
