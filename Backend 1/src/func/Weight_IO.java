@@ -96,10 +96,6 @@ public class Weight_IO {
 			System.out.println("8 " + responseFromServer);
 			System.out.println("Tryk OK ");
 
-			
-			//Start loop
-			
-			
 			//Press OK on weight
 			responseFromServer = getFromServer.readLine();
 			System.out.println("9" + responseFromServer);
@@ -180,8 +176,6 @@ public class Weight_IO {
 			responseFromServer = getFromServer.readLine();
 			System.out.println("20 " + responseFromServer);
 
-			
-			
 //			sendToServer.writeBytes("S" + '\n');
 //			//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
 //			responseFromServer = getFromServer.readLine();//Save
@@ -205,15 +199,10 @@ public class Weight_IO {
 			responseFromServer = getFromServer.readLine();
 //			System.out.println("23 " + responseFromServer);
 
-			
-			//Stop loop
-			
-			
 			sendToServer.writeBytes("T" + '\n');
 			responseFromServer = getFromServer.readLine();
 			System.out.println("24 " +responseFromServer);
-		
-//			afv.toString();
+			afv.toString();
 
 			sendToServer.writeBytes("Q" + '\n');
 
@@ -322,9 +311,12 @@ public class Weight_IO {
 
 		int status = 0;
 		PreparedStatement checkStatus = null;
+		PreparedStatement setStatus = null;
 		ResultSet rs = null;
+		int update;
 
 		String checkProduktStatus = "SELECT status FROM produktbatch WHERE pb_id = ? ";
+		String setProduktStatus = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?";
 
 
 		try {
@@ -335,6 +327,9 @@ public class Weight_IO {
 			if(rs.first()) {
 				status = rs.getInt("status");	
 				if (status != 2) {
+					setStatus = sqlCon.prepareStatement(setProduktStatus);
+					setStatus.setInt(1, id);
+					update = setStatus.executeUpdate();
 					status = 1;
 				}
 			}
@@ -342,51 +337,13 @@ public class Weight_IO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if(checkStatus != null) {
+			if(setStatus != null) {
+				setStatus.close();
 				checkStatus.close();
 			}
 		}
 		return status;
 	}
-	
-	public int updateStatus(int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		int status = 0;
-		int update = 0;
-		PreparedStatement updateStatus1 = null;
-		PreparedStatement updateStatus2 = null;
-		ResultSet rs = null;
-
-		String updateProduktStatus1 = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?";
-		String updateProduktStatus2 = "UPDATE produktbatch SET status = 2 WHERE pb_id = ?";
-
-		try {
-			
-			
-			updateStatus = sqlCon.prepareStatement(updateProduktStatus);
-			
-			updateStatus.setInt(1,id);
-			rs = updateStatus.executeQuery();
-			if(rs.first()) {
-				status = rs.getInt("status");	
-				if (status != 2) {
-					updateStatus = sqlCon.prepareStatement(updateProduktStatus);
-					updateStatus.setInt(1, id);
-					update = updateStatus.executeUpdate();
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(updateStatus != null) {
-				updateStatus.close();
-			}
-		}
-		return update;
-	}
-	
 
 	public boolean checkTolerance(int rb_id, double netto) throws SQLException {
 		Connection sqlCon = Connector.getConn();
@@ -394,7 +351,7 @@ public class Weight_IO {
 		double tolerance = 0.0;
 		PreparedStatement checkTolerance = null;
 		ResultSet rs = null;
-		boolean flag = false; 
+		int update;
 
 		String checkRaavareTolerance = "SELECT DISTINCT tolerance FROM raavarebatch NATURAL JOIN receptkomponent WHERE rb_id = ?;";
 
@@ -407,9 +364,8 @@ public class Weight_IO {
 				tolerance = rs.getDouble(1);
 				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
 //				checkTolerance.setInt(1, rb_id);
-				if (netto * (1 - tolerance) <= getNom_netto(rb_id, afv.getUserId()) && getNom_netto(rb_id, afv.getUserId()) <= netto * (1 + tolerance) ) {
-					flag = true;
-					return flag;
+				if (netto * (1 - tolerance) <= netto && netto <= netto * (1 + tolerance) ) {
+					return true;
 				}
 			}
 		} catch (SQLException e) {
@@ -420,7 +376,7 @@ public class Weight_IO {
 				checkTolerance.close();
 			}
 		}
-		return flag;
+		return false;
 	}
 
 	public void insertProBaKomRow(int pd_id, int rb_id, double tara, double netto, int oprId) throws SQLException {
@@ -452,37 +408,6 @@ public class Weight_IO {
 			}
 		}
 	}
-
-	public double getNom_netto (int rb_id, int pb_id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		double netto = 0.0;
-		PreparedStatement getNom_netto = null;
-		ResultSet rs = null;
-
-		String getNetto = "SELECT nom_netto FROM receptkompoent WHERE rb_id = ? AND pb_id = ?";
-
-
-		try {
-			getNom_netto = sqlCon.prepareStatement(getNetto);
-
-			getNom_netto.setInt(1, rb_id);
-			getNom_netto.setInt(2, pb_id);
-			rs = getNom_netto.executeQuery();
-			if(rs.first()) {
-				netto = rs.getDouble(1);	
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(getNom_netto != null) {
-				getNom_netto.close();
-			}
-		}
-		return netto;
-	}
-	
 	
 }
 
