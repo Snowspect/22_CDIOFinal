@@ -317,12 +317,6 @@ public class Weight_IO {
 
 		String checkProduktStatus = "SELECT status FROM produktbatch WHERE pb_id = ? ";
 		String setProduktStatus = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?";
-		
-		//Det vi har vejet
-//		(SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?));
-
-		//Det vi skal veje
-//		(SELECT raavare_id FROM receptkomponent WHERE recept_id = ?);
 
 
 		try {
