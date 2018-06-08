@@ -105,7 +105,7 @@ public class Weight_IO {
 			System.out.println("9" + responseFromServer);
 			
 			
-			int tempStat = setStatus(tempId);
+			int tempStat = checkStatus(tempId);
 			System.out.println("Status blev sat til " + tempStat);
 			if (tempStat == 2) {
 				System.out.println("Ikke tilladt");
@@ -317,7 +317,7 @@ public class Weight_IO {
 		return recept;
 	}
 
-	public int setStatus(int id) throws SQLException {
+	public int checkStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 
 		int status = 0;
