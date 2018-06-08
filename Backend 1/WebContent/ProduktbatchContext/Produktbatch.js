@@ -64,20 +64,20 @@ function getProduktFromHTML() {
 	var produktbatch = {
 		pbId : pbIdT,
 		receptId : rcpIdT,
-		status : "Oprettet",
-		produktBatchKomponent: []
+		status : "Oprettet"
+//		produktBatchKomponent: []
 	};
-	
-	$("tr").each(function(index,element){
-		//debugger;
-		var pbIdA = pbIdT;
-		var rbIdA = document.getElementById("rbID" + index).value;
-		var taraA = document.getElementById("tara" + index).value;
-		var nettoA = document.getElementById("Netto" + index).value;
-		var rolle_idA = document.getElementById("rolle_id" + index).value;
-		var obj = {pbId : pbIdA, rbId: rbIdA, tara: taraA, netto: nettoA, rolle_id: rolle_idA};
-		produktbatch.produktBatchKomponent.push(obj);
-	});	
+//	
+//	$("tr").each(function(index,element){
+//		//debugger;
+//		var pbIdA = pbIdT;
+//		var rbIdA = document.getElementById("rbID" + index).value;
+//		var taraA = document.getElementById("tara" + index).value;
+//		var nettoA = document.getElementById("Netto" + index).value;
+//		var rolle_idA = document.getElementById("rolle_id" + index).value;
+//		var obj = {pbId : pbIdA, rbId: rbIdA, tara: taraA, netto: nettoA, rolle_id: rolle_idA};
+//		produktbatch.produktBatchKomponent.push(obj);
+//	});	
 	
 	return produktbatch;
 }

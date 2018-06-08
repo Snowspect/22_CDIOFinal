@@ -7,8 +7,9 @@ function toCreateProduktbatch(){
 function toViewProduktbatch()
 {
 	$(function(){
-		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html");
-		loadProducts(); //now not automatically executed once front page loads.
+		$("#transform").load("ProduktbatchContext/ViewProduktbatch.html", null, function() {
+			loadProducts();
+		});
 	});
 }
 

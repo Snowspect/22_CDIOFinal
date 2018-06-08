@@ -59,11 +59,11 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			rs = getProdBatchKompList.executeQuery();
 			while (rs.next())
 			{
-				list.add(new produktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id")));
+				list.add(new produktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("rolle_id")));
 			}
 		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (getProdBatchKompList != null) {
 				getProdBatchKompList.close();
