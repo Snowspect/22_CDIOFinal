@@ -37,7 +37,6 @@ public class Weight_IO {
 	private UserResources UsRe = new UserResources();
 	private boolean run = false;
 	private boolean mainRun = false;
-	private boolean flag = true;
 	private int foo;
 
 
@@ -73,6 +72,9 @@ public class Weight_IO {
 			
 			if(findUserName(foo) == null){
 				System.out.println("Ugyldigt ID");
+				sendToServer.writeBytes("RM20 8 ”Ugyldigt laborant nr" + "” ”” ”&3”" + '\n');
+				responseFromServer = getFromServer.readLine();		
+				responseFromServer = getFromServer.readLine();		
 			}
 			
 			} while (findUserName(foo) == null);
@@ -82,7 +84,6 @@ public class Weight_IO {
 			sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
 
 			System.out.println(findUserName(foo));
-			System.out.println(flag);
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("4 " + responseFromServer);
 
