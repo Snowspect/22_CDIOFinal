@@ -169,58 +169,54 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("20 " + responseFromServer);
 
-						if(checkTolerance(afv.getRbId(), afv.getNetto())) {
+						if(withinTolerance(afv.getRbId(), afv.getNetto())) {
 							//sql transaction
 							insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 							System.out.println("Success! Gemt i database.");
-							
+
 							sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
 							responseFromServer = getFromServer.readLine();
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
-							
+
 							updateStatus(proBa.getPbId());
-								if(checkIfDone(proBa.getPbId())) {
-									run = false;
-								} else {
-									run = true;
-								}
-								
+							if(checkIfDone(proBa.getPbId())) {
+								run = false;
+							} else {
+								run = true;
+							}
+
 						} else {
 							//break loop
 							System.out.println("Fejl");
-							
+							//Send error message to weight.
 							sendToServer.writeBytes("RM20 8 ”Afvejnings status: Fejl” “” “&3”" + '\n');
 							responseFromServer = getFromServer.readLine();
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
-							
+
 							System.out.println("Nom_netto: " + getNom_netto(afv.getRbId(), proBa.getPbId()));
-							
+
 							run = false;
 						}
 					}
 				} else {
 					System.out.println("Ikke tilladt");
-					
+
 					sendToServer.writeBytes("RM20 8 ”Er allerede færdig!” “” “&3”" + '\n');
 					responseFromServer = getFromServer.readLine();
 					System.out.println("22 " + responseFromServer);
 					responseFromServer = getFromServer.readLine();
-					
-				    run = false;
+
+					run = false;
 				}
+				//TODO
 				//Stop loop
-//				Send to weight "En mere?"
-//			    mainRun = okFromWeight()
+				//Send to weight "En mere?"
+				//mainRun = okFromWeight()
 			}
-
-//			sendToServer.writeBytes("T" + '\n');
-//			responseFromServer = getFromServer.readLine();
-//			System.out.println("24 " +responseFromServer);
-//
-//			afv.toString();
-
+			
+			//Quit weight
 			sendToServer.writeBytes("Q" + '\n');
 
 		} catch(Exception e) {
@@ -408,43 +404,43 @@ public class Weight_IO {
 			getWeighed = sqlCon.prepareStatement(getWeighedItems);
 			getWeighed.setInt(1,pb_id);
 			rs1 = getWeighed.executeQuery();
-			
+
 			// Go to the last row 
 			rs1.last(); 
 			int rowCount = rs1.getRow(); 
 
 			// Reset row before iterating to get data 
 			rs1.beforeFirst();
-			
+
 			int [] checkerArr1 = new int [rowCount];
 			int arrayCount = 0;
-			
+
 			while(rs1.next()) {
 				checkerArr1[arrayCount] = rs1.getInt(1);
 				arrayCount++;
-//				System.out.println("arrayCount: " + arrayCount);
+				//				System.out.println("arrayCount: " + arrayCount);
 			}
 			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
-			
+
 			//Get second array from database
 			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
 			getToWeigh.setInt(1,pb_id);
 			rs2 = getToWeigh.executeQuery();
-			
+
 			// Go to the last row 
 			rs2.last(); 
 			int rowCount2 = rs2.getRow(); 
 
 			// Reset row before iterating to get data 
 			rs2.beforeFirst();
-			
+
 			int [] checkerArr2 = new int [rowCount2];
 			int arrayCount2 = 0;
-			
+
 			while(rs2.next()) {
 				checkerArr2[arrayCount2] = rs2.getInt(1);
 				arrayCount2++;
-//				System.out.println("arrayCount: " + arrayCount2);
+				//				System.out.println("arrayCount: " + arrayCount2);
 			}
 			System.out.println("Arary 2: \n" + Arrays.toString(checkerArr2));
 
@@ -503,8 +499,8 @@ public class Weight_IO {
 		return checkStatus(id);
 	}
 
-
-	public boolean checkTolerance(int rb_id, double netto) throws SQLException {
+	//Checks if the weighed netto is within tolerance for that raavare. 
+	public boolean withinTolerance(int rb_id, double netto) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 
 		double tolerance = 0.0;
@@ -520,11 +516,11 @@ public class Weight_IO {
 			checkTolerance.setInt(1, rb_id);
 			rs = checkTolerance.executeQuery();
 			if(rs.first()) {
+				System.out.println("Hej med dig");
 				tolerance = rs.getDouble(1);
-				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
-				//				checkTolerance.setInt(1, rb_id);
-				if (netto * (1 - tolerance) <= getNom_netto(rb_id, afv.getUserId()) && getNom_netto(rb_id, afv.getUserId()) <= netto * (1 + tolerance) ) {
+				if (netto * (1 - tolerance) <= getNom_netto(rb_id, afv.getUserId()) && getNom_netto(rb_id, afv.getUserId()) <= netto * (1 + tolerance)) {
 					flag = true;
+					System.out.println("Quick maths");
 					return flag;
 				}
 			}
@@ -600,7 +596,6 @@ public class Weight_IO {
 		return netto;
 
 	}
-
 
 }
 
