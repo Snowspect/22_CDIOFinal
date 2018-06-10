@@ -211,7 +211,7 @@ public class Weight_IO {
 				    run = false;
 				}
 				//Stop loop
-//				Send to wight "En mere?"
+//				Send to weight "En mere?"
 //			    mainRun = okFromWeight()
 			}
 
@@ -400,7 +400,7 @@ public class Weight_IO {
 		//Det vi har vejet	
 		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
 		//Det vi skal veje
-		String getToWeighItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
+		String getToWeighItems = "SELECT raavare_id FROM receptkomponent WHERE recept_id = (SELECT recept_id FROM produktbatch WHERE pb_id = ?);";
 
 
 		try {
