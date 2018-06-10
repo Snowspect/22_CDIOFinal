@@ -37,6 +37,8 @@ public class Weight_IO {
 	private UserResources UsRe = new UserResources();
 	private boolean run = false;
 	private boolean mainRun = false;
+	private boolean flag = true;
+	private int foo;
 
 
 
@@ -57,6 +59,8 @@ public class Weight_IO {
 	public void run() throws IOException //Run() skal skrives om.
 	{
 		try {
+
+			do {
 			//Send text to weight
 			sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
 			responseFromServer = getFromServer.readLine();
@@ -65,10 +69,20 @@ public class Weight_IO {
 			System.out.println("1 " + responseFromServer); //Test
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("2 " + responseFromServer);
-			int foo = retrieveIdAsInt(responseFromServer);
+			foo = retrieveIdAsInt(responseFromServer);
+			
+			if(findUserName(foo) == null){
+				System.out.println("Ugyldigt ID");
+			}
+			
+			} while (findUserName(foo) == null);
 
+			
 			//Send name to weight
 			sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
+
+			System.out.println(findUserName(foo));
+			System.out.println(flag);
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("4 " + responseFromServer);
 
