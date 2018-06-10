@@ -473,8 +473,6 @@ public class Weight_IO {
 
 	public int updateStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
-
-
 		try {
 			switch (checkStatus(id)) {
 			case 0:
