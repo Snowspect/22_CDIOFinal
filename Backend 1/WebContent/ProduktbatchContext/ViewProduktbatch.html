@@ -5,6 +5,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<center>Produktbatch id</center>
+	<form action="javascript:loadproduktKomp()" method="get">
+	<div style="clear:right; margin-bottom:10px;">
+	<input type="number" id="produktbatchID" step="1" min="0" required pattern="[0-9.]+" style="clear:right;">
+	<input type="submit" value="Hent tilknyttede komponenter">
+	</div>
+	</form>
 	<div>
 		<div style="clear:right; float:left; margin-left:10em;border-style:solid; border-color:black; border-thickness: 1px;background-color:grey;">
 		<table id="productBatchTable"> 

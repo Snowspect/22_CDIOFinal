@@ -83,9 +83,11 @@ function getProduktFromHTML() {
 }
 
 function loadproduktKomp() {
+	var id = document.getElementById("produktbatchID").value;
+	toViewProduktbatch();
 	$(function() {
 		$.ajax({
-			url : 'cargostock/productbatch/' + id,
+			url : 'cargostock/produktbatch/' + id,
 			type: 'GET',
 			contentType : 'application/json',
 			success: function(data)
