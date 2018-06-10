@@ -21,8 +21,7 @@ function generateRecept() {
 		'				<center>'+
 		'					<input type="number" id="tolerance' + i + '" step="0.01" required pattern="[0-9.]+">'+
 		'				</center></td>' +
-		'				</tr>';
-			
+		'				</tr>';			
 		$("#numberOfRecept").append(form);
 	}
 }
@@ -73,6 +72,26 @@ function submitRecept() { //Formen kalder denne function, sikre at alle felter e
 	return false; //For at undgå at knappen poster data (default behavior).
 }
 
+function loadReceptRaavare() {
+	var id = document.getElementById("receptID").value;
+	toViewRecept();
+	$(function() {
+		$.ajax({
+			url: 'cargostock/recept/' + id,
+			type : 'GET',
+			contentType : 'application/json',
+			success : function(data)
+			{
+				iterateReceptID(data);
+			},
+			error : function(message)
+			{
+				alert("something went wrong");
+			}
+		})
+	})
+}
+
 function loadRecept() {
 	$(function() {
 		$.ajax({ //Indleder et asynkront ajax kald
@@ -83,7 +102,6 @@ function loadRecept() {
 			success : function(data)
 			{//Funktion der skal udføres når data er hentet
 				iterateRecept(data);
-				//alert("data");
 			}, error: function(message) {
 				alert("Recept get failed");
 			}
@@ -96,10 +114,14 @@ function loadRecept() {
  * @param data
  */
 function iterateRecept(data) {
-	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index, element) {  
-		for(i = 0; i < this.receptKomponent.length; i++) {
-		insertIntoReceptTable(this.receptId, this.receptNavn, this.receptKomponent[i].raavareId, this.receptKomponent[i].nomNetto, this.receptKomponent[i].tolerance);
-		}
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index, element) {
+		insertIntoReceptTable(this.receptId, this.receptNavn);
+	});
+}
+
+function iterateReceptID(data) {
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index,element) {
+			insertIntoRaavareReceptTable(this.raavareId, this.nomNetto, this.tolerance)
 	});
 }
 /**
@@ -109,18 +131,24 @@ function iterateRecept(data) {
  * @param supplier
  * @returns
  */
-function insertIntoReceptTable(receptId, receptNavn, raavareId, nomNetto, tolerance) {
+function insertIntoReceptTable(receptId, receptNavn) {
 	var table = document.getElementById("receptTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
-	var cell3 = row.insertCell(2);
-	var cell4 = row.insertCell(3);
-	var cell5 = row.insertCell(4);
 
 	cell1.innerHTML = receptId;
 	cell2.innerHTML = receptNavn;
-	cell3.innerHTML = raavareId;
-	cell4.innerHTML = nomNetto;
-	cell5.innerHTML = tolerance;
-} 
+}
+function insertIntoRaavareReceptTable(raavareId, nomNetto, tolerance)
+{
+	var table = document.getElementById("raavareReceptTable");
+	var row = table.insertRow(1);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	
+	cell1.innerHTML = raavareId;
+	cell2.innerHTML = nomNetto;
+	cell3.innerHTML = tolerance;
+}
