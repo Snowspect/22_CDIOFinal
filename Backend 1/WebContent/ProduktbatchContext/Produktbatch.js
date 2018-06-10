@@ -82,6 +82,23 @@ function getProduktFromHTML() {
 	return produktbatch;
 }
 
+function loadproduktKomp() {
+	$(function() {
+		$.ajax({
+			url : 'cargostock/productbatch/' + id,
+			type: 'GET',
+			contentType : 'application/json',
+			success: function(data)
+			{
+				iterateProductKompTable(data);
+			}, error : function(message)
+			{
+				alert("produkt batch komp fejlet");
+			}
+		})
+	})
+}
+
 function loadProducts(){
 	$(function() {
 		$.ajax({ //Indleder et asynkront ajax kald
@@ -102,28 +119,52 @@ function loadProducts(){
 
 function iterateProductTable(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-		for(i = 0; i < this.produktBatchKomponent.length; i++) {
-		insertIntoProductTable(this.pbId, this.receptId, this.status, this.produktBatchKomponent[i].rolle_id, this.produktBatchKomponent[i].rbId, this.produktBatchKomponent[i].tara, this.produktBatchKomponent[i].netto);
-		}
+		insertIntoProductTable(this.pbId, this.receptId, this.status);
 	}); 
 }
 
-function insertIntoProductTable(pbId, rcpId, Status, rolle_id, rbId, tara, netto) {
+function iterateProductKompTable(data) {
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function(){
+		insertIntoProductKompTable(this.rolle_id, this.rbId, this.tara, this.netto);		
+	});
+}
+
+function insertIntoProductTable(pbId, rcpId, Status) {
 	var table = document.getElementById("productBatchTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
-	var cell4 = row.insertCell(3);
-	var cell5 = row.insertCell(4);
-	var cell6 = row.insertCell(5);
-	var cell7 = row.insertCell(6);
+//	var cell4 = row.insertCell(3);
+//	var cell5 = row.insertCell(4);
+//	var cell6 = row.insertCell(5);
+//	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = pbId;
 	cell2.innerHTML = rcpId;
 	cell3.innerHTML = Status;
-	cell4.innerHTML = rolle_id;
-	cell5.innerHTML = rbId;
-	cell6.innerHTML = tara;
-	cell7.innerHTML = netto;
+//	cell4.innerHTML = rolle_id;
+//	cell5.innerHTML = rbId;
+//	cell6.innerHTML = tara;
+//	cell7.innerHTML = netto;
+}
+
+function insertIntoProductKompTable(rolle_id, rbId, tara, netto) {
+	var table = document.getElementById("produktBatchKompTable");
+	var row = table.insertRow(1);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+//	var cell5 = row.insertCell(4);
+//	var cell6 = row.insertCell(5);
+//	var cell7 = row.insertCell(6);
+
+//	cell1.innerHTML = pbId;
+//	cell2.innerHTML = rcpId;
+//	cell3.innerHTML = Status;
+	cell1.innerHTML = rolle_id;
+	cell2.innerHTML = rbId;
+	cell3.innerHTML = tara;
+	cell4.innerHTML = netto;
 }
