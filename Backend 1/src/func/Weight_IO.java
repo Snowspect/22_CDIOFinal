@@ -169,7 +169,7 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("20 " + responseFromServer);
 
-						if(withinTolerance(afv.getRbId(), afv.getNetto())) {
+						if(checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId())) {
 							//sql transaction
 							insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 							System.out.println("Success! Gemt i database.");
@@ -500,13 +500,12 @@ public class Weight_IO {
 	}
 
 	//Checks if the weighed netto is within tolerance for that raavare. 
-	public boolean withinTolerance(int rb_id, double netto) throws SQLException {
+	public boolean checkTolerance(int rb_id, double netto, int pb_id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 
 		double tolerance = 0.0;
 		PreparedStatement checkTolerance = null;
 		ResultSet rs = null;
-		boolean flag = false; 
 
 		String checkRaavareTolerance = "SELECT DISTINCT tolerance FROM raavarebatch NATURAL JOIN receptkomponent WHERE rb_id = ?;";
 
@@ -516,12 +515,11 @@ public class Weight_IO {
 			checkTolerance.setInt(1, rb_id);
 			rs = checkTolerance.executeQuery();
 			if(rs.first()) {
-				System.out.println("Hej med dig");
 				tolerance = rs.getDouble(1);
-				if (netto * (1 - tolerance) <= getNom_netto(rb_id, afv.getUserId()) && getNom_netto(rb_id, afv.getUserId()) <= netto * (1 + tolerance)) {
-					flag = true;
-					System.out.println("Quick maths");
-					return flag;
+				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
+				//				checkTolerance.setInt(1, rb_id);
+				if (netto >= getNom_netto(rb_id, pb_id) * (1 - tolerance) && netto <= getNom_netto(rb_id, pb_id) * (1 + tolerance)) {
+					return true;
 				}
 			}
 		} catch (SQLException e) {
@@ -532,7 +530,7 @@ public class Weight_IO {
 				checkTolerance.close();
 			}
 		}
-		return flag;
+		return false;
 	}
 
 	public void insertProBaKomRow(int pd_id, int rb_id, double tara, double netto, int oprId) throws SQLException {
@@ -553,8 +551,8 @@ public class Weight_IO {
 			row.setInt(5,oprId);
 
 			row.execute();
-			if(rs.first()) {
-			}
+//			if(rs.first()) {
+//			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
