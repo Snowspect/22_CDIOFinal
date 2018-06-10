@@ -8,11 +8,17 @@ import java.net.UnknownHostException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+
+import com.mysql.jdbc.DatabaseMetaData;
+import com.mysql.jdbc.ResultSetMetaData;
+
 import java.sql.Array;
 import java.sql.Connection;
 
 import DTO.Afvejning ;
 import DTO.Personer;
+import DTO.Produktbatch;
 import DTO.RaavareBatch;
 import JDBC.Connector;
 import user.UserResources;
@@ -26,8 +32,11 @@ public class Weight_IO {
 	private Afvejning afv = new Afvejning();
 	private Personer pers = new Personer ();
 	private RaavareBatch raav = new RaavareBatch();
+	private Produktbatch proBa = new Produktbatch();
 	private int id;
 	private UserResources UsRe = new UserResources();
+	private boolean run = false;
+	private boolean mainRun = false;
 
 
 
@@ -48,8 +57,6 @@ public class Weight_IO {
 	public void run() throws IOException //Run() skal skrives om.
 	{
 		try {
-
-
 			//Send text to weight
 			sendToServer.writeBytes("RM20 8 ”Indtast laborant nr” ”” ”&3”" + '\n');
 			responseFromServer = getFromServer.readLine();
@@ -58,16 +65,9 @@ public class Weight_IO {
 			System.out.println("1 " + responseFromServer); //Test
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("2 " + responseFromServer);
-			System.out.println("3 " + responseFromServer.split(" ")[2]);
-
-			//		//Gets userId from weight-response and converts to int
-			//		String tempId = responseFromServer.split(" ")[2];
-			//		tempId = tempId.replaceAll("\\D+","");	
-			//		int foo = Integer.parseInt(tempId);
-
 			int foo = retrieveIdAsInt(responseFromServer);
 
-			//		Send name to weight
+			//Send name to weight
 			sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("4 " + responseFromServer);
@@ -76,147 +76,150 @@ public class Weight_IO {
 			System.out.println("Tryk OK");
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("5 " + responseFromServer);
+			mainRun = true;
 
-			//Send Produktbatch text to weight
-			sendToServer.writeBytes("RM20 4 ”Indtast Produktbatch nr” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("6 " + responseFromServer);
+			//Start outer loop
+			while (mainRun == true) {	
+				//Send Produktbatch text to weight
+				sendToServer.writeBytes("RM20 4 ”Indtast Produktbatch nr” ”” ”&3”" + '\n');
+				responseFromServer = getFromServer.readLine();
+				System.out.println("6 " + responseFromServer);
 
-			//Input Produktbatch id on weight
-			responseFromServer = getFromServer.readLine();		//Save
-			int tempId = retrieveIdAsInt(responseFromServer);
-			String str = findReceptName(tempId);
-			System.out.println("recept navn " + str);
+				//Input Produktbatch id on weight
+				responseFromServer = getFromServer.readLine();		//Save
+				proBa.setPbId(retrieveIdAsInt(responseFromServer)); //Sets productBatch id in DTO.
+				String str = findReceptName(proBa.getPbId());
+				System.out.println("recept navn " + str);
+				System.out.println("7 " + responseFromServer);
 
-			//raav.setRbId(responseFromServer); //converts to the corresponding values if it contains chars.
-			System.out.println("7 " + responseFromServer);
+				//Send text to weight
+				sendToServer.writeBytes("RM20 8 ”Recept navn: " + findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
+				responseFromServer = getFromServer.readLine();
+				System.out.println("8 " + responseFromServer);
+				System.out.println("Tryk OK ");
 
-			//Send text to weight
-			sendToServer.writeBytes("RM20 8 ”Recept navn: " + findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("8 " + responseFromServer);
-			System.out.println("Tryk OK ");
+				//Press OK on weight
+				responseFromServer = getFromServer.readLine();
+				System.out.println("9" + responseFromServer);
 
+				if(checkIfDone(proBa.getPbId()) == false){
+					run = true;
+					while(run) {
+						//Send text to weight
+						sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("10" + responseFromServer);
+						responseFromServer = getFromServer.readLine();
+						System.out.println("Tryk OK ");
 
-			//Start loop
-			
+						//Send tara command to weight 
+						sendToServer.writeBytes("T" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("11" + responseFromServer);
+						System.out.println("Tryk OK ");
 
+						//Place tara
+						sendToServer.writeBytes("RM20 8 ”Placer venligst tara” ”” ”&3”" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("11.5 " + responseFromServer);
 
-			//Press OK on weight
-			responseFromServer = getFromServer.readLine();
-			System.out.println("9" + responseFromServer);
+						//Send tara weight from weight and press OK
+						responseFromServer = getFromServer.readLine();
+						System.out.println("12" + responseFromServer);
 
+						//Send S to weight to save tara
+						sendToServer.writeBytes("S" + '\n');
+						responseFromServer = getFromServer.readLine();		//Save						
+						responseFromServer = strip(responseFromServer);
+						afv.setTara(Double.parseDouble(responseFromServer));
+						System.out.println("12.5 " + afv.getTara());
 
-			int tempStat = updateStatus(tempId);
-			System.out.println("Status blev sat til " + tempStat);
-			if (tempStat == 2) {
-				System.out.println("Ikke tilladt");
-				//break i løkke
+						sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
+						responseFromServer = getFromServer.readLine();
+						responseFromServer = getFromServer.readLine();
+						afv.setRbId(retrieveIdAsInt(responseFromServer));
+						System.out.println("13.5" + afv.getRbId());
+
+						sendToServer.writeBytes("T" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("14" + responseFromServer);
+						//Send text to weight
+						sendToServer.writeBytes("RM20 8 ”Placer venligst netto” ”” ”&3”" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("15 " + responseFromServer);
+						//Place netto on weight and press OK
+						responseFromServer = getFromServer.readLine();
+						System.out.println("16" + responseFromServer);
+						//Save netto
+						sendToServer.writeBytes("S" + '\n');
+						responseFromServer = getFromServer.readLine();		//Save
+						responseFromServer = strip(responseFromServer);
+						afv.setNetto(Double.parseDouble(responseFromServer));
+						System.out.println("17.5" + afv.getNetto());
+
+						sendToServer.writeBytes("T" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("18" + responseFromServer);
+
+						sendToServer.writeBytes("RM20 8 ”Fjern venligst brutto” ”” ”&3”" + '\n');
+						responseFromServer = getFromServer.readLine();
+						System.out.println("19" + responseFromServer);
+
+						//remove brutto from weight and press ok
+						responseFromServer = getFromServer.readLine();
+						System.out.println("20 " + responseFromServer);
+
+						if(checkTolerance(afv.getRbId(), afv.getNetto())) {
+							//sql transaction
+							insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
+							System.out.println("Success! Gemt i database.");
+							
+							sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
+							responseFromServer = getFromServer.readLine();
+							System.out.println("22 " + responseFromServer);
+							responseFromServer = getFromServer.readLine();
+							
+							updateStatus(proBa.getPbId());
+								if(checkIfDone(proBa.getPbId())) {
+									run = false;
+								} else {
+									run = true;
+								}
+								
+						} else {
+							//break loop
+							System.out.println("Fejl");
+							
+							sendToServer.writeBytes("RM20 8 ”Afvejnings status: Fejl” “” “&3”" + '\n');
+							responseFromServer = getFromServer.readLine();
+							System.out.println("22 " + responseFromServer);
+							responseFromServer = getFromServer.readLine();
+							
+							System.out.println("Nom_netto: " + getNom_netto(afv.getRbId(), proBa.getPbId()));
+							
+							run = false;
+						}
+					}
+				} else {
+					System.out.println("Ikke tilladt");
+					
+					sendToServer.writeBytes("RM20 8 ”Er allerede færdig!” “” “&3”" + '\n');
+					responseFromServer = getFromServer.readLine();
+					System.out.println("22 " + responseFromServer);
+					responseFromServer = getFromServer.readLine();
+					
+				    run = false;
+				}
+				//Stop loop
+//				Send to wight "En mere?"
+//			    mainRun = okFromWeight()
 			}
 
-			//Send text to weight
-			sendToServer.writeBytes("RM20 8 ”Vaegten skal ubelastes” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("10" + responseFromServer);
-			responseFromServer = getFromServer.readLine();
-			System.out.println("Tryk OK ");
-			//		System.out.println("10" + responseFromServer);
-
-			//Send tara command to weight 
-			sendToServer.writeBytes("T" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("11" + responseFromServer);
-			System.out.println("Tryk OK ");
-
-			//Place tara
-			sendToServer.writeBytes("RM20 8 ”Placer venligst tara” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("11.5 " + responseFromServer);
-
-			//Send tara weight from weight and press OK
-			responseFromServer = getFromServer.readLine();
-			System.out.println("12" + responseFromServer);
-			//Send S to weight to save tara
-			sendToServer.writeBytes("S" + '\n');
-			responseFromServer = getFromServer.readLine();		//Save
-			//	dto.setTaraWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
-			responseFromServer = strip(responseFromServer);
-			afv.setTara(Double.parseDouble(responseFromServer));
-			System.out.println("12.5 " + afv.getTara());
-			System.out.println("13 " + responseFromServer);
-
-			sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			responseFromServer = getFromServer.readLine();
-			afv.setRbId(retrieveIdAsInt(responseFromServer));
-			System.out.println("13.5" + afv.getRbId());
-
-
-			sendToServer.writeBytes("T" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("14" + responseFromServer);
-			//Send text to weight
-			sendToServer.writeBytes("RM20 8 ”Placer venligst netto” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("15 " + responseFromServer);
-			//Place netto on weight and press OK
-			responseFromServer = getFromServer.readLine();
-			System.out.println("16" + responseFromServer);
-			//Sav netto
-			sendToServer.writeBytes("S" + '\n');
-			responseFromServer = getFromServer.readLine();		//Save
-			//	dto.setNetWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
-			responseFromServer = strip(responseFromServer);
-			afv.setNetto(Double.parseDouble(responseFromServer));
-			System.out.println("17" + responseFromServer);
-			System.out.println("17.5" + afv.getNetto());
-
-			sendToServer.writeBytes("T" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("18" + responseFromServer);
-
-			sendToServer.writeBytes("RM20 8 ”Fjern venligst brutto” ”” ”&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("19" + responseFromServer);
-			//remove brutto from weight and press ok
-			responseFromServer = getFromServer.readLine();
-			System.out.println("20 " + responseFromServer);
-
-
-
-			//			sendToServer.writeBytes("S" + '\n');
-			//			//	dto.setBruttoWeight(Double.parseDouble(responseFromServer.replace("kg", "").replace("S", "")));
-			//			responseFromServer = getFromServer.readLine();//Save
-			//			responseFromServer = strip(responseFromServer);
-			//			afv.setBrutto(Double.parseDouble(responseFromServer));
-			//			System.out.println("21 " + responseFromServer);
-
-
-			if(checkTolerance(afv.getRbId(), afv.getNetto())) {
-				//sql transaction
-				insertProBaKomRow(tempId, afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
-				System.out.println("Success");
-			} else {
-				//break loop
-				System.out.println("Fejl");
-				System.out.println("Nom_netto: " + getNom_netto(afv.getRbId(), tempId));
-			}
-
-			sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("22 " + responseFromServer);
-			responseFromServer = getFromServer.readLine();
-			//			System.out.println("23 " + responseFromServer);
-
-
-			//Stop loop
-
-
-			sendToServer.writeBytes("T" + '\n');
-			responseFromServer = getFromServer.readLine();
-			System.out.println("24 " +responseFromServer);
-
-			//			afv.toString();
+//			sendToServer.writeBytes("T" + '\n');
+//			responseFromServer = getFromServer.readLine();
+//			System.out.println("24 " +responseFromServer);
+//
+//			afv.toString();
 
 			sendToServer.writeBytes("Q" + '\n');
 
@@ -260,7 +263,7 @@ public class Weight_IO {
 		PreparedStatement getUserName = null;
 		ResultSet rs = null;
 
-		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?";
+		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
 
 
 		try {
@@ -298,7 +301,7 @@ public class Weight_IO {
 		PreparedStatement getReceptName = null;
 		ResultSet rs = null;
 
-		String getRecept = "Select recept_navn from produktbatch NATURAL JOIN recept where pb_id = ? group by recept_navn";
+		String getRecept = "Select recept_navn from produktbatch NATURAL JOIN recept where pb_id = ? group by recept_navn;";
 
 
 		try {
@@ -327,7 +330,7 @@ public class Weight_IO {
 		PreparedStatement checkStatus = null;
 		ResultSet rs = null;
 
-		String checkProduktStatus = "SELECT status FROM produktbatch WHERE pb_id = ? ";
+		String checkProduktStatus = "SELECT status FROM produktbatch WHERE pb_id = ?;";
 
 
 		try {
@@ -360,8 +363,8 @@ public class Weight_IO {
 		PreparedStatement setStatus1 = null;
 		PreparedStatement setStatus2 = null;
 
-		String setProduktStatus1 = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?";
-		String setProduktStatus2 = "UPDATE produktbatch SET status = 2 WHERE pb_id = ?";
+		String setProduktStatus1 = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?;";
+		String setProduktStatus2 = "UPDATE produktbatch SET status = 2 WHERE pb_id = ?;";
 
 
 		try {
@@ -392,58 +395,79 @@ public class Weight_IO {
 		PreparedStatement getToWeigh = null;
 		ResultSet rs1 = null;
 		ResultSet rs2 = null;
-		Array checker1 = null;
-		Array checker2 = null;
-		int [] checkerArr1 = null;
-		int [] checkerArr2 = null;
 		int count = 0;
-		
+
 		//Det vi har vejet	
-		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?";
+		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
 		//Det vi skal veje
-		String getToWeighItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?";
+		String getToWeighItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
 
 
 		try {
-
+			//Get first array from database
 			getWeighed = sqlCon.prepareStatement(getWeighedItems);
-			getWeighed.setInt(1,id);
+			getWeighed.setInt(1,pb_id);
 			rs1 = getWeighed.executeQuery();
 			
+			// Go to the last row 
+			rs1.last(); 
+			int rowCount = rs1.getRow(); 
+
+			// Reset row before iterating to get data 
+			rs1.beforeFirst();
+			
+			int [] checkerArr1 = new int [rowCount];
+			int arrayCount = 0;
 			
 			while(rs1.next()) {
-				checker1 = rs1.getArray(1);
-				checkerArr1 = (int []) checker1.getArray();
+				checkerArr1[arrayCount] = rs1.getInt(1);
+				arrayCount++;
+//				System.out.println("arrayCount: " + arrayCount);
 			}
-
-			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
-			getToWeigh.setInt(1,id);
-			getToWeigh.executeQuery();
-
-			while(rs2.next()) {
-				checker2 = rs2.getArray(1);
-				checkerArr2 = (int []) checker2.getArray();
-			}
+			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
 			
+			//Get second array from database
+			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
+			getToWeigh.setInt(1,pb_id);
+			rs2 = getToWeigh.executeQuery();
+			
+			// Go to the last row 
+			rs2.last(); 
+			int rowCount2 = rs2.getRow(); 
+
+			// Reset row before iterating to get data 
+			rs2.beforeFirst();
+			
+			int [] checkerArr2 = new int [rowCount2];
+			int arrayCount2 = 0;
+			
+			while(rs2.next()) {
+				checkerArr2[arrayCount2] = rs2.getInt(1);
+				arrayCount2++;
+//				System.out.println("arrayCount: " + arrayCount2);
+			}
+			System.out.println("Arary 2: \n" + Arrays.toString(checkerArr2));
+
+			//compare arrays
 			for (int i = 0; i < checkerArr1.length; i++) {
 				for(int j = 0; j < checkerArr2.length; j++) {
 					if(checkerArr1[i] == checkerArr2[j]) {
-						count ++;
+						count++;
 					}
-					
+
 				}
 			}
 			if(count == checkerArr2.length) {
 				return true;
 			}
-		
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if( getWeighed != null || getToWeigh != null) {
 				getWeighed.close();
-//				getToWeigh.close();
+				//				getToWeigh.close();
 			}
 		}
 		return false;
@@ -453,7 +477,7 @@ public class Weight_IO {
 
 	public int updateStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
-		
+
 
 		try {
 			switch (checkStatus(id)) {
@@ -463,7 +487,7 @@ public class Weight_IO {
 			case 1:
 				if (checkIfDone(id)){
 					setStatus(id, 2);
-					} 
+				} 
 				break;
 			case 2:
 				break;
@@ -552,8 +576,8 @@ public class Weight_IO {
 		PreparedStatement getNom_netto = null;
 		ResultSet rs = null;
 
-		String getNetto = "SELECT nom_netto FROM receptkomponent NATURAL JOIN produktbatch NATURAL JOIN raavarebatch WHERE rb_id=? AND pb_id = ?";
-		
+		String getNetto = "SELECT nom_netto FROM receptkomponent NATURAL JOIN produktbatch NATURAL JOIN raavarebatch WHERE rb_id=? AND pb_id = ?;";
+
 
 		try {
 			getNom_netto = sqlCon.prepareStatement(getNetto);
@@ -563,7 +587,7 @@ public class Weight_IO {
 			rs = getNom_netto.executeQuery();
 			if(rs.first()) {
 				netto = rs.getDouble(1);	
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -574,7 +598,7 @@ public class Weight_IO {
 			}
 		}
 		return netto;
-		
+
 	}
 
 
