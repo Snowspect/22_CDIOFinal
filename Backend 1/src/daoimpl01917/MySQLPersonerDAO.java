@@ -10,73 +10,15 @@ import java.util.List;
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.PersonerDAO;
+import jersey.repackaged.com.google.common.base.Throwables;
+import DTO.NotFoundException;
 import DTO.Personer;
 
 public class MySQLPersonerDAO implements PersonerDAO {
 
-	@Override
-	public Personer getPersoner(int rolle_id) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement getPerson = null;
-		PreparedStatement getRolle = null;
-		PreparedStatement getOperator = null;
-		ResultSet rs = null;
-		Personer perDTO = null;
-		
-		String getper = "SELECT * FROM personer WHERE cpr = ?";
-		String getopr = "SELECT * FROM operatoer WHERE rolle_id = ?";
-		String getrol = "SELECT * FROM roller WHERE rolle_id = ?";
-		
-		try {
-			String cpr = null;;
-			String Cpr = null, opr_navn = null,ini = null,Rolle = null;
-			int Rolle_id = 0;
-			Boolean Status = null;
-			
-
-			getRolle = conn.prepareStatement(getrol);
-			getRolle.setInt(1, rolle_id);
-			rs = getRolle.executeQuery();
-			if(rs.first())
-			{
-				Rolle_id = rs.getInt("rolle_id");
-				Cpr = rs.getString("cpr");
-				Rolle = rs.getString("rolle");
-				cpr = Cpr;
-			}
-			
-			getOperator = conn.prepareStatement(getopr);
-			getOperator.setInt(1, rolle_id);
-			rs = getOperator.executeQuery();
-			if(rs.first())
-			{
-				Status = (rs.getBoolean("opr_status"));				
-			}
-
-			getPerson = conn.prepareStatement(getper);
-			getPerson.setString(1, cpr);
-			rs = getPerson.executeQuery();
-			if(rs.first())
-			{
-				opr_navn = rs.getString("opr_navn");
-				ini = rs.getString("ini");				
-			}
-
-		perDTO = new Personer (Rolle_id, opr_navn, ini, Cpr, Rolle, Status);   
-		
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getPerson != null) {   //Fix error handling for roller and operator
-				getPerson.close();
-				getRolle.close();
-				getOperator.close();
-	        }
-		}
-		return perDTO;
-	}
-
+	/**
+	 * Får liste over personer i databasen og returnerer
+	 */
 	@Override
 	public ArrayList<Personer> getPersonerList() throws DALException, SQLException {
 		ArrayList<Personer> list = new ArrayList<Personer>();
@@ -105,7 +47,6 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			opr_navn.add(rs.getString("opr_navn"));
 			ini.add(rs.getString("ini"));
 			}
-//			rs = null;
 			
 			getRolle = conn.prepareStatement(getrol);
 			rs = getRolle.executeQuery();
@@ -113,7 +54,6 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				rolle_id.add(rs.getInt("rolle_id"));
 				rolle.add(rs.getString("rolle"));
 			}
-//			rs = null;
 			
 			getOperator = conn.prepareStatement(getopr);
 			rs = getOperator.executeQuery();
@@ -122,7 +62,6 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				status.add(rs.getBoolean("opr_status"));
 				System.out.println(rs.getBoolean("opr_status"));
 			}
-//			rs = null;
 			
 			int i = 0;
 			for (String string : ini) {
@@ -130,8 +69,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				i++;
 			}
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (getPerson != null) {
 				getPerson.close();
@@ -142,6 +81,9 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		return list;
 	}
 
+	/**
+	 * Laver en person i databasen
+	 */
 	@Override
 	public void createPersoner(Personer per) throws DALException, SQLException {
 		
@@ -169,13 +111,17 @@ public class MySQLPersonerDAO implements PersonerDAO {
 
 	}
 
+	/**
+	 * updaterer en peron hvor CPR nr og bruger id skal stemme overens med det i databasen
+	 * @throws NotFoundException 
+	 */
 	@Override
-	public void updatePersoner(Personer per) throws DALException, SQLException {
+	public void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
 		String updatePer = "CALL UpdateEmployee(?,?,?,?,?)";
-		
+		int affectedRows = -1;
 		try {
 			updatePerson = conn.prepareStatement(updatePer);
 			
@@ -183,11 +129,9 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			updatePerson.setString(2, per.getIni());
 			updatePerson.setInt(3, per.getUserId());
 			updatePerson.setString(4, per.getRoles());
-			updatePerson.setString(5, per.getCpr());		//false cpr needed but not used
+			updatePerson.setString(5, per.getCpr());
 			updatePerson.executeUpdate();
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} finally {
@@ -195,26 +139,41 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				updatePerson.close();
 	        }
 		}
+		if (affectedRows == 0)
+		{
+			throw new NotFoundException("Ingen Bruger fundet - ingen bruger opdateret");
+		}
 	}
 
-	public void deletePersoner(int id) throws DALException, SQLException {
-		
+	/**
+	 * Inaktiverer en bruger 
+	 * @param id
+	 * @throws DALException
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 */
+	public void deletePersoner(int id) throws DALException, SQLException, NotFoundException 
+	{
 		Connection conn = Connector.getConn();
 		PreparedStatement deletePerson = null;
 		String deletePer = "UPDATE operatoer SET opr_status = 0 WHERE rolle_id = ?;";
+		int affectedRows = -1;
 		try {
 			deletePerson = conn.prepareStatement(deletePer);
 			deletePerson.setInt(1, id);
-			deletePerson.executeUpdate();
+			affectedRows = deletePerson.executeUpdate();
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (deletePerson != null) {
 				deletePerson.close();
 	        }
 		}
-
+		//delete returns a number for affected rows 
+		if(affectedRows == 0)
+		{
+			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
+		}
 	}
-	
 }

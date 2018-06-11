@@ -28,6 +28,14 @@ public class ReceptResources {
 	MySQLReceptDAO recpt = new MySQLReceptDAO();
 	MySQLReceptKompDAO recptkomp = new MySQLReceptKompDAO();
 	
+	/**
+	 * creates a recept dto in the database
+	 * @param rec 
+	 * @return a string : representing the result
+	 * @throws FoundException
+	 * @throws DALException
+	 * @throws SQLException
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Recept rec) throws FoundException, DALException, SQLException
@@ -40,7 +48,6 @@ public class ReceptResources {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		
 		return result;
 	}
 

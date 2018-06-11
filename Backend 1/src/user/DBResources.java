@@ -29,18 +29,10 @@ public class DBResources {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void createConn() throws FoundException, DALException, SQLException {
 		try { new Connector(); 
-		System.out.println("DB connection works, maybe!");} 
+		System.out.println("DB connection setup done");} 
 		catch (InstantiationException e) { e.printStackTrace(); }
 		catch (IllegalAccessException e) { e.printStackTrace(); }
 		catch (ClassNotFoundException e) { e.printStackTrace(); }
 		catch (SQLException e) { e.printStackTrace(); }	
-//		MySQLPersonerDAO test = new MySQLPersonerDAO();
-//		System.out.println(test.getPersonerList());
-//		for (Personer element : test.getPersonerList()) {
-//			System.out.println(element);
-//		}
-//		System.out.println(test.getPersoner(1));
-//		Personer per = new Personer(321, "dan", "dsd","231","admin",true);
-//		test.createPersoner(per);
 	}	
 }

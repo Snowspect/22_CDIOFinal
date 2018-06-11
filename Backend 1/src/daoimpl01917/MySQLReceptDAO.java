@@ -14,10 +14,12 @@ import daointerfaces01917.DALException;
 import daointerfaces01917.ReceptDAO;
 import DTO.FoundException;
 import DTO.Recept;
-import DTO.ReceptKompDTO;
 
 public class MySQLReceptDAO implements ReceptDAO {
 
+	/**
+	 * Returns a list of recept products 
+	 */
 	@Override
 	public List<Recept> getReceptList() throws DALException, SQLException {
 		List<Recept> list = new ArrayList<Recept>();
@@ -35,7 +37,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 			{
 				list.add(new Recept(rs.getInt("recept_id"), rs.getString("recept_navn")));
 			}
-		} catch (SQLException e) { 
+		} catch (SQLException e) {
 			System.out.println(e);
 			e.printStackTrace();
 		} finally {
@@ -43,16 +45,12 @@ public class MySQLReceptDAO implements ReceptDAO {
 				getRecepList.close();
 			}
 		}
-		MySQLReceptKompDAO t = new MySQLReceptKompDAO();
-		ArrayList<ReceptKompDTO> tmpList = new ArrayList<>();
-		for(int i = 0; i < list.size(); i++)
-		{
-			tmpList = (ArrayList<ReceptKompDTO>) t.getReceptKompList(list.get(i).getReceptId());
-			list.get(i).setReceptKomponent(tmpList);
-		}
 		return list;
 	}
 
+	/**
+	 * Opretter en recept i databasen og dens komponenter relateret.
+	 */
 	@Override
 	public String createRecept(Recept recept) throws DALException, SQLException, FoundException {
 		Connection conn = Connector.getConn();
@@ -67,6 +65,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 			createRec.executeUpdate();
 		} catch(MySQLIntegrityConstraintViolationException e)
 		{
+			//throw exception hvis et id allerede eksisterer
 			throw new FoundException("Recept Id already exists");
 		}
 		catch (SQLException e) {
@@ -77,6 +76,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 				createRec.close();
 			}
 		}
+		//Indsætter komponenter relateret til den oprettede recept
 		MySQLReceptKompDAO t = new MySQLReceptKompDAO();
 		try 
 		{		
@@ -88,6 +88,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 			System.out.println(e);
 			e.printStackTrace();
 		}
+		//endelige return string
 		return "Recept oprettet";
 	}
 }

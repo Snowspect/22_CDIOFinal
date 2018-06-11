@@ -11,7 +11,7 @@ public class Recept {
 	private String receptNavn;
 
 	/** Ingredienser i recept */
-	private ArrayList<ReceptKompDTO> receptKomponent;
+	private ArrayList<ReceptKompDTO> receptKomponent = new ArrayList<>();
 
 	public Recept() {}
 	

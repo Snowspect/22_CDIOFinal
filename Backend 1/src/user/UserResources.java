@@ -9,7 +9,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-//import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -20,37 +19,24 @@ import daoimpl01917.MySQLPersonerDAO;
 import daointerfaces01917.DALException;
 
 
-
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResources {
-	MySQLPersonerDAO perConn = new MySQLPersonerDAO();
+	MySQLPersonerDAO pers = new MySQLPersonerDAO();
 	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 	
 	//Inserts new user into system
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createUser(Personer per) throws FoundException, DALException, SQLException {
-/*		boolean found = false;
-		for (Personer person : perConn.getPersonerList()) {
-			if (per.getUserId() == person.getUserId()) {
-				found = true;
-			}
-		}
-		
-		if (found) {
-			throw new FoundException("Brugeren findes allerede");
-		}*/
-		
+	public String createUser(Personer per) throws FoundException, DALException, SQLException 
+	{		
 		System.out.println("foer createPersoner");
-		perConn.createPersoner(per);		//from DB
+		pers.createPersoner(per);
 		
-//		perList.add(per);		//from arrayList
-		System.out.println("Created user: " + per.toString());
-		System.out.println("Current list " + perConn.getPersonerList().toString());
+		System.out.println("Created user: " + per.toString()); //LOGGER
 
-		String result = "It works, maybe";
+		String result = "Bruger tilføjet til databasen";
 		return result;
 	}
 
@@ -58,18 +44,10 @@ public class UserResources {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Personer> getUsers() throws DALException, SQLException {
-		System.out.println("Get list: " + perConn.getPersonerList().toString());
-		return perConn.getPersonerList();
+		System.out.println("Get list: " + pers.getPersonerList().toString()); //LOGGER
+		
+		return pers.getPersonerList();
 	}
-	
-//	@PUT
-//	@Path("{id}/status")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public void createStatus(@PathParam("id") int id, boolean status) {
-//		//code that updates the status of a given id.
-//	}
-	
-	
 	
 	//removes user from list
 	@DELETE
@@ -78,23 +56,7 @@ public class UserResources {
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
 	public void deleteUser(@PathParam("id") int id) throws NotFoundException, DALException, SQLException
 	{
-		boolean found = false;
-		for (Personer person : perConn.getPersonerList()) {
-			if (id == person.getUserId()) {
-				System.out.println("Detele person ID: " + id);
-				perConn.deletePersoner(id);
-				found = true;
-			}
-		}
-		if (!found) {
-			throw new NotFoundException("Brugeren findes ikke");
-		}
-		
-//		boolean removeIf = perList.removeIf(e-> e.getUserId() == id);
-//		if(!removeIf)
-//		{
-//			throw new NotFoundException("Brugeren findes ikke");
-//		}
+		pers.deletePersoner(id);
 	}
 
 	public static ArrayList<Personer> getPerList() {
@@ -107,17 +69,6 @@ public class UserResources {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void updateUser(Personer per) throws NotFoundException, DALException, SQLException
 	{
-		boolean found = false;
-		for (Personer person : perConn.getPersonerList()) {
-			if(person.getUserId() == per.getUserId())
-			{
-				System.out.println("Updatere person ID: " + per.getUserId());
-				perConn.updatePersoner(per);
-				found = true;
-			}
-		}
-		if (!found) {
-			throw new NotFoundException("Brugeren findes ikke");
-		}
+				pers.updatePersoner(per);
 	}
 }

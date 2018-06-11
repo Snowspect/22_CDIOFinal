@@ -27,27 +27,43 @@ import daointerfaces01917.DALException;
 public class ProduktResources {
 	MySQLProduktBatchDAO proConn = new MySQLProduktBatchDAO();
 	MySQLProduktBatchKompDAO pbkomp = new MySQLProduktBatchKompDAO();
-	private static ArrayList <Produktbatch> proConnList = new ArrayList<>();
 	
+	/**
+	 * POST a new batch DTO to the database
+	 * @param batch
+	 * @return a string : "created productbatch"
+	 * @throws FoundException
+	 * @throws DALException
+	 * @throws SQLException
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Produktbatch batch) throws FoundException, DALException, SQLException
 	{
-		proConn.createProduktBatch(batch);
-		
+		proConn.createProduktBatch(batch);		
 		String result = "created productbatch";
 		return result;
 	}
 	
+	/**
+	 * @return an arraylist : of produktbatchkomponents
+	 * @throws DALException
+	 * @throws SQLException
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Produktbatch> getProduktbatch() throws DALException, SQLException
 	{
-
-		proConnList = (ArrayList<Produktbatch>) proConn.getProduktBatchList();
-		return proConnList;
+		return (ArrayList<Produktbatch>) proConn.getProduktBatchList();
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return an arraylist: of produktbatchkomponents related to the param id
+	 * @throws DALException
+	 * @throws SQLException
+	 */
 	@GET
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)

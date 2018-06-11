@@ -1,4 +1,5 @@
 /**
+
  * Generate n input fields in form depending on number of needed raavare
  */
 function generateRecept() {
