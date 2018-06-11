@@ -1,6 +1,12 @@
 package DTO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import JDBC.Connector;
 
 public class Personer {
 	private int userId;
@@ -76,5 +82,33 @@ public class Personer {
 		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , roles " + roles + ", status: " + status;
 		return str;
 
+	}
+
+	public String findUserName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		String name = null;
+		PreparedStatement getUserName = null;
+		ResultSet rs = null;
+	
+		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
+	
+		try {
+			getUserName = sqlCon.prepareStatement(getName);
+	
+			getUserName.setInt(1, id);
+			rs = getUserName.executeQuery();
+			if(rs.first()) {
+				name = rs.getString("opr_navn");	
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(getUserName != null) {
+				getUserName.close();
+			}
+		}
+		return name;
 	}
 }

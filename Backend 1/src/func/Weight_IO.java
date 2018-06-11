@@ -5,18 +5,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.sql.Connection;
 
 import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.Produktbatch;
 import DTO.RaavareBatch;
-import JDBC.Connector;
 import user.UserResources;
+import DTO.*;
 
 public class Weight_IO {
 	private data.socket.Connection conn;
@@ -25,11 +20,14 @@ public class Weight_IO {
 	private BufferedReader getFromServer;
 	private String responseFromServer, messageToServer, status = "";
 	private Afvejning afv = new Afvejning();
+	private StatusDTO sts = new StatusDTO();
 	private Personer pers = new Personer ();
 	private RaavareBatch raav = new RaavareBatch();
 	private Produktbatch proBa = new Produktbatch();
+	private Recept recpt = new Recept();	
 	private int id;
 	private UserResources UsRe = new UserResources();
+	private produktBatchKompDTO ProBaKoDTO = new produktBatchKompDTO();
 	private boolean run = false;
 	private boolean mainRun = false;
 	private int foo;
@@ -44,7 +42,6 @@ public class Weight_IO {
 		sendToServer = conn.getWriter();
 		getFromServer = conn.getReader();
 	}
-
 
 	/**
 	 * In RM20 8 there needs to be exactly 3 words in the message for some reason
@@ -65,20 +62,19 @@ public class Weight_IO {
 				System.out.println("2 " + responseFromServer);
 				foo = retrieveIdAsInt(responseFromServer);
 
-				if(findUserName(foo) == null){
+				if(pers.findUserName(foo) == null){
 					System.out.println("Ugyldigt ID");
 					sendToServer.writeBytes("RM20 8 ”Ugyldigt laborant nr" + "” ”” ”&3”" + '\n');
 					responseFromServer = getFromServer.readLine();		
 					responseFromServer = getFromServer.readLine();		
 				}
 
-			} while (findUserName(foo) == null);
-
+			} while (pers.findUserName(foo) == null);
 
 			//Send name to weight
-			sendToServer.writeBytes("RM20 8 ”t Navn: " + findUserName(foo) + "” ”” ”&3”" + '\n');
+			sendToServer.writeBytes("RM20 8 ”t Navn: " + pers.findUserName(foo) + "” ”” ”&3”" + '\n');
 
-			System.out.println(findUserName(foo));
+			System.out.println(pers.findUserName(foo));
 			responseFromServer = getFromServer.readLine();		
 			System.out.println("4 " + responseFromServer);
 
@@ -99,22 +95,22 @@ public class Weight_IO {
 				//Input Produktbatch id on weight
 				responseFromServer = getFromServer.readLine();		//Save
 				proBa.setPbId(retrieveIdAsInt(responseFromServer)); //Sets productBatch id in DTO.
-				String str = findReceptName(proBa.getPbId());
+				String str = recpt.findReceptName(proBa.getPbId());
 				System.out.println("recept navn " + str);
 				System.out.println("7 " + responseFromServer);
 
 				
-				if(findReceptName(proBa.getPbId()) == null){
+				if(recpt.findReceptName(proBa.getPbId()) == null){
 					System.out.println("Ugyldigt ID");
 					sendToServer.writeBytes("RM20 8 ”Ugyldigt produktbatch nr " + "” ”” ”&3”" + '\n');
 					responseFromServer = getFromServer.readLine();		
 					responseFromServer = getFromServer.readLine();		
 				}
 				
-				} while (findReceptName(proBa.getPbId()) == null);
+				} while (recpt.findReceptName(proBa.getPbId()) == null);
 				
 				//Send text to weight
-				sendToServer.writeBytes("RM20 8 ”Recept navn: " + findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
+				sendToServer.writeBytes("RM20 8 ”Recept navn: " + recpt.findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
 				responseFromServer = getFromServer.readLine();
 				System.out.println("8 " + responseFromServer);
 				System.out.println("Tryk OK ");
@@ -123,7 +119,7 @@ public class Weight_IO {
 				responseFromServer = getFromServer.readLine();
 				System.out.println("9" + responseFromServer);
 
-				if(checkIfDone(proBa.getPbId()) == false){
+				if(sts.checkIfDone(proBa.getPbId()) == false){
 					run = true;
 					while(run) {
 						//Send text to weight
@@ -155,7 +151,6 @@ public class Weight_IO {
 						afv.setTara(Double.parseDouble(responseFromServer));
 						System.out.println("12.5 " + afv.getTara());
 
-						
 						do {
 						sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
@@ -165,17 +160,16 @@ public class Weight_IO {
 
 						sendToServer.writeBytes("T" + '\n');
 						responseFromServer = getFromServer.readLine();
-						System.out.println("14" + responseFromServer);
+						System.out.println("14" + responseFromServer);	
 						
-						
-						if(!iterateRb(afv.getRbId())){
+						if(!raav.iterateRb(afv.getRbId())){
 							System.out.println("Ugyldigt ID");
 							sendToServer.writeBytes("RM20 8 ”Ugyldigt råvarebatch nr " + "” ”” ”&3”" + '\n');
 							responseFromServer = getFromServer.readLine();		
 							responseFromServer = getFromServer.readLine();		
 						}
 						
-						} while (!iterateRb(afv.getRbId()));
+						} while (!raav.iterateRb(afv.getRbId()));
 						
 						
 						//Send text to weight
@@ -204,9 +198,9 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("20 " + responseFromServer);
 
-						if(checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId())) {
+						if(afv.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId())) {
 							//sql transaction
-							insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
+							ProBaKoDTO.insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 							System.out.println("Success! Gemt i database.");
 
 							sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
@@ -214,8 +208,8 @@ public class Weight_IO {
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
 
-							updateStatus(proBa.getPbId());
-							if(checkIfDone(proBa.getPbId())) {
+							sts.updateStatus(this, proBa, proBa.getPbId());
+							if(sts.checkIfDone(proBa.getPbId())) {
 								run = false;
 							} else {
 								run = true;
@@ -230,7 +224,7 @@ public class Weight_IO {
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
 
-							System.out.println("Nom_netto: " + getNom_netto(afv.getRbId(), proBa.getPbId()));
+							System.out.println("Nom_netto: " + afv.getNom_netto(afv.getRbId(), proBa.getPbId()));
 
 							run = false;
 						}
@@ -246,6 +240,8 @@ public class Weight_IO {
 					run = false;
 				}
 				sendToServer.writeBytes("RM20 8 ”Fortsæt? Tryk 1” “” “&3”" + '\n');
+				responseFromServer = getFromServer.readLine();
+				System.out.println(responseFromServer);
 				responseFromServer = getFromServer.readLine();
 				int respns = retrieveIdAsInt(responseFromServer);
 				if (respns == 1) {
@@ -263,8 +259,7 @@ public class Weight_IO {
 				//Send to weight "En mere?"
 				//mainRun = okFromWeight()
 			}
-
-
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -280,7 +275,6 @@ public class Weight_IO {
 		}
 	}
 
-
 	/*
 	 * method made for taking in a string
 	 * and extracting doubles as a string
@@ -295,383 +289,11 @@ public class Weight_IO {
 		return stripped;
 	}
 
-
-	//Finds the username in the database with the ID given from the weight.
-	public String findUserName (int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		String name = null;
-		PreparedStatement getUserName = null;
-		ResultSet rs = null;
-
-		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
-
-		try {
-			getUserName = sqlCon.prepareStatement(getName);
-
-			getUserName.setInt(1, id);
-			rs = getUserName.executeQuery();
-			if(rs.first()) {
-				name = rs.getString("opr_navn");	
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(getUserName != null) {
-				getUserName.close();
-			}
-		}
-		return name;
-	}
-
 	//Converts the "int inputs" on the weight into java ints Works on pb_id and rb_id.
 	public int retrieveIdAsInt(String ServerResponse) {
 		String tempId = ServerResponse.split(" ")[2];
 		tempId = tempId.replaceAll("\\D+","");	
 		int foo = Integer.parseInt(tempId);
 		return foo;
-	}
-
-	//Returns the recept name given a pb_id
-	public String findReceptName (int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		String recept = null;
-		PreparedStatement getReceptName = null;
-		ResultSet rs = null;
-
-		String getRecept = "Select recept_navn from produktbatch NATURAL JOIN recept where pb_id = ? group by recept_navn;";
-
-		try {
-			getReceptName = sqlCon.prepareStatement(getRecept);
-
-			getReceptName.setInt(1, id);
-			rs = getReceptName.executeQuery();
-			if(rs.first()) {
-				recept = rs.getString("recept_navn");	
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(getReceptName != null) {
-				getReceptName.close();
-			}
-		}
-		return recept;
-	}
-
-	//Checks the status of a produktbatch given the pb_id. Then returns it.
-	public int checkStatus(int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		int status = 0;
-		PreparedStatement checkStatus = null;
-		ResultSet rs = null;
-
-		String checkProduktStatus = "SELECT status FROM produktbatch WHERE pb_id = ?;";
-
-		try {
-			checkStatus = sqlCon.prepareStatement(checkProduktStatus);
-
-			checkStatus.setInt(1,id);
-			rs = checkStatus.executeQuery();
-			if(rs.first()) {
-				status = rs.getInt("status");	
-				if (status != 2) {
-					status = 1;
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(checkStatus != null) {
-				checkStatus.close();
-			}
-		}
-		return status;
-	}
-
-	//Simply sets the status of a produktbatch to 1 or 2.
-	public void setStatus(int id, int stat) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		int status = 0;
-		int update = 0;
-		PreparedStatement setStatus1 = null;
-		PreparedStatement setStatus2 = null;
-
-		String setProduktStatus1 = "UPDATE produktbatch SET status = 1 WHERE pb_id = ?;";
-		String setProduktStatus2 = "UPDATE produktbatch SET status = 2 WHERE pb_id = ?;";
-
-		try {
-			if(stat == 1) {
-				setStatus1 = sqlCon.prepareStatement(setProduktStatus1);
-				setStatus1.setInt(1,id);
-				setStatus1.execute();
-			} else {
-				setStatus2 = sqlCon.prepareStatement(setProduktStatus2);
-				setStatus2.setInt(1,id);
-				setStatus2.execute();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(setStatus1 != null || setStatus2 != null) {
-				setStatus1.close();
-				setStatus2.close();
-			}
-		}
-	}
-
-	/*Checks if a produktbatch is done by comparing to SQL columns converted into java arrays 
-	  using the values of raavare_id and comparing them value by value*/
-	public boolean checkIfDone(int pb_id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		PreparedStatement getWeighed = null;
-		PreparedStatement getToWeigh = null;
-		ResultSet rs1 = null;
-		ResultSet rs2 = null;
-		int count = 0;
-
-		//Det vi har vejet	
-		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
-		//Det vi skal veje
-		String getToWeighItems = "SELECT raavare_id FROM receptkomponent WHERE recept_id = (SELECT recept_id FROM produktbatch WHERE pb_id = ?);";
-
-		try {
-			//Get first array from database
-			getWeighed = sqlCon.prepareStatement(getWeighedItems);
-			getWeighed.setInt(1,pb_id);
-			rs1 = getWeighed.executeQuery();
-
-			// Go to the last row 
-			rs1.last(); 
-			int rowCount = rs1.getRow(); 
-
-			// Reset row before iterating to get data 
-			rs1.beforeFirst();
-
-			int [] checkerArr1 = new int [rowCount];
-			int arrayCount = 0;
-
-			while(rs1.next()) {
-				checkerArr1[arrayCount] = rs1.getInt(1);
-				arrayCount++;
-			}
-			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
-
-			//Get second array from database
-			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
-			getToWeigh.setInt(1,pb_id);
-			rs2 = getToWeigh.executeQuery();
-
-			// Go to the last row 
-			rs2.last(); 
-			int rowCount2 = rs2.getRow(); 
-
-			// Reset row before iterating to get data 
-			rs2.beforeFirst();
-
-			int [] checkerArr2 = new int [rowCount2];
-			int arrayCount2 = 0;
-
-			while(rs2.next()) {
-				checkerArr2[arrayCount2] = rs2.getInt(1);
-				arrayCount2++;
-			}
-			System.out.println("Arary 2: \n" + Arrays.toString(checkerArr2));
-
-			//compare arrays
-			for (int i = 0; i < checkerArr1.length; i++) {
-				for(int j = 0; j < checkerArr2.length; j++) {
-					if(checkerArr1[i] == checkerArr2[j]) {
-						count++;
-					}
-				}
-			}
-			if(count == checkerArr2.length) {
-				return true;
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if( getWeighed != null || getToWeigh != null) {
-				getWeighed.close();
-			}
-		}
-		return false;
-	}
-
-	public boolean iterateRb(int rb_id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		PreparedStatement getRb = null;
-		ResultSet rs = null;
-		int count = 0;
-
-		String getRbItems = "SELECT rb_id FROM raavarebatch;";
-
-		try {
-			//Get first array from database
-			getRb = sqlCon.prepareStatement(getRbItems);
-			rs = getRb.executeQuery();
-
-			// Go to the last row 
-			rs.last(); 
-			int rowCount = rs.getRow(); 
-
-			// Reset row before iterating to get data 
-			rs.beforeFirst();
-
-			int [] checkerArr1 = new int [rowCount];
-			int arrayCount = 0;
-
-			while(rs.next()) {
-				checkerArr1[arrayCount] = rs.getInt(1);
-				arrayCount++;
-				//				System.out.println("arrayCount: " + arrayCount);
-			}
-			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
-
-			//compare arrays
-			for (int i = 0; i < checkerArr1.length; i++) {
-					if(rb_id == checkerArr1[i]) {
-						return true;
-					}
-				}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if( getRb != null) {
-				getRb.close();
-			}
-		}
-		return false;
-	}
-	
-	//A method that checks if a status needs updating by calling other methods.
-	public int updateStatus(int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-		try {
-			switch (checkStatus(id)) {
-			case 0:
-				setStatus(id, 1);			
-				break;
-			case 1:
-				if (checkIfDone(id)){
-					setStatus(id, 2);
-				} 
-				break;
-			case 2:
-				break;
-			default:
-				System.out.println("WHAT!!??");
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return checkStatus(id);
-	}
-
-	//Checks if the weighed netto is within tolerance for that raavare. 
-	public boolean checkTolerance(int rb_id, double netto, int pb_id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		double tolerance = 0.0;
-		PreparedStatement checkTolerance = null;
-		ResultSet rs = null;
-
-		String checkRaavareTolerance = "SELECT DISTINCT tolerance FROM raavarebatch NATURAL JOIN receptkomponent WHERE rb_id = ?;";
-
-		try {
-			checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
-
-			checkTolerance.setInt(1, rb_id);
-			rs = checkTolerance.executeQuery();
-			if(rs.first()) {
-				tolerance = rs.getDouble(1);
-				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
-				if (netto >= getNom_netto(rb_id, pb_id) * (1 - tolerance) && netto <= getNom_netto(rb_id, pb_id) * (1 + tolerance)) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(checkTolerance != null) {
-				checkTolerance.close();
-			}
-		}
-		return false;
-	}
-
-	//Calls a SP in the SQL that will insert a row in produktbatchkomp 
-	public void insertProBaKomRow(int pd_id, int rb_id, double tara, double netto, int oprId) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		PreparedStatement row = null;
-		ResultSet rs = null;
-
-		String insertRow = "CALL MakeProBaKompRow(?,?,?,?,?) ";
-
-		try {
-			row = sqlCon.prepareStatement(insertRow);
-
-			row.setInt(1,pd_id);
-			row.setInt(2,rb_id);
-			row.setDouble(3,tara);
-			row.setDouble(4,netto);
-			row.setInt(5,oprId);
-
-			row.execute();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(row != null) {
-				row.close();
-			}
-		}
-	}
-
-	//Returns nom_netto when given a pb_id and a rb_id.
-	public double getNom_netto (int rb_id, int pb_id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-
-		double netto = 0.0;
-		PreparedStatement getNom_netto = null;
-		ResultSet rs = null;
-
-		String getNetto = "SELECT nom_netto FROM receptkomponent NATURAL JOIN produktbatch NATURAL JOIN raavarebatch WHERE rb_id=? AND pb_id = ?;";
-
-		try {
-			getNom_netto = sqlCon.prepareStatement(getNetto);
-
-			getNom_netto.setInt(1, rb_id);
-			getNom_netto.setInt(2, pb_id);
-			rs = getNom_netto.executeQuery();
-			if(rs.first()) {
-				netto = rs.getDouble(1);	
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if(getNom_netto != null) {
-				getNom_netto.close();
-			}
-		}
-		return netto;
 	}
 }
