@@ -7,13 +7,16 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.FoundException;
 import DTO.Produktbatch;
+import DTO.produktBatchKompDTO;
 import daoimpl01917.MySQLPersonerDAO;
 import daoimpl01917.MySQLProduktBatchDAO;
+import daoimpl01917.MySQLProduktBatchKompDAO;
 import daointerfaces01917.DALException;
 
 @Path("/produktbatch")
@@ -23,6 +26,7 @@ import daointerfaces01917.DALException;
 
 public class ProduktResources {
 	MySQLProduktBatchDAO proConn = new MySQLProduktBatchDAO();
+	MySQLProduktBatchKompDAO pbkomp = new MySQLProduktBatchKompDAO();
 	private static ArrayList <Produktbatch> proConnList = new ArrayList<>();
 	
 	@POST
@@ -42,5 +46,14 @@ public class ProduktResources {
 
 		proConnList = (ArrayList<Produktbatch>) proConn.getProduktBatchList();
 		return proConnList;
-	}	
+	}
+	
+	@GET
+	@Path("{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<produktBatchKompDTO> getProduktBatchKomponenter(@PathParam("id") int id) throws DALException, SQLException
+	{
+		return (ArrayList<produktBatchKompDTO>) pbkomp.getProduktBatchKompList(id);
+	}
 }

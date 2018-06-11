@@ -90,10 +90,10 @@ function removeUser() {
 //draws person information from html into a "bruger" variable
 function getPersonFromHTML() {
 	var id = document.getElementById("ID").value;
-	var navn = document.getElementById("Brugernavn").value
-	var ini = document.getElementById("ini").value
-	var cpr = document.getElementById("CPR").value
-	var rolle = document.getElementById("rolle").value
+	var navn = document.getElementById("Brugernavn").value;
+	var ini = document.getElementById("ini").value;
+	var cpr = document.getElementById("CPR").value;
+	var rolle = document.getElementById("rolle").value;
 
 	var bruger = {
 		userId : id,

@@ -6,16 +6,35 @@
 
 </head>
 <body>
+	<center>Recept id</center>
+	<form action="javascript:loadReceptRaavare()" method="get">
+	<div style="clear:right; margin-bottom:10px;">
+	<input type="number" id="receptID" step="1" min="0" required pattern="[0-9.]+" style="clear:right;">
+	<input type="submit" value="Hent tilknyttede råvare">
+	</div>
+	</form>
 	<div>
+	<div style="clear:right; float:left; margin-left:10em;border-style:solid; border-color:black; border-thickness: 1px;background-color:grey;">
 		<table id="receptTable"> 
 			<tr>
 				<th>ReceptID</th>
 				<th>Recept Navn</th>
-				<th>RåvareID</th>
-				<th>NomNetto i kg</th>
-				<th>Tolerance i %</th>
 			</tr>
 		</table>
+	</div>
+	<div style="float:right; margin-right:5em; border-style:solid; border-color:black; border-thickness: 1px; background-color:grey;">
+		<table id="raavareReceptTable">
+			<thead>
+			<tr>
+				<th>RåvareID</th>
+				<th>NomNetto i kg </th>
+				<th>Tolerance i %</th>
+			</tr>
+			</thead>
+			<tbody>
+			</body>
+		</table>
+	</div>
 	</div>
 </body>
 </html>
