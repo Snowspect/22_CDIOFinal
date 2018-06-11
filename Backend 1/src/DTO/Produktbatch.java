@@ -6,7 +6,7 @@ public class Produktbatch {
 	private int pbId;
 	private int receptId;
 	private int status;
-	private ArrayList<produktBatchKompDTO> produktBatchKomponent = new ArrayList<>();
+	private ArrayList<ProduktBatchKompDTO> produktBatchKomponent = new ArrayList<>();
 
 	public Produktbatch() {
 	}{};
@@ -36,10 +36,10 @@ public class Produktbatch {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public ArrayList<produktBatchKompDTO> getProduktBatchKomponent() {
+	public ArrayList<ProduktBatchKompDTO> getProduktBatchKomponent() {
 		return produktBatchKomponent;
 	}
-	public void setProduktBatchKomponent(ArrayList<produktBatchKompDTO> produktBaKo) {
+	public void setProduktBatchKomponent(ArrayList<ProduktBatchKompDTO> produktBaKo) {
 		this.produktBatchKomponent = produktBaKo;
 	} 
 }

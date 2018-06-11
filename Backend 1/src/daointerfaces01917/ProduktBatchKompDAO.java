@@ -3,13 +3,13 @@ package daointerfaces01917;
 import java.sql.SQLException;
 import java.util.List;
 
-import DTO.produktBatchKompDTO;
+import DTO.ProduktBatchKompDTO;
 
 public interface ProduktBatchKompDAO {
-	produktBatchKompDTO getProduktBatchKomp(int pbId, int rbId) throws DALException, SQLException;
-	List<produktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException;
-	List<produktBatchKompDTO> getProduktBatchKompList() throws DALException, SQLException;
-	void createProduktBatchKomp(produktBatchKompDTO produktbatchkomponent) throws DALException, SQLException;
-	void updateProduktBatchKomp(produktBatchKompDTO produktbatchkomponent) throws DALException, SQLException;	
+	ProduktBatchKompDTO getProduktBatchKomp(int pbId, int rbId) throws DALException, SQLException;
+	List<ProduktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException;
+	List<ProduktBatchKompDTO> getProduktBatchKompList() throws DALException, SQLException;
+	void createProduktBatchKomp(ProduktBatchKompDTO produktbatchkomponent) throws DALException, SQLException;
+	void updateProduktBatchKomp(ProduktBatchKompDTO produktbatchkomponent) throws DALException, SQLException;	
 }
 

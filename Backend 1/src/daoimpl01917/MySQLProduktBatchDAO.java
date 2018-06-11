@@ -12,7 +12,7 @@ import daointerfaces01917.DALException;
 import DTO.OperatoerDTO;
 import DTO.Produktbatch;
 import DTO.ReceptKompDTO;
-import DTO.produktBatchKompDTO;
+import DTO.ProduktBatchKompDTO;
 import daointerfaces01917.ProduktBatchDAO;
 
 public class MySQLProduktBatchDAO implements ProduktBatchDAO {
@@ -67,10 +67,10 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 			}
 		}
 		MySQLProduktBatchKompDAO t = new MySQLProduktBatchKompDAO();
-		ArrayList<produktBatchKompDTO> tmpList = new ArrayList<>();
+		ArrayList<ProduktBatchKompDTO> tmpList = new ArrayList<>();
 		for(int i = 0; i < list.size(); i++)
 		{
-			tmpList = (ArrayList<produktBatchKompDTO>) t.getProduktBatchKompList(list.get(i).getPbId());
+			tmpList = (ArrayList<ProduktBatchKompDTO>) t.getProduktBatchKompList(list.get(i).getPbId());
 			list.get(i).setProduktBatchKomponent(tmpList);
 		}
 		return list;
