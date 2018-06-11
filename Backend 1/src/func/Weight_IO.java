@@ -468,7 +468,6 @@ public class Weight_IO {
 		} finally {
 			if( getWeighed != null || getToWeigh != null) {
 				getWeighed.close();
-				//				getToWeigh.close();
 			}
 		}
 		return false;
@@ -518,7 +517,6 @@ public class Weight_IO {
 			if(rs.first()) {
 				tolerance = rs.getDouble(1);
 				checkTolerance = sqlCon.prepareStatement(checkRaavareTolerance);
-				//				checkTolerance.setInt(1, rb_id);
 				if (netto >= getNom_netto(rb_id, pb_id) * (1 - tolerance) && netto <= getNom_netto(rb_id, pb_id) * (1 + tolerance)) {
 					return true;
 				}
@@ -553,8 +551,7 @@ public class Weight_IO {
 			row.setInt(5,oprId);
 
 			row.execute();
-			//			if(rs.first()) {
-			//			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -583,7 +580,6 @@ public class Weight_IO {
 			rs = getNom_netto.executeQuery();
 			if(rs.first()) {
 				netto = rs.getDouble(1);	
-
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
