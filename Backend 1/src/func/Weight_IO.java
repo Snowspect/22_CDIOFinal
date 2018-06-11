@@ -96,6 +96,7 @@ public class Weight_IO {
 			//Start outer loop
 			while (mainRun == true) {	
 				//Send Produktbatch text to weight
+				do {
 				sendToServer.writeBytes("RM20 4 ”Indtast Produktbatch nr” ”” ”&3”" + '\n');
 				responseFromServer = getFromServer.readLine();
 				System.out.println("6 " + responseFromServer);
@@ -107,6 +108,16 @@ public class Weight_IO {
 				System.out.println("recept navn " + str);
 				System.out.println("7 " + responseFromServer);
 
+				
+				if(findReceptName(proBa.getPbId()) == null){
+					System.out.println("Ugyldigt ID");
+					sendToServer.writeBytes("RM20 8 ”Ugyldigt produktbatch nr " + "” ”” ”&3”" + '\n');
+					responseFromServer = getFromServer.readLine();		
+					responseFromServer = getFromServer.readLine();		
+				}
+				
+				} while (findReceptName(proBa.getPbId()) == null);
+				
 				//Send text to weight
 				sendToServer.writeBytes("RM20 8 ”Recept navn: " + findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
 				responseFromServer = getFromServer.readLine();
@@ -149,6 +160,8 @@ public class Weight_IO {
 						afv.setTara(Double.parseDouble(responseFromServer));
 						System.out.println("12.5 " + afv.getTara());
 
+						
+						do {
 						sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
 						responseFromServer = getFromServer.readLine();
@@ -158,6 +171,18 @@ public class Weight_IO {
 						sendToServer.writeBytes("T" + '\n');
 						responseFromServer = getFromServer.readLine();
 						System.out.println("14" + responseFromServer);
+						
+						
+						if(!iterateRb(afv.getRbId())){
+							System.out.println("Ugyldigt ID");
+							sendToServer.writeBytes("RM20 8 ”Ugyldigt råvarebatch nr " + "” ”” ”&3”" + '\n');
+							responseFromServer = getFromServer.readLine();		
+							responseFromServer = getFromServer.readLine();		
+						}
+						
+						} while (!iterateRb(afv.getRbId()));
+						
+						
 						//Send text to weight
 						sendToServer.writeBytes("RM20 8 ”Placer venligst netto” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
@@ -333,7 +358,8 @@ public class Weight_IO {
 		}
 		return recept;
 	}
-
+	
+	
 	public int checkStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 
@@ -484,6 +510,55 @@ public class Weight_IO {
 		return false;
 	}
 
+	
+	public boolean iterateRb(int rb_id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+
+		PreparedStatement getRb = null;
+		ResultSet rs = null;
+		int count = 0;
+
+		String getRbItems = "SELECT rb_id FROM raavarebatch;";
+
+		try {
+			//Get first array from database
+			getRb = sqlCon.prepareStatement(getRbItems);
+			rs = getRb.executeQuery();
+
+			// Go to the last row 
+			rs.last(); 
+			int rowCount = rs.getRow(); 
+
+			// Reset row before iterating to get data 
+			rs.beforeFirst();
+
+			int [] checkerArr1 = new int [rowCount];
+			int arrayCount = 0;
+
+			while(rs.next()) {
+				checkerArr1[arrayCount] = rs.getInt(1);
+				arrayCount++;
+				//				System.out.println("arrayCount: " + arrayCount);
+			}
+			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
+
+			//compare arrays
+			for (int i = 0; i < checkerArr1.length; i++) {
+					if(rb_id == checkerArr1[i]) {
+						return true;
+					}
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if( getRb != null) {
+				getRb.close();
+			}
+		}
+		return false;
+	}
+	
+	
 
 
 	public int updateStatus(int id) throws SQLException {
