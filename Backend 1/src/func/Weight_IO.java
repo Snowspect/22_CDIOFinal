@@ -220,14 +220,25 @@ public class Weight_IO {
 
 					run = false;
 				}
+				sendToServer.writeBytes("RM20 8 ”Fortsæt? Tryk 1” “” “&3”" + '\n');
+				responseFromServer = getFromServer.readLine();
+				int respns = retrieveIdAsInt(responseFromServer);
+				if (respns == 1) {
+					mainRun = true;
+				} else {
+					//Quit weight
+					sendToServer.writeBytes("Q" + '\n');
+					mainRun = false;
+				}
+//				System.out.println("22 " + responseFromServer);
+//				responseFromServer = getFromServer.readLine();
+				
 				//TODO
 				//Stop loop
 				//Send to weight "En mere?"
 				//mainRun = okFromWeight()
 			}
 
-			//Quit weight
-			sendToServer.writeBytes("Q" + '\n');
 
 		} catch(Exception e) {
 			e.printStackTrace();
