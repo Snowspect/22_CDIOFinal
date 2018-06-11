@@ -1,6 +1,6 @@
 package DTO;
 
-public class ProduktBatchKompDTO 
+public class produktBatchKompDTO 
 {
 	int pbId; 	  // produktbatchets id
 	int rbId;        // i omraadet 1-99999999
@@ -9,9 +9,9 @@ public class ProduktBatchKompDTO
 	int rolle_id;					// operatoer-nummer
 
 	
-	public ProduktBatchKompDTO() {}
+	public produktBatchKompDTO() {}
 	
-	public ProduktBatchKompDTO(int pbId, int rbId, double tara, double netto, int oprId)
+	public produktBatchKompDTO(int pbId, int rbId, double tara, double netto, int oprId)
 	{
 		this.pbId = pbId;
 		this.rbId = rbId;

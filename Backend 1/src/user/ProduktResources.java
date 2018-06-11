@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import DTO.FoundException;
 import DTO.Produktbatch;
-import DTO.ProduktBatchKompDTO;
+import DTO.produktBatchKompDTO;
 import daoimpl01917.MySQLPersonerDAO;
 import daoimpl01917.MySQLProduktBatchDAO;
 import daoimpl01917.MySQLProduktBatchKompDAO;
@@ -52,8 +52,8 @@ public class ProduktResources {
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<ProduktBatchKompDTO> getProduktBatchKomponenter(@PathParam("id") int id) throws DALException, SQLException
+	public ArrayList<produktBatchKompDTO> getProduktBatchKomponenter(@PathParam("id") int id) throws DALException, SQLException
 	{
-		return (ArrayList<ProduktBatchKompDTO>) pbkomp.getProduktBatchKompList(id);
+		return (ArrayList<produktBatchKompDTO>) pbkomp.getProduktBatchKompList(id);
 	}
 }
