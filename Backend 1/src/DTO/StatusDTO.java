@@ -10,6 +10,9 @@ import JDBC.Connector;
 import func.Weight_IO;
 
 public class StatusDTO {
+	
+	/*Checks if a produktbatch is done by comparing to SQL columns converted into java arrays 
+	  using the values of raavare_id and comparing them value by value*/
 	public boolean checkIfDone(int pb_id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	
@@ -89,6 +92,8 @@ public class StatusDTO {
 		}
 		return false;
 	}
+	
+	//A method that checks if a status needs updating by calling other methods.
 	public int updateStatus(Weight_IO weight_IO, Produktbatch produktbatch, int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 		try {
@@ -113,6 +118,8 @@ public class StatusDTO {
 		}
 		return checkStatus(id);
 	}
+	
+	//Simply sets the status of a produktbatch to 1 or 2.
 	public void setStatus(int id, int stat) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	
@@ -144,6 +151,7 @@ public class StatusDTO {
 			}
 		}
 	}
+	//Checks the status of a produktbatch given the pb_id. Then returns it.
 	public int checkStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	

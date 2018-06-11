@@ -57,6 +57,7 @@ public class Recept {
 		this.receptKomponent = receptKomponent;
 	}
 
+	//Returns the recept name given a pb_id
 	public String findReceptName (int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	

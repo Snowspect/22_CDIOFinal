@@ -74,6 +74,7 @@ public class produktBatchKompDTO
 		this.rolle_id = rolle_id;
 	}
 
+	//Calls a SP in the SQL that will insert a row in produktbatchkomp 
 	public void insertProBaKomRow(int pd_id, int rb_id, double tara, double netto, int oprId) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	

@@ -55,6 +55,8 @@ public class Afvejning {
 				+ " taravægt: " + tara + " netto: "+ netto + " brutto: " 
 				+ brutto;
 	}
+	
+	//Returns nom_netto when given a pb_id and a rb_id.
 	public double getNom_netto (int rb_id, int pb_id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	
@@ -83,6 +85,8 @@ public class Afvejning {
 		}
 		return netto;
 	}
+	
+	//Checks if the weighed netto is within tolerance for that raavare. 
 	public boolean checkTolerance(int rb_id, double netto, int pb_id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 	
