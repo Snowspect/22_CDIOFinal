@@ -295,5 +295,28 @@ public class Weight_IO {
 		tempId = tempId.replaceAll("\\D+","");	
 		int foo = Integer.parseInt(tempId);
 		return foo;
+
+	}
+}
+		String getRecept = "Select recept_navn from produktbatch NATURAL JOIN recept where pb_id = ? group by recept_navn";
+
+
+		try {
+			getReceptName = sqlCon.prepareStatement(getRecept);
+
+			getReceptName.setInt(1, id);
+			rs = getReceptName.executeQuery();
+			if(rs.first()) {
+				recept = rs.getString("recept_navn");	
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(getReceptName != null) {
+				getReceptName.close();
+			}
+		}
+		return recept;
 	}
 }
