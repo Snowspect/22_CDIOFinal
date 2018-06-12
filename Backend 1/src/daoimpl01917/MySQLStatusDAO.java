@@ -142,9 +142,11 @@ public class MySQLStatusDAO implements StatusDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(setStatus1 != null || setStatus2 != null) {
+			if(setStatus1 != null) {
 				setStatus1.close();
-				setStatus2.close();
+			}
+			if(setStatus2 != null) {
+				setStatus2.close();				
 			}
 		}
 	}
@@ -164,10 +166,7 @@ public class MySQLStatusDAO implements StatusDAO {
 			checkStatus.setInt(1,id);
 			rs = checkStatus.executeQuery();
 			if(rs.first()) {
-				status = rs.getInt("status");	
-				if (status != 2) {
-					status = 1;
-				}
+				status = rs.getInt(1);	
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
