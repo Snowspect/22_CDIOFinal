@@ -29,6 +29,7 @@ public class Weight_IO {
 	private MySQLRaavareDAO raa = new MySQLRaavareDAO();
 	private MySQLProduktBatchKompDAO ProBaKoDAO = new MySQLProduktBatchKompDAO();
 	private MySQLReceptDAO recpt = new MySQLReceptDAO();	
+	private MySQLAfvejningDAO afvDAO = new MySQLAfvejningDAO();
 	
 	private Produktbatch proBa = new Produktbatch();
 	private Afvejning afv = new Afvejning();
@@ -214,7 +215,9 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("20 " + responseFromServer);
 
-						if(afv.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId()) && bruttoCheck(afv.getBrutto())) {
+
+						if(afvDAO.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId()) && bruttoCheck(afv.getBrutto())) {
+
 							//sql transaction
 							ProBaKoDAO.insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 							System.out.println("Success! Gemt i database.");
@@ -240,7 +243,7 @@ public class Weight_IO {
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
 
-							System.out.println("Nom_netto: " + afv.getNom_netto(afv.getRbId(), proBa.getPbId()));
+							System.out.println("Nom_netto: " + afvDAO.getNom_netto(afv.getRbId(), proBa.getPbId()));
 
 							run = false;
 						}
