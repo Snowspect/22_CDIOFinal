@@ -15,6 +15,7 @@ import DTO.rolleEnum;
 
 public class MySQLRollerDAO implements RollerDAO {
 
+	// Returns the RollerDTO associated with the opr_id and cpr parameters, from the database.
 	@Override
 	public RollerDTO getRoller(int opr_id, int cpr) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
@@ -32,7 +33,6 @@ public class MySQLRollerDAO implements RollerDAO {
 			rolleDTO = new RollerDTO (rs.getInt("opr_id"), rs.getString("cpr"), rolleEnum.valueOf(rs.getString("rolle")));
 		} catch (SQLException e ) {
 			//Do error handling
-			//TODO
 		} finally {
 			if (getRoller != null) {
 				getRoller.close();
@@ -41,6 +41,7 @@ public class MySQLRollerDAO implements RollerDAO {
 		return rolleDTO;
 	}
 
+	// Returns a list of RollerDTO associated with the cpr parameter, from the database.
 	@Override
 	public List<RollerDTO> getAllRoller(String cpr) throws DALException, SQLException {
 		List<RollerDTO> list = new ArrayList<RollerDTO>();
@@ -59,7 +60,7 @@ public class MySQLRollerDAO implements RollerDAO {
 				}
 		} catch (SQLException e ) {
 			//Do error handling
-			//TODO
+	
 		} finally {
 			if (getRollerList != null) {
 				getRollerList.close();
@@ -68,6 +69,7 @@ public class MySQLRollerDAO implements RollerDAO {
 		return list;
 	}
 
+	// Returns a list of RollerDTO containing all the information from roller in the database 
 	@Override
 	public List<RollerDTO> getRollerList() throws DALException, SQLException {
 		List<RollerDTO> list = new ArrayList<RollerDTO>();
@@ -95,12 +97,13 @@ public class MySQLRollerDAO implements RollerDAO {
 		return list;
 	}
 
+	// Inserts the information from the RollerDTO parameter into the table roller in the database.
 	@Override
 	public void createRoller(RollerDTO rolle) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRoller = null;
 		
-		String createRolle = "INSERT INTO rolle(opr_id, cpr, rolle) VALUES " +
+		String createRolle = "INSERT INTO roller(opr_id, cpr, rolle) VALUES " +
 						"( ? , ? , ? )";
 		
 		try {
@@ -111,7 +114,7 @@ public class MySQLRollerDAO implements RollerDAO {
 			createRoller.executeUpdate();
 		} catch (SQLException e ) {
 			//Do error handling
-			//TODO
+			
 		} finally {
 			if (createRoller != null) {
 				createRoller.close();
@@ -120,6 +123,7 @@ public class MySQLRollerDAO implements RollerDAO {
 		
 	}
 
+	// Updates Roller with the information from the RollerDTO parameter, in the database.
 	@Override
 	public void updateRoller(RollerDTO rolle) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
@@ -135,7 +139,7 @@ public class MySQLRollerDAO implements RollerDAO {
 			updateRoller.executeUpdate();
 		} catch (SQLException e ) {
 			//Do error handling
-			//TODO
+			
 		} finally {
 			if (updateRoller != null) {
 				updateRoller.close();

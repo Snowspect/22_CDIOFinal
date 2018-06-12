@@ -17,6 +17,7 @@ import DTO.RaavareBatch;
 
 public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 
+	// Returns a list of RaavareBatch containing all RaavareBatch from the database.
 	@Override
 	public List<RaavareBatch> getRaavareBatchList() throws DALException, SQLException {
 		List<RaavareBatch> list = new ArrayList<RaavareBatch>();
@@ -43,6 +44,7 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 		return list;
 	}
 
+	// Creates a RaavareBatch in the database with the information from the RaavareBatch parameter.
 	@Override
 	public String createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException, FoundException {
 		Connection conn = Connector.getConn();
@@ -61,8 +63,8 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 			throw new FoundException("RaavareBatchen findes allerede");	
 		}
 		catch (SQLException e) {
-			//i tvivl om hvorvidt dette nogensinde bliver udført grundet vores input handling gennem html
-			//også i tvivl om den kan finde ud af at køre begge to eller den stoppe efter sout.(system out print)
+			//i tvivl om hvorvidt dette nogensinde bliver udfÃ¸rt grundet vores input handling gennem html
+			//ogsÃ¥ i tvivl om den kan finde ud af at kÃ¸re begge to eller den stoppe efter sout.(system out print)
 			System.out.println(e);
 			return "Error ikke relateret til allerede eksisterende id - se consol output";
 		} finally {

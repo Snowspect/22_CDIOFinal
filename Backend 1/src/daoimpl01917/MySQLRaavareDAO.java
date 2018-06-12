@@ -44,6 +44,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		return raaDTO;
 	}
 */
+	// Returns a list of Raavare containing all Raavare from the database.
 	@Override
 	public List<Raavare> getRaavareList() throws DALException, SQLException {
 		List<Raavare> list = new ArrayList<Raavare>();
@@ -71,6 +72,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		return list;
 	}
 
+	// Creates a Raavare in the database with the information from the Raavare parameter.
 	@Override
 	public String createRaavare(Raavare raavare) throws DALException, SQLException, FoundException {	
 		Connection conn = Connector.getConn();
@@ -99,6 +101,8 @@ public class MySQLRaavareDAO implements RaavareDAO{
 	}
 		
 
+	// Updates a Raavare in the database with the information from the Raavare parameter.
+	// A raavare with the ravareId in the DTO needs to be in the database before the method is called.
 	@Override
 	public String updateRaavare(Raavare raavare) throws DALException, SQLException, NotFoundException{
 		Connection conn = Connector.getConn();
@@ -115,7 +119,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			NumberOfRows = updateRaavare.executeUpdate();
 		} catch (SQLException e ) {
 				System.out.println(e);
-				return "sql fejl ikke relateret til mangel på eksistens af raavare, se consol";
+				return "sql fejl ikke relateret til mangel pï¿½ eksistens af raavare, se consol";
 		} finally {
 			if (updateRaavare != null) {
 				updateRaavare.close();

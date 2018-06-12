@@ -13,10 +13,8 @@ import daointerfaces01917.OperatoerDAO;
 import DTO.OperatoerDTO;
 
 public class MySQLOperatoerDAO implements OperatoerDAO {
-	/**
-	 * Done
-	 * @throws SQLException 
-	 */
+	
+	// Creates a operatoerDTO with operatoer information associated with the oprId from database
 	public OperatoerDTO getOperatoer(int oprId) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement getOperat = null;
@@ -41,9 +39,7 @@ public class MySQLOperatoerDAO implements OperatoerDAO {
 		}
 		return oprDTO;
 	}
-	/**
-	 * Done
-	 */
+	// Creates a operatoer in the database with the information from the DTO parameter.
 	public void createOperatoer(OperatoerDTO opr) throws DALException, SQLException {		
 		Connection conn = Connector.getConn();
 		PreparedStatement createOperat = null;
@@ -68,10 +64,7 @@ public class MySQLOperatoerDAO implements OperatoerDAO {
 		}
 	}
 	
-	/**
-	 * Done
-	 * @throws SQLException 
-	 */
+	// Updates the operatoer information in the database with the information from the DTO parameter.
 	public void updateOperatoer(OperatoerDTO opr) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement updateOperat = null;
@@ -94,10 +87,7 @@ public class MySQLOperatoerDAO implements OperatoerDAO {
 		}
 	}
 	
-	/**
-	 * Done
-	 * @throws SQLException 
-	 */
+	// Returns a list of the operatoers in the database.
 	public List<OperatoerDTO> getOperatoerList() throws DALException, SQLException {
 		List<OperatoerDTO> list = new ArrayList<OperatoerDTO>();
 

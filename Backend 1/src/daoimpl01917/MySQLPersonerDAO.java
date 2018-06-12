@@ -16,9 +16,7 @@ import DTO.Personer;
 
 public class MySQLPersonerDAO implements PersonerDAO {
 
-	/**
-	 * Får liste over personer i databasen og returnerer
-	 */
+	//Returns a list of personer from the database.
 	@Override
 	public ArrayList<Personer> getPersonerList() throws DALException, SQLException {
 		ArrayList<Personer> list = new ArrayList<Personer>();
@@ -68,9 +66,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		return list;
 	}
 
-	/**
-	 * Laver en person i databasen
-	 */
+	// Creates a person in the database with information from the Personer parameter.
 	@Override
 	public void createPersoner(Personer per) throws DALException, SQLException {
 		
@@ -98,10 +94,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 
 	}
 
-	/**
-	 * updaterer en peron hvor CPR nr og bruger id skal stemme overens med det i databasen
-	 * @throws NotFoundException 
-	 */
+	// Updates a person in the database with the information from the Personer parameter.
+	// The CPR nr and UserId needs to be from an existing person and it must be the same person.
 	@Override
 	public void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
 		Connection conn = Connector.getConn();
@@ -132,13 +126,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		}
 	}
 
-	/**
-	 * Inaktiverer en bruger 
-	 * @param id
-	 * @throws DALException
-	 * @throws SQLException
-	 * @throws NotFoundException
-	 */
+	// Sets status to false on a operatoer associated with the id parameter.
 	public void deletePersoner(int id) throws DALException, SQLException, NotFoundException 
 	{
 		Connection conn = Connector.getConn();
@@ -157,7 +145,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				deletePerson.close();
 	        }
 		}
-		//delete returns a number for affected rows 
+		//delete returns a number for affected rows.
 		if(affectedRows == 0)
 		{
 			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
