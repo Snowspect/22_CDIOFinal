@@ -162,12 +162,12 @@ public class Weight_IO {
 
 						do {
 							
-							sendToServer.writeBytes("RM20 8 ”Afvej råvaren: " + raa.findRaavareName(proBa.getPbId()) + "” ”” ”&3”" + '\n');
+							sendToServer.writeBytes("RM20 8 ”Afvej raavaren: " + raa.findRaavareName(proBa.getPbId()) + "” ”” ”&3”" + '\n');
 							responseFromServer = getFromServer.readLine();
 							responseFromServer = getFromServer.readLine();
 							
 							
-						sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
+						sendToServer.writeBytes("RM20 8 ”Indtast raavareBatch nr” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
 						responseFromServer = getFromServer.readLine();
 						afv.setRbId(retrieveIdAsInt(responseFromServer));
@@ -179,7 +179,7 @@ public class Weight_IO {
 						
 						if(!raaBa.iterateRb(afv.getRbId())){
 							System.out.println("Ugyldigt ID");
-							sendToServer.writeBytes("RM20 8 ”Ugyldigt råvarebatch nr " + "” ”” ”&3”" + '\n');
+							sendToServer.writeBytes("RM20 8 ”Ugyldigt raavarebatch nr " + "” ”” ”&3”" + '\n');
 							responseFromServer = getFromServer.readLine();		
 							responseFromServer = getFromServer.readLine();		
 						}
