@@ -14,6 +14,7 @@ import DTO.ReceptKompDTO;
 
 public class MySQLReceptKompDAO implements ReceptKompDAO {
 
+	// Returns the ReceptKompDTO associated with the parameters receptId and raavareId, from the database.
 	@Override
 	public ReceptKompDTO getReceptKomp(int receptId, int raavareId) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
@@ -41,6 +42,7 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 		return RkDTO;
 	}
 
+	// Returns a list of ReceptKompDTO associated with receptId, from the database.
 	@Override
 	public List<ReceptKompDTO> getReceptKompList(int receptId) throws DALException, SQLException {
 		List<ReceptKompDTO> list = new ArrayList<ReceptKompDTO>();
@@ -82,6 +84,7 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 //		return list;
 //	}
 
+	// Returns a list of ReceptKompDTO from the database, containing all receptkomponent.
 	@Override
 	public List<ReceptKompDTO> getReceptKompList() throws DALException, SQLException {
 		List<ReceptKompDTO> list = new ArrayList<ReceptKompDTO>();
@@ -124,6 +127,7 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 //		return list;
 //	}
 
+	// Creates a receptkomponent in the database with information from the ReceptKompDTO parameter.
 	@Override
 	public void createReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();

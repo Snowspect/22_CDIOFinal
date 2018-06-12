@@ -15,6 +15,7 @@ import daointerfaces01917.ProduktBatchDAO;
 
 public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 
+	// Creates a Produktbatch in the database with the information from the DTO parameter.
 	@Override
 	public void createProduktBatch(Produktbatch pb) throws DALException, SQLException {		
 		Connection conn = Connector.getConn();
@@ -40,6 +41,7 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 		}
 		}
 
+	//Returns a list of ProduktBatch from the database.
 	@Override
 	public List<Produktbatch> getProduktBatchList() throws DALException, SQLException {
 		List<Produktbatch> list = new ArrayList<Produktbatch>();

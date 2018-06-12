@@ -17,9 +17,8 @@ import DTO.Recept;
 
 public class MySQLReceptDAO implements ReceptDAO {
 
-	/**
-	 * Returns a list of recept products 
-	 */
+	
+	// Returns a list of Recept from the database containing all recepts in the database.
 	@Override
 	public List<Recept> getReceptList() throws DALException, SQLException {
 		List<Recept> list = new ArrayList<Recept>();
@@ -48,9 +47,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 		return list;
 	}
 
-	/**
-	 * Opretter en recept i databasen og dens komponenter relateret.
-	 */
+	// Creates a recept in the database with the information from the Recept parameter.
 	@Override
 	public String createRecept(Recept recept) throws DALException, SQLException, FoundException {
 		Connection conn = Connector.getConn();
@@ -65,7 +62,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 			createRec.executeUpdate();
 		} catch(MySQLIntegrityConstraintViolationException e)
 		{
-			//throw exception hvis et id allerede eksisterer
+			//throw exception if an id already exists
 			throw new FoundException("Recept Id already exists");
 		}
 		catch (SQLException e) {
@@ -76,7 +73,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 				createRec.close();
 			}
 		}
-		//Inds�tter komponenter relateret til den oprettede recept
+		//Inserts komp related to the created recept
 		MySQLReceptKompDAO t = new MySQLReceptKompDAO();
 		try 
 		{		
@@ -88,7 +85,6 @@ public class MySQLReceptDAO implements ReceptDAO {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		//endelige return string
 		return "Recept oprettet";
 	}
 	
@@ -111,7 +107,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 				recept = rs.getString("recept_navn");	
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} finally {
 			if(getReceptName != null) {

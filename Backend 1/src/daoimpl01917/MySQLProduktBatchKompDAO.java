@@ -14,6 +14,7 @@ import DTO.produktBatchKompDTO;
 
 public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 
+	// Returns the produktBatchKompDTO associated with the pbId and rbId parameters, from the database.
 	@Override
 	public produktBatchKompDTO getProduktBatchKomp(int pbId, int rbId) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
@@ -41,7 +42,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 		return PbkDTO;
 	}
 
-
+	// Returns a list of produktBatchKompDTO associated with the pbId parameter, from the database.
 	@Override
 	public List<produktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException {
 		List<produktBatchKompDTO> list = new ArrayList<produktBatchKompDTO>();
@@ -72,7 +73,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 		return list;
 	}
 
-
+	// Returns a list of produktBatchKompDTO containing all the ProduktBatchKomp from the database. 
 	@Override
 	public List<produktBatchKompDTO> getProduktBatchKompList() throws DALException, SQLException {
 		List<produktBatchKompDTO> list = new ArrayList<produktBatchKompDTO>();
@@ -93,7 +94,6 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 		} catch (SQLException e) { 
 			//throw new DALException(e);
 			//Do error handling
-			//TODO
 		} finally {
 			if (getProdBatchListKomp != null) {
 				getProdBatchListKomp.close();
@@ -116,6 +116,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 //		return list;
 //	}
 
+	// Creates a produktBatchKomp in the database with the information from the produktBatchKompDTO parameter.
 	@Override
 	public void createProduktBatchKomp(produktBatchKompDTO produktbatchkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
@@ -149,6 +150,8 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 //				);
 //	}
 
+	// Updates the produktbatchkomponent in the database with the information from the produktBatchKompDTO parameter.
+	// The pbId and rbId from the DTO needs to be associated with a produktbatchkomponent in the database before this method is called.
 	@Override
 	public void updateProduktBatchKomp(produktBatchKompDTO produktbatchkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
