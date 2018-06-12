@@ -198,8 +198,10 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			}
 			System.out.println("Arary 2: \n" + Arrays.toString(checkerArr2));
 
+
 			//compare arrays and gets the first id if they do not match
 			for (int i = 0; i < checkerArr1.length; i++) {
+
 				if(checkerArr1[i] != checkerArr2[i]) {
 					compare = checkerArr2[i]; 
 					count++;
@@ -210,13 +212,31 @@ public class MySQLRaavareDAO implements RaavareDAO{
 				return "Opfyldt";
 			}
 
+			if(checkerArr1.length == 0) {
+				getRaavareName = sqlCon.prepareStatement(getName);
+
+				//Finds the raavare_navn from the id
+				getRaavareName.setInt(1, checkerArr2[0]);
+				rs = getRaavareName.executeQuery();
+				if(rs.first()) {
+
+					name = rs.getString("raavare_navn");
+
+					System.out.println(name);
+					return name;
+				}
+			}
+			
+			
 			getRaavareName = sqlCon.prepareStatement(getName);
 
 			//Finds the raavare_navn from the id
 			getRaavareName.setInt(1, compare);
 			rs = getRaavareName.executeQuery();
 			if(rs.first()) {
+
 				name = rs.getString("raavare_navn");
+
 				System.out.println(name);
 				return name;
 			}
