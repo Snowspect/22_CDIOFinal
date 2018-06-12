@@ -142,12 +142,12 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		PreparedStatement getRaavareName = null;	
 		ResultSet rs = null;
 
-		//Ser hvilke råvare vi mangler 
+		//Checks what raavare name from a defined raavare_id
 		String getName = "SELECT raavare_navn FROM raavare WHERE raavare_id = ?;";
 
-		//Det vi har vejet	
+		//gets id from the items that we weighed
 		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
-		//Det vi skal veje
+		//gets id from the items that needs to be weighed
 		String getToWeighItems = "SELECT raavare_id FROM receptkomponent WHERE recept_id = (SELECT recept_id FROM produktbatch WHERE pb_id = ?);";
 
 		try {
@@ -194,7 +194,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			}
 			System.out.println("Arary 2: \n" + Arrays.toString(checkerArr2));
 
-			//compare arrays
+			//compare arrays and gets the first id if they do not match
 			for (int i = 0; i < checkerArr1.length; i++) {
 				if(checkerArr1[i] != checkerArr2[i]) {
 					compare = checkerArr2[i]; 
@@ -208,6 +208,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 
 			getRaavareName = sqlCon.prepareStatement(getName);
 
+			//Finds the raavare_navn from the id
 			getRaavareName.setInt(1, compare);
 			rs = getRaavareName.executeQuery();
 			if(rs.first()) {
@@ -225,5 +226,4 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		}
 		return name;
 	}
-	
 }
