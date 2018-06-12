@@ -35,7 +35,7 @@ public class UserResources {
 		
 		System.out.println("Created user: " + per.toString()); //LOGGER
 
-		String result = "Bruger tilføjet til databasen";
+		String result = "Bruger tilfÃ¸jet til databasen";
 		return result;
 	}
 

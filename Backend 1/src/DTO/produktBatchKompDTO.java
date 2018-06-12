@@ -26,7 +26,6 @@ public class produktBatchKompDTO
 		this.netto = netto;
 		this.rolle_id = rolle_id;
 	}
-
 	public int getPbId() {	return pbId; }
 	public void setPbId(int pbId) {	this.pbId = pbId; }
 	public int getRbId() { return rbId; }

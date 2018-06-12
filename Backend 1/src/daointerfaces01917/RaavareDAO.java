@@ -12,4 +12,5 @@ public interface RaavareDAO {
 	List<Raavare> getRaavareList() throws DALException, SQLException;
 	String createRaavare(Raavare raavare) throws DALException, SQLException, FoundException;
 	String updateRaavare(Raavare raavare) throws DALException, SQLException, NotFoundException;
+	public String findRaavareName (int pb_id) throws SQLException;
 }

@@ -47,7 +47,7 @@ public class Recept {
 	public void setReceptKomponent(ArrayList<ReceptKompDTO> receptKomponent) {
 		this.receptKomponent = receptKomponent;
 	}
-
+	
 	public String toString() {
 		return "receptId: " + receptId + ", receptNavn: " + receptNavn + 
 				", recept komponents: " + Arrays.toString(receptKomponent.toArray());

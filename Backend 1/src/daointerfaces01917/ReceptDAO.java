@@ -11,4 +11,5 @@ public interface ReceptDAO {
 	List<Recept> getReceptList() throws DALException, SQLException;
 	String createRecept(Recept recept) throws DALException, SQLException, FoundException;
 //	void updateRecept(Recept recept) throws DALException, SQLException;
+	public String findReceptName (int id) throws SQLException;
 }

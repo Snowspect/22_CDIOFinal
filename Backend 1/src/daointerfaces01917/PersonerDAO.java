@@ -12,4 +12,5 @@ public interface PersonerDAO {
 	ArrayList<Personer> getPersonerList() throws DALException, SQLException;
 	void createPersoner(Personer per) throws DALException, SQLException;
 	void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException;
+	public String findUserName (int id) throws SQLException;
 }

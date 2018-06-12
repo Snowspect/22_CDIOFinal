@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -115,7 +116,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			NumberOfRows = updateRaavare.executeUpdate();
 		} catch (SQLException e ) {
 				System.out.println(e);
-				return "sql fejl ikke relateret til mangel på eksistens af raavare, se consol";
+				return "sql fejl ikke relateret til mangel pï¿½ eksistens af raavare, se consol";
 		} finally {
 			if (updateRaavare != null) {
 				updateRaavare.close();
@@ -126,5 +127,103 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			throw new NotFoundException("Raavaren eksisterer ikke");
 		}
 		return "Raavaren er opdateret";
+	}
+	
+	public String findRaavareName (int pb_id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+
+		PreparedStatement getWeighed = null;
+		PreparedStatement getToWeigh = null;
+		ResultSet rs1 = null;
+		ResultSet rs2 = null;
+		int count = 0;
+		String name = null;
+
+		PreparedStatement getRaavareName = null;	
+		ResultSet rs = null;
+
+		//Checks what raavare name from a defined raavare_id
+		String getName = "SELECT raavare_navn FROM raavare WHERE raavare_id = ?;";
+
+		//gets id from the items that we weighed
+		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
+		//gets id from the items that needs to be weighed
+		String getToWeighItems = "SELECT raavare_id FROM receptkomponent WHERE recept_id = (SELECT recept_id FROM produktbatch WHERE pb_id = ?);";
+
+		try {
+
+			getWeighed = sqlCon.prepareStatement(getWeighedItems);
+			getWeighed.setInt(1,pb_id);
+			rs1 = getWeighed.executeQuery();
+
+			// Go to the last row 
+			rs1.last(); 
+			int rowCount = rs1.getRow(); 
+
+			// Reset row before iterating to get data 
+			rs1.beforeFirst();
+
+			int [] checkerArr1 = new int [rowCount];
+			int arrayCount = 0;
+
+			while(rs1.next()) {
+				checkerArr1[arrayCount] = rs1.getInt(1);
+				arrayCount++;
+			}
+			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
+
+			//Get second array from database
+			getToWeigh = sqlCon.prepareStatement(getToWeighItems);
+			getToWeigh.setInt(1,pb_id);
+			rs2 = getToWeigh.executeQuery();
+
+			// Go to the last row 
+			rs2.last(); 
+			int rowCount2 = rs2.getRow(); 
+
+			// Reset row before iterating to get data 
+			rs2.beforeFirst();
+
+			int [] checkerArr2 = new int [rowCount2];
+			int arrayCount2 = 0;
+			int compare = 0;
+
+			while(rs2.next()) {
+				checkerArr2[arrayCount2] = rs2.getInt(1);
+				arrayCount2++;
+			}
+			System.out.println("Arary 2: \n" + Arrays.toString(checkerArr2));
+
+			//compare arrays and gets the first id if they do not match
+			for (int i = 0; i < checkerArr1.length; i++) {
+				if(checkerArr1[i] != checkerArr2[i]) {
+					compare = checkerArr2[i]; 
+					count++;
+					break;
+				}
+			}
+			if(count == checkerArr2.length) {
+				return "Opfyldt";
+			}
+
+			getRaavareName = sqlCon.prepareStatement(getName);
+
+			//Finds the raavare_navn from the id
+			getRaavareName.setInt(1, compare);
+			rs = getRaavareName.executeQuery();
+			if(rs.first()) {
+				name = rs.getString("raavare_navn");
+				System.out.println(name);
+				return name;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(getRaavareName != null) {
+				getRaavareName.close();
+			}
+		}
+		return name;
 	}
 }

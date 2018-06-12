@@ -47,31 +47,5 @@ public class Personer {
 		return str;
 	}
 
-	public String findUserName (int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
-	
-		String name = null;
-		PreparedStatement getUserName = null;
-		ResultSet rs = null;
-	
-		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
-	
-		try {
-			getUserName = sqlCon.prepareStatement(getName);
-	
-			getUserName.setInt(1, id);
-			rs = getUserName.executeQuery();
-			if(rs.first()) {
-				name = rs.getString("opr_navn");
-			}
-		} catch (SQLException e) {
-			System.out.println(e);
-			e.printStackTrace();
-		} finally {
-			if(getUserName != null) {
-				getUserName.close();
-			}
-		}
-		return name;
-	}
+
 }

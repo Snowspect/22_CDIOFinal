@@ -1,13 +1,12 @@
 package DTO;
-
 //Data Transfer object to hold information regarding one instance of Raavare
-public class Raavare 
-{
+public class Raavare {
+
 	private int ravareId;
 	private String name, supplier;
-	
+
 	public Raavare() {}
-	
+
 	public Raavare(int ravareId, String name, String supplier) {
 		this.ravareId = ravareId;
 		this.name = name;
