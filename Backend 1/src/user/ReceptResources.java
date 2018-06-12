@@ -1,6 +1,8 @@
 package user;
 
-import java.util.ArrayList;  
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -11,8 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.FoundException;
-import DTO.Raavare;
 import DTO.Recept;
+import DTO.ReceptKompDTO;
+import daoimpl01917.MySQLReceptDAO;
+import daoimpl01917.MySQLReceptKompDAO;
+import daointerfaces01917.DALException;
 
 @Path("/recept")
 
@@ -20,64 +25,31 @@ import DTO.Recept;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class ReceptResources {
-	private static ArrayList <Recept> receptList = new ArrayList<>();
-
-	//{"receptId": 1, "receptNavn": "Fisk", "ingrediens": [{"raavareId": 24, "nomNetto": 95.9, "tolerance": 2.6}]}
+	MySQLReceptDAO recpt = new MySQLReceptDAO();
+	MySQLReceptKompDAO recptkomp = new MySQLReceptKompDAO();
+	
+	// inserts a recept into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Recept rec) throws FoundException
+	public String submit(Recept rec) throws FoundException, DALException, SQLException
 	{
-		boolean found = false;
-		for (Recept recept : receptList) {
-			if (rec.getReceptId() == recept.getReceptId()) {
-				found = true;
-			}
-		}
-		if (found) {
-			throw new FoundException("Recepten findes allerede");
-		}
-		
-		receptList.add(rec);
-
-		System.out.println("Created user: " + rec.toString());
-		System.out.println("Current list " + receptList.toString());
-
-		String result = "created recept";
-		return result; 
+		return recpt.createRecept(rec);
 	}
 
-	//GET
+	// gets a list of recepts from database without their attached raavare components 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Recept> getRecept()
+	public ArrayList<Recept> getRecept() throws DALException, SQLException
 	{
-		return receptList;
+		return (ArrayList<Recept>) recpt.getReceptList();
 	}
-
-	//	//GET
-	//	@GET
-	//	@Path("/{id}")
-	//	@Produces(MediaType.APPLICATION_JSON)
-	//	public ArrayList<Recept> getRecept(@PathParam("id") int id)
-	//	{
-	//		should return the body of that path param. //ask tomorrow
-	//		return receptList;
-	//	}
-
-	//PUT
-	//	@PUT
-	//	@Path("{receptNr}")
-	//	@Consumes(MediaType.APPLICATION_JSON)
-	//	public String update(Recept rec) {
-	//		
-	//		for (Recept recpt : receptList) {
-	//			if(recpt.getReceptId() == rec.getReceptId())
-	//			{
-	//				recpt.setReceptId(rec.getReceptId());
-	//				recpt.setName(rec.getName());
-	//				recpt.setSupplier(rec.getSupplier());
-	//			}
-	//		}			
-	//		return "Updated råvare";
-	//	}
+	
+	// gets a list of raavare components attached to a recept based on a recept id.
+	@GET
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<ReceptKompDTO> getReceptRaavare(@PathParam("id") int id) throws DALException, SQLException
+	{
+		return (ArrayList<ReceptKompDTO>) recptkomp.getReceptKompList(id);
+	}
 }

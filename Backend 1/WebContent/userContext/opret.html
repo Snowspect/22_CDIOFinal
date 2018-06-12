@@ -28,29 +28,25 @@
 
 			<center>BrugerID:</center>
 			<center>
-				<input type="number" id="ID" required pattern="[0-9.]+">
+				<input type="number" id="ID" required maxlength="11" pattern="[0-9.]+">
 			</center>
 			<br>
 			<center>Brugernavn</center>
 			<center>
-				<input type="text" id="Brugernavn" required
+				<input type="text" id="Brugernavn" maxlength="29" required
 					pattern="[a-åA-Å]*">
 			</center>
 			<br>
 			<center>Initial</center>
 			<center>
-				<input type="text" id="ini" required>
+				<input type="text" id="ini" maxlength="4" required>
 			</center>
 			<br>
 			<center>CPR-nr</center>
 			<center>
-				<input type="text" id="CPR" required>
+				<input type="text" id="CPR" maxlength="11" required>
 			</center>
 			<br>
-			<center>Password</center>
-			<center>
-				<input type="text" id="password" required>
-			</center>
 			<center>
 				<select id=rolle required="required">
 					<option value=""> Vælg rolle </option>

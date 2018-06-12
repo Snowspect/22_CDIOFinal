@@ -5,42 +5,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.RaavareBatchDAO;
+import DTO.FoundException;
 import DTO.RaavareBatch;
 
 public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 
-	@Override
-	public RaavareBatch getRaavareBatch(int rbId) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement getraavareBatch = null;
-		ResultSet rs = null;
-		RaavareBatch raaBaDTO = null;
-		
-		String getraaBa = "SELECT * FROM raavarebatch WHERE rbId_id = ?";
-		
-		try {
-			getraavareBatch = conn.prepareStatement(getraaBa);
-			getraavareBatch.setInt(1, rbId);
-			rs = getraavareBatch.executeQuery();
-			if (!rs.first()) throw new DALException("RaavareBatchen med id:  " + rbId + " findes ikke");
-			raaBaDTO = new RaavareBatch (rs.getInt("rb_id"), rs.getInt("raavare_id"), rs.getDouble("maengde"));
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getraavareBatch != null) {
-				getraavareBatch.close();
-	        }
-		}
-		return raaBaDTO;
-	}
-
-
+	// Returns a list of RaavareBatch containing all RaavareBatch from the database.
 	@Override
 	public List<RaavareBatch> getRaavareBatchList() throws DALException, SQLException {
 		List<RaavareBatch> list = new ArrayList<RaavareBatch>();
@@ -67,35 +45,9 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 		return list;
 	}
 
+	// Creates a RaavareBatch in the database with the information from the RaavareBatch parameter.
 	@Override
-	public List<RaavareBatch> getRaavareBatchList(int raavareId) throws DALException, SQLException {
-		List<RaavareBatch> list = new ArrayList<RaavareBatch>();
-		Connection conn = Connector.getConn();
-		PreparedStatement getRaavareBatchList = null;
-		ResultSet rs = null;
-		
-		String getRaaBaList = "SELECT * FROM raavarebatch WHERE raavareId = ?";
-		
-		try {
-			getRaavareBatchList = conn.prepareStatement(getRaaBaList);
-			getRaavareBatchList.setInt(1, raavareId);
-			rs = getRaavareBatchList.executeQuery();
-			while (rs.next()) {
-					list.add(new RaavareBatch(rs.getInt("rb_id"), rs.getInt("raavare_id"), rs.getDouble("maengde")));
-				}
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getRaavareBatchList != null) {
-				getRaavareBatchList.close();
-	        }
-		}
-		return list;
-	}
-
-	@Override
-	public void createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException {
+	public String createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException, FoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRaavareBatch = null;
 		
@@ -106,38 +58,66 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 			
 			createRaavareBatch.setInt(1, raavarebatch.getRbId());
 			createRaavareBatch.setInt(2, raavarebatch.getRaavareId());
-			createRaavareBatch.setDouble(3, raavarebatch.getMaengde());
+			createRaavareBatch.setDouble(3, raavarebatch.getamount());
 			createRaavareBatch.executeUpdate();
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			throw new FoundException("RaavareBatchen findes allerede");	
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+			return "Error ikke relateret til allerede eksisterende id - se consol output";
 		} finally {
 			if (createRaavareBatch != null) {
 				createRaavareBatch.close();
 	        }
 		}
+		return "raavareBatch oprettet";
 	}
-
-	@Override
-	public void updateRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement updateRaavareBatch = null;
-		
-		String updateRaaBa = "UPDATE raavarebatch SET maengde = ? WHERE rb_id = ?";
-		
+	
+	public boolean iterateRb(int rb_id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		PreparedStatement getRb = null;
+		ResultSet rs = null;
+		int count = 0;
+	
+		String getRbItems = "SELECT rb_id FROM raavarebatch;";
+	
 		try {
-			updateRaavareBatch = conn.prepareStatement(updateRaaBa);
-			updateRaavareBatch.setDouble(1, raavarebatch.getMaengde());
-			updateRaavareBatch.setInt(2, raavarebatch.getRbId());
-			updateRaavareBatch.setInt(3, raavarebatch.getRaavareId());
-			updateRaavareBatch.executeUpdate();
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			//Get first array from database
+			getRb = sqlCon.prepareStatement(getRbItems);
+			rs = getRb.executeQuery();
+	
+			// Go to the last row 
+			rs.last(); 
+			int rowCount = rs.getRow(); 
+	
+			// Reset row before iterating to get data 
+			rs.beforeFirst();
+	
+			int [] checkerArr1 = new int [rowCount];
+			int arrayCount = 0;
+	
+			while(rs.next()) {
+				checkerArr1[arrayCount] = rs.getInt(1);
+				arrayCount++;
+				//				System.out.println("arrayCount: " + arrayCount);
+			}
+			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
+	
+			//compare arrays
+			for (int i = 0; i < checkerArr1.length; i++) {
+					if(rb_id == checkerArr1[i]) {
+						return true;
+					}
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		} finally {
-			if (updateRaavareBatch != null) {
-				updateRaavareBatch.close();
-	        }
+			if( getRb != null) {
+				getRb.close();
+			}
 		}
+		return false;
 	}
 }

@@ -7,9 +7,9 @@ function generateProdukt() {
 	
 	for(i = 0; i < number; i++) {
 		var form = '	<tr>' + 
-		'				<td><center>UserID</center>'+
+		'				<td><center>Bruger ID</center>'+
 		'				<center>'+
-		'					<input type="number" id="userID' + i + '" required pattern="[0-9.]+">'+
+		'					<input type="number" id="rolle_id' + i + '" required pattern="[0-9.]+">'+
 		'				</center></td>'+
 		'				<br>'+
 		'				<td><center>rbID</center>'+
@@ -56,31 +56,49 @@ function submitProduct() { //Formen kalder denne function, sikre at alle felter 
 
 
 function getProduktFromHTML() {
-	var pbId = document.getElementById("pbId").value;
-	var rcpId = document.getElementById("receptId").value;
-	var status = document.getElementById("Status").value;
+	var pbIdT = document.getElementById("pbId").value;
+	var rcpIdT = document.getElementById("receptId").value;
 	
 	// lav afvejnings inputs
 
 	var produktbatch = {
-		pbId : pbId,
-		receptId : rcpId,
-		status : status,
-		afvejning: []
-	//	"afvejning" : [{"userId"a: /*input*/, "rbId":/*input*/, "tara": /*input*/, "netto": /*input*/ }]
+		pbId : pbIdT,
+		receptId : rcpIdT,
+		status : 0,
+		produktBatchKomponent: []
 	};
-	
-	$("tr").each(function(index,element){
-		//debugger;
-		var UserID = document.getElementById("userID" + index).value;
-		var rbId = document.getElementById("rbID" + index).value;
-		var tara = document.getElementById("tara" + index).value;
-		var netto = document.getElementById("Netto" + index).value;
-		var obj = {userId : UserID, rbId: rbId, tara: tara, netto: netto};
-		produktbatch.afvejning.push(obj);
-	});	
+//	
+//	$("tr").each(function(index,element){
+//		//debugger;
+//		var pbIdA = pbIdT;
+//		var rbIdA = document.getElementById("rbID" + index).value;
+//		var taraA = document.getElementById("tara" + index).value;
+//		var nettoA = document.getElementById("Netto" + index).value;
+//		var rolle_idA = document.getElementById("rolle_id" + index).value;
+//		var obj = {pbId : pbIdA, rbId: rbIdA, tara: taraA, netto: nettoA, rolle_id: rolle_idA};
+//		produktbatch.produktBatchKomponent.push(obj);
+//	});	
 	
 	return produktbatch;
+}
+
+function loadproduktKomp() {
+	var id = document.getElementById("produktbatchID").value;
+	toViewProduktbatch();
+	$(function() {
+		$.ajax({
+			url : 'cargostock/produktbatch/' + id,
+			type: 'GET',
+			contentType : 'application/json',
+			success: function(data)
+			{
+				iterateProductKompTable(data);
+			}, error : function(message)
+			{
+				alert("produkt batch komp fejlet");
+			}
+		})
+	})
 }
 
 function loadProducts(){
@@ -102,29 +120,53 @@ function loadProducts(){
 }
 
 function iterateProductTable(data) {
-	$(jQuery.parseJSON(JSON.stringify(data))).each(function(index,element) {  
-		for(i = 0; i < this.afvejning.length; i++) {
-		insertIntoProductTable(this.pbId, this.receptId, this.status, this.afvejning[i].userId, this.afvejning[i].rbId, this.afvejning[i].tara, this.afvejning[i].netto);
-		}
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
+		insertIntoProductTable(this.pbId, this.receptId, this.status);
 	}); 
 }
 
-function insertIntoProductTable(pbId, rcpId, Status, userId, rbId, tara, netto) {
+function iterateProductKompTable(data) {
+	$(jQuery.parseJSON(JSON.stringify(data))).each(function(){
+		insertIntoProductKompTable(this.rolle_id, this.rbId, this.tara, this.netto);		
+	});
+}
+
+function insertIntoProductTable(pbId, rcpId, Status) {
 	var table = document.getElementById("productBatchTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
-	var cell4 = row.insertCell(3);
-	var cell5 = row.insertCell(4);
-	var cell6 = row.insertCell(5);
-	var cell7 = row.insertCell(6);
+//	var cell4 = row.insertCell(3);
+//	var cell5 = row.insertCell(4);
+//	var cell6 = row.insertCell(5);
+//	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = pbId;
 	cell2.innerHTML = rcpId;
 	cell3.innerHTML = Status;
-	cell4.innerHTML = userId;
-	cell5.innerHTML = rbId;
-	cell6.innerHTML = tara;
-	cell7.innerHTML = netto;
+//	cell4.innerHTML = rolle_id;
+//	cell5.innerHTML = rbId;
+//	cell6.innerHTML = tara;
+//	cell7.innerHTML = netto;
+}
+
+function insertIntoProductKompTable(rolle_id, rbId, tara, netto) {
+	var table = document.getElementById("produktBatchKompTable");
+	var row = table.insertRow(1);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+//	var cell5 = row.insertCell(4);
+//	var cell6 = row.insertCell(5);
+//	var cell7 = row.insertCell(6);
+
+//	cell1.innerHTML = pbId;
+//	cell2.innerHTML = rcpId;
+//	cell3.innerHTML = Status;
+	cell1.innerHTML = rolle_id;
+	cell2.innerHTML = rbId;
+	cell3.innerHTML = tara;
+	cell4.innerHTML = netto;
 }

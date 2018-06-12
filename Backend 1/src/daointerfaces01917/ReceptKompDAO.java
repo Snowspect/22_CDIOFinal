@@ -10,5 +10,5 @@ public interface ReceptKompDAO {
 	List<ReceptKompDTO> getReceptKompList(int receptId) throws DALException, SQLException;
 	List<ReceptKompDTO> getReceptKompList() throws DALException, SQLException;
 		void createReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException;
-	void updateReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException;
+	//void updateReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException;
 }

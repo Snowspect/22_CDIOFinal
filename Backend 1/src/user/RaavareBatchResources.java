@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -11,9 +12,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mysql.jdbc.Connection;
+
 import DTO.FoundException;
 import DTO.Raavare;
 import DTO.RaavareBatch;
+import daoimpl01917.MySQLRaavareBatchDAO;
+import daointerfaces01917.DALException;
 
 @Path("/raavarebatch")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -22,60 +27,25 @@ import DTO.RaavareBatch;
 public class RaavareBatchResources {
 
 	private static ArrayList <RaavareBatch> ravareBatchList = new ArrayList<>();
-
-	//*** ravareBatch ***//
+	MySQLRaavareBatchDAO ravB = new MySQLRaavareBatchDAO();
+	
+	// inserts raavareBatch into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(RaavareBatch ravBat) throws FoundException
-	{
-		boolean found = false;
-		for (RaavareBatch raavareBatch : ravareBatchList) {
-			if (ravBat.getRbId() == raavareBatch.getRbId()) {
-				found = true;
-			}
-		}
-		if (found) {
-			throw new FoundException("RaavareBatchen findes allerede");
-		}
-		
-		ravareBatchList.add(ravBat);
+	public String submit(RaavareBatch ravBat) throws FoundException, DALException, SQLException
+	{		
+		String result = ravB.createRaavareBatch(ravBat);
 
 		System.out.println("Created raavareBatch: " + ravBat.toString());
 		System.out.println("Current list " + ravareBatchList.toString());
 
-		String result = "created ravareBatch";
-
-
 		return result;
 	}
 
+	// gets list of raavarebatches from database
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-
-	public ArrayList<RaavareBatch> getRaavarebatch(){
-
-		return ravareBatchList;
+	public ArrayList<RaavareBatch> getRaavarebatch() throws DALException, SQLException{
+		return (ArrayList<RaavareBatch>) ravB.getRaavareBatchList();
 	}
-
-//	@PUT
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String update(RaavareBatch ravBat) {
-//
-//		for(RaavareBatch RavBatch : ravareBatchList)
-//			if(RavBatch.getRbId() == ravBat.getRbId())
-//			{
-//				RavBatch.setRbId(ravBat.getRbId());
-//				RavBatch.setRaavareId(ravBat.getRaavareId());
-//				RavBatch.setMaengde(ravBat.getMaengde());
-//			}
-//		return "Updated RaavareBatch";
-//	}
-
-//	@DELETE
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String delete(int rbId)
-//	{
-//		ravareBatchList.removeIf(e-> e.getRbId() == rbId);
-//		return "deleted ravareBatch";
-//	}
 }

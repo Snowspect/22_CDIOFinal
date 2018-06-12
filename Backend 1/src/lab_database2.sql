@@ -36,7 +36,7 @@ CREATE TABLE produktbatchkomponent(pb_id INT, rb_id INT, tara REAL, netto REAL, 
    PRIMARY KEY (pb_id, rb_id), 
    FOREIGN KEY (pb_id) REFERENCES produktbatch(pb_id), 
    FOREIGN KEY (rb_id) REFERENCES raavarebatch(rb_id), 
-   FOREIGN KEY (rolle_id) REFERENCES operatoer(rolle_id)) ENGINE=innoDB;
+   FOREIGN KEY (rolle_id) REFERENCES operatoer(rolle_id)) ENGINE=innoDB; 
 
 INSERT INTO personer(cpr, opr_navn, ini) VALUES
 ('070770-7007', 'Angelo A', 'AA' ),
@@ -147,7 +147,7 @@ end; //
 delimiter ;
  
 delimiter //
-create procedure UpdateEmployee(in oprnavn varchar(29), ini_ varchar(4), cpr_n varchar(11), rolle_Id int(11), rolle varchar(35))
+create procedure UpdateEmployee(in oprnavn varchar(29), ini_ varchar(4), rolle_Id int(11), rolle varchar(35), cpr_n varchar(11))
 begin 
 
 
@@ -160,20 +160,63 @@ END;
 start transaction;
 
 update personer
-set cpr = cpr_n, opr_navn = oprnavn, ini = ini_
+set opr_navn = oprnavn, ini = ini_
 where cpr = cpr_n;
 
 update roller 
 set  rolle = rolle
 where cpr = cpr_n and rolle_id = rolle_Id;
 
-update operatoer
-set rolle_id = rolle_Id
-where rolle_id = rolle_Id;
+commit;
+end; //
+delimiter ;
+
+
+
+
+
+delimiter //
+create procedure CreateProduktBatchKomp(in pb_id int(11), rb_id int(11), tara double, netto double, rolle_id int(11))
+begin 
+
+declare exit handler for sqlexception
+	begin 
+	rollback;
+END;
+
+start transaction;
+
+INSERT INTO produktbatchkomponent
+(pb_id, rb_id, tara, netto, rolle_id) VALUES (pb_id, rb_id, tara, netto, rolle_id);
 
 commit;
 end; //
 delimiter ;
+
+
+
+
+
+delimiter //
+create procedure MakeProBaKompRow(in par_pb_id int(8), par_rb_id int(8), par_tara double(4,2), par_netto double(4,2), par_rolle_id int(3))
+begin 
+
+declare exit handler for sqlexception
+	begin 
+	rollback;
+END;
+
+start transaction;
+
+insert into produktbatchkomponent  
+(pb_id, rb_id, tara, netto, rolle_id) values(par_pb_id, par_rb_id, par_tara, par_netto, par_rolle_id);
+
+update raavarebatch set maengde = (maengde - par_netto) where rb_id = par_rb_id;
+
+commit;
+end; //
+delimiter ;
+
 
 -- Admin 			Check
 -- Pharmasict		Check	- Laver pizza

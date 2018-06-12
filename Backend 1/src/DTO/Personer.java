@@ -1,80 +1,51 @@
 package DTO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-public class Personer {
-	private int userId;
-	private String userName;
-	private String ini;
-	private String cpr;
-	private String roles;
-	private boolean status;
+import JDBC.Connector;
 
-	//tom constructor for god ordens skyld
-	public Personer() {
-	}
+//Data Transfer object to hold information regarding one instance of Personer
+public class Personer {
+	private int userId; 
+	private String userName; 
+	private String ini; //initials
+	private String cpr; 
+	private String roles; 
+	private boolean status; //whether a user is active or not.
+
+	public Personer() {}
 
 	public Personer(int userId, String userName, String ini, String cpr, String roles, boolean status) {
-		this.userId = userId;
-		this.userName = userName;
-		this.ini = ini;
-		this.cpr = cpr;
-		this.roles = roles;
-		this.status = true;
+		this.userId = userId; 
+		this.userName = userName; 
+		this.ini = ini; 
+		this.cpr = cpr; 
+		this.roles = roles; 
+		this.status = status; 
 	}
 
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getIni() {
-		return ini;
-	}
-
-	public void setIni(String ini) {
-		this.ini = ini;
-	}
-
-	public String getCpr() {
-		return cpr;
-	}
-
-	public void setCpr(String cpr) {
-		this.cpr = cpr;
-	}
-
-	public String getRoles() {
-		return roles;
-	}
-
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+	public int getUserId() { return userId; }
+	public void setUserId(int userId) { this.userId = userId; }
+	public String getUserName() { return userName; }
+	public void setUserName(String userName) { this.userName = userName; }
+	public String getIni() { return ini; }
+	public void setIni(String ini) { this.ini = ini; }
+	public String getCpr() { return cpr; }
+	public void setCpr(String cpr) { this.cpr = cpr; }
+	public String getRoles() { return roles; }
+	public void setRoles(String roles) { this.roles = roles; }
+	public boolean isStatus() { return status; }
+	public void setStatus(boolean status) { this.status = status; }
 
 	public String toString() {
 		String str = null;
 		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , roles " + roles + ", status: " + status;
 		return str;
-
 	}
+
+
 }

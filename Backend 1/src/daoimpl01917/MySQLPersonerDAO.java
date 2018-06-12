@@ -10,89 +10,30 @@ import java.util.List;
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.PersonerDAO;
+import jersey.repackaged.com.google.common.base.Throwables;
+import DTO.NotFoundException;
 import DTO.Personer;
 
 public class MySQLPersonerDAO implements PersonerDAO {
 
-	@Override
-	public Personer getPersoner(int rolle_id) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement getPerson = null;
-		PreparedStatement getRolle = null;
-		PreparedStatement getOperator = null;
-		ResultSet rs = null;
-		Personer perDTO = null;
-		
-		String getper = "SELECT * FROM personer WHERE cpr = ?";
-		String getopr = "SELECT * FROM operatoer WHERE rolle_id = ?";
-		String getrol = "SELECT * FROM roller WHERE rolle_id = ?";
-		
-		try {
-			String cpr = null;;
-			String Cpr = null, opr_navn = null,ini = null,Rolle = null;
-			int Rolle_id = 0;
-			Boolean Status = null;
-			
 
-			getRolle = conn.prepareStatement(getrol);
-			getRolle.setInt(1, rolle_id);
-			rs = getRolle.executeQuery();
-			if(rs.first())
-			{
-				Rolle_id = rs.getInt("rolle_id");
-				Cpr = rs.getString("cpr");
-				Rolle = rs.getString("rolle");
-				cpr = Cpr;
-			}
-			
-			getOperator = conn.prepareStatement(getopr);
-			getOperator.setInt(1, rolle_id);
-			rs = getOperator.executeQuery();
-			if(rs.first())
-			{
-				Status = (rs.getBoolean("opr_status"));				
-			}
-
-			getPerson = conn.prepareStatement(getper);
-			getPerson.setString(1, cpr);
-			rs = getPerson.executeQuery();
-			if(rs.first())
-			{
-				opr_navn = rs.getString("opr_navn");
-				ini = rs.getString("ini");				
-			}
-
-		perDTO = new Personer (Rolle_id, opr_navn, ini, Cpr, Rolle, Status);   
-		
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getPerson != null) {   //Fix error handling for roller and operator
-				getPerson.close();
-				getRolle.close();
-				getOperator.close();
-	        }
-		}
-		return perDTO;
-	}
+	//Returns a list of personer from the database.
 
 	@Override
-	public List<Personer> getPersonerList() throws DALException, SQLException {
-		List<Personer> list = new ArrayList<Personer>();
+	public ArrayList<Personer> getPersonerList() throws DALException, SQLException {
+		ArrayList<Personer> list = new ArrayList<Personer>();
 
 		Connection conn = Connector.getConn();
 		PreparedStatement getPerson = null;
-		PreparedStatement getRolle = null;
-		PreparedStatement getOperator = null;
 		ResultSet rs = null;
 		
-		String getper = "SELECT * FROM personer";
-		String getopr = "SELECT * FROM operatoer";
-		String getrol = "SELECT * FROM roller";
+		String getper = "SELECT * FROM roller natural join operatoer natural join personer";
 		
 		try {
-			ArrayList<String> cpr = new ArrayList<String>(), opr_navn = new ArrayList<String>(), ini = new ArrayList<String>(),rolle = new ArrayList<String>();
+			ArrayList<String> cpr = new ArrayList<String>();
+			ArrayList<String> opr_navn = new ArrayList<String>();
+			ArrayList<String> ini = new ArrayList<String>();
+			ArrayList<String> rolle = new ArrayList<String>();
 			ArrayList<Integer> rolle_id = new ArrayList<Integer>();
 			ArrayList<Boolean> status = new ArrayList<Boolean>();
 			
@@ -104,43 +45,27 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			cpr.add(rs.getString("cpr"));
 			opr_navn.add(rs.getString("opr_navn"));
 			ini.add(rs.getString("ini"));
+			rolle_id.add(rs.getInt("rolle_id"));
+			rolle.add(rs.getString("rolle"));
+			status.add(rs.getBoolean("opr_status"));
 			}
-//			rs = null;
 			
-			getRolle = conn.prepareStatement(getrol);
-			rs = getRolle.executeQuery();
-			while(rs.next()) {
-				rolle_id.add(rs.getInt("rolle_id"));
-				rolle.add(rs.getString("rolle"));
-			}
-//			rs = null;
-			
-			getOperator = conn.prepareStatement(getopr);
-			rs = getOperator.executeQuery();
-			while(rs.next())
+			for(int j = 0; j < cpr.size(); j++)
 			{
-				status.add((rs.getBoolean("opr_status")));				
-			}
-//			rs = null;
-			
-			int i = 0;
-			for (String string : ini) {
-				list.add(new Personer(rolle_id.get(i), opr_navn.get(i), ini.get(i), cpr.get(i), rolle.get(i), status.get(i)));  //TODO Fix parameters
-				i++;
+				list.add(new Personer(rolle_id.get(j), opr_navn.get(j), ini.get(j), cpr.get(j), rolle.get(j), status.get(j)));  //TODO Fix parameters
 			}
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (getPerson != null) {
 				getPerson.close();
-				getRolle.close();
-				getOperator.close();
 	        }
 		}
 		return list;
 	}
 
+	// Creates a person in the database with information from the Personer parameter.
 	@Override
 	public void createPersoner(Personer per) throws DALException, SQLException {
 		
@@ -158,8 +83,8 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			createPerson.setString(6, per.getRoles());
 			createPerson.executeUpdate();
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (createPerson != null) {
 				createPerson.close();
@@ -168,28 +93,89 @@ public class MySQLPersonerDAO implements PersonerDAO {
 
 	}
 
+	// Updates a person in the database with the information from the Personer parameter.
+	// The CPR nr and UserId needs to be from an existing person and it must be the same person.
 	@Override
-	public void updatePersoner(Personer per) throws DALException, SQLException {
+	public void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
-		String updatePer = "UPDATE personer SET opr_navn = ?, ini = ? WHERE cpr = ?";
-		
+		String updatePer = "CALL UpdateEmployee(?,?,?,?,?)";
+		int affectedRows = -1;
 		try {
 			updatePerson = conn.prepareStatement(updatePer);
 			
 			updatePerson.setString(1, per.getUserName());
 			updatePerson.setString(2, per.getIni());
-			updatePerson.setString(3, per.getCpr());
+			updatePerson.setInt(3, per.getUserId());
+			updatePerson.setString(4, per.getRoles());
+			updatePerson.setString(5, per.getCpr());
 			updatePerson.executeUpdate();
 		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			if (updatePerson != null) {
 				updatePerson.close();
 	        }
 		}
+		if (affectedRows == 0)
+		{
+			throw new NotFoundException("Ingen Bruger fundet - ingen bruger opdateret");
+		}
 	}
 
+	// Sets status to false on a operatoer associated with the id parameter.
+	public void deletePersoner(int id) throws DALException, SQLException, NotFoundException 
+	{
+		Connection conn = Connector.getConn();
+		PreparedStatement deletePerson = null;
+		String deletePer = "UPDATE operatoer SET opr_status = 0 WHERE rolle_id = ?;";
+		int affectedRows = -1;
+		try {
+			deletePerson = conn.prepareStatement(deletePer);
+			deletePerson.setInt(1, id);
+			affectedRows = deletePerson.executeUpdate();
+		} catch (SQLException e ) {
+			System.out.println(e);
+			e.printStackTrace();
+		} finally {
+			if (deletePerson != null) {
+				deletePerson.close();
+	        }
+		}
+		//delete returns a number for affected rows.
+		if(affectedRows == 0)
+		{
+			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
+		}
+	}
+	
+	public String findUserName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		String name = null;
+		PreparedStatement getUserName = null;
+		ResultSet rs = null;
+	
+		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
+	
+		try {
+			getUserName = sqlCon.prepareStatement(getName);
+	
+			getUserName.setInt(1, id);
+			rs = getUserName.executeQuery();
+			if(rs.first()) {
+				name = rs.getString("opr_navn");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		} finally {
+			if(getUserName != null) {
+				getUserName.close();
+			}
+		}
+		return name;
+	}
 }

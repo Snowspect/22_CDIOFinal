@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -13,65 +14,38 @@ import javax.ws.rs.core.MediaType;
 import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Raavare;
+import daoimpl01917.MySQLRaavareDAO;
+import daointerfaces01917.DALException;
 
 @Path("/raavare")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
-public class RaavareResources {
-
-	private static ArrayList <Raavare> raavareList = new ArrayList<>();
+public class RaavareResources 
+{	
+	MySQLRaavareDAO test = new MySQLRaavareDAO();	
 	
+	// Inserts new raavare into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Raavare rav) throws FoundException
+	public String submit(Raavare rav) throws FoundException, DALException, SQLException
 	{
-		boolean found = false;
-		for (Raavare raavare : raavareList) {
-			if (rav.getRavareId() == raavare.getRavareId()) {
-				found = true;
-			}
-		}
-		if (found) {
-			throw new FoundException("Raavaren findes allerede");
-		}
-		
-		raavareList.add(rav);
-
-		System.out.println("Created raavare: " + rav.toString());
-		System.out.println("Current list " + raavareList.toString());
-
-		String result = "created ravare";
-
-
+		String result = test.createRaavare(rav);
 		return result;
 	}
 
+	// gets list of raavare from database
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-
-	public ArrayList<Raavare> getRaavare(){
-
-		return raavareList;
+	public ArrayList<Raavare> getRaavare() throws DALException, SQLException{
+		return (ArrayList<Raavare>) test.getRaavareList();
 	}
 
+	// updates a raavare in database
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON) 
-	public void update(Raavare rav) throws NotFoundException {
-		boolean found = false;
-		
-		for(Raavare Rav : raavareList) {
-			if(Rav.getRavareId() == rav.getRavareId())
-			{
-				Rav.setRavareId(rav.getRavareId());
-				Rav.setName(rav.getName());
-				Rav.setSupplier(rav.getSupplier());
-				found = true;
-			}
-		}
-		if (!found) {
-			throw new NotFoundException("Raavaren findes ikke");
-		}	
+	public String update(Raavare rav) throws NotFoundException, DALException, SQLException {
+		String result = test.updateRaavare(rav);
+		return result;
 	}
-
 }
