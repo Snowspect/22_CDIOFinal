@@ -1,4 +1,4 @@
-package DTO;
+package daoimpl01917;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import JDBC.Connector;
-import func.Weight_IO;
+import daointerfaces01917.StatusDAO;
 
-public class StatusDTO {
-	
+public class MySQLStatusDAO implements StatusDAO {
 	/*Checks if a produktbatch is done by comparing to SQL columns converted into java arrays 
 	  using the values of raavare_id and comparing them value by value*/
 	public boolean checkIfDone(int pb_id) throws SQLException {
@@ -22,9 +21,9 @@ public class StatusDTO {
 		ResultSet rs2 = null;
 		int count = 0;
 	
-		//Det vi har vejet	
+		//Items that we have weighed
 		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
-		//Det vi skal veje
+		//Items that has to be weighed
 		String getToWeighItems = "SELECT raavare_id FROM receptkomponent WHERE recept_id = (SELECT recept_id FROM produktbatch WHERE pb_id = ?);";
 	
 		try {
@@ -94,7 +93,7 @@ public class StatusDTO {
 	}
 	
 	//A method that checks if a status needs updating by calling other methods.
-	public int updateStatus(Weight_IO weight_IO, Produktbatch produktbatch, int id) throws SQLException {
+	public int updateStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 		try {
 			switch (checkStatus(id)) {
@@ -113,7 +112,6 @@ public class StatusDTO {
 			}
 	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return checkStatus(id);
@@ -142,7 +140,6 @@ public class StatusDTO {
 				setStatus2.execute();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if(setStatus1 != null || setStatus2 != null) {

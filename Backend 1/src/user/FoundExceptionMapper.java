@@ -10,9 +10,9 @@ import DTO.FoundException;
 @Provider
 public class FoundExceptionMapper implements ExceptionMapper<FoundException> {
 
+	//takes a FoundException parameter and returns a response message with status 302 with message
 	@Override
 	public Response toResponse(FoundException exception) {
 		return Response.status(Status.FOUND).entity("{msg:"+exception.getMessage()+"}").build();
 	}
-	//if FoundException called then return 302 http code	
 }

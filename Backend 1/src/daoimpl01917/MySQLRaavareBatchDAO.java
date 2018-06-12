@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -57,14 +58,12 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 			
 			createRaavareBatch.setInt(1, raavarebatch.getRbId());
 			createRaavareBatch.setInt(2, raavarebatch.getRaavareId());
-			createRaavareBatch.setDouble(3, raavarebatch.getMaengde());
+			createRaavareBatch.setDouble(3, raavarebatch.getamount());
 			createRaavareBatch.executeUpdate();
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			throw new FoundException("RaavareBatchen findes allerede");	
 		}
 		catch (SQLException e) {
-			//i tvivl om hvorvidt dette nogensinde bliver udført grundet vores input handling gennem html
-			//også i tvivl om den kan finde ud af at køre begge to eller den stoppe efter sout.(system out print)
 			System.out.println(e);
 			return "Error ikke relateret til allerede eksisterende id - se consol output";
 		} finally {
@@ -73,5 +72,52 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 	        }
 		}
 		return "raavareBatch oprettet";
+	}
+	
+	public boolean iterateRb(int rb_id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		PreparedStatement getRb = null;
+		ResultSet rs = null;
+		int count = 0;
+	
+		String getRbItems = "SELECT rb_id FROM raavarebatch;";
+	
+		try {
+			//Get first array from database
+			getRb = sqlCon.prepareStatement(getRbItems);
+			rs = getRb.executeQuery();
+	
+			// Go to the last row 
+			rs.last(); 
+			int rowCount = rs.getRow(); 
+	
+			// Reset row before iterating to get data 
+			rs.beforeFirst();
+	
+			int [] checkerArr1 = new int [rowCount];
+			int arrayCount = 0;
+	
+			while(rs.next()) {
+				checkerArr1[arrayCount] = rs.getInt(1);
+				arrayCount++;
+				//				System.out.println("arrayCount: " + arrayCount);
+			}
+			System.out.println("Arary 1: \n" + Arrays.toString(checkerArr1));
+	
+			//compare arrays
+			for (int i = 0; i < checkerArr1.length; i++) {
+					if(rb_id == checkerArr1[i]) {
+						return true;
+					}
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if( getRb != null) {
+				getRb.close();
+			}
+		}
+		return false;
 	}
 }

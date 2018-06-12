@@ -1,11 +1,12 @@
 package DTO;
 
+//Data Transfer object to hold information regarding one instance of ReceptKompDTO
 public class ReceptKompDTO
 {
-	int receptId;                  // auto genereres fra 1..n   
-	int raavareId;             // i omraadet 1-99999999
-	double nomNetto;            // skal vaere positiv og passende stor
-	double tolerance;           // skal vaere positiv og passende stor
+	int receptId;       
+	int raavareId;    
+	double nomNetto;  
+	double tolerance; 
 	
 	public ReceptKompDTO() {}
 	

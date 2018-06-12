@@ -25,6 +25,7 @@ import daointerfaces01917.DALException;
 @Produces(MediaType.APPLICATION_JSON)
 public class DBResources {
 	
+	// establishes connection to database in connector class found under JDBC package.
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void createConn() throws FoundException, DALException, SQLException {

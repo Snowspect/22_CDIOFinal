@@ -9,9 +9,13 @@ import java.net.UnknownHostException;
 import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.Produktbatch;
+import DTO.Raavare;
 import DTO.RaavareBatch;
+import DTO.Recept;
+import daoimpl01917.*;
+import DTO.produktBatchKompDTO;
+import daoimpl01917.MySQLStatusDAO;
 import user.UserResources;
-import DTO.*;
 
 public class Weight_IO {
 	private data.socket.Connection conn;
@@ -19,15 +23,18 @@ public class Weight_IO {
 	private DataOutputStream sendToServer;
 	private BufferedReader getFromServer;
 	private String responseFromServer, messageToServer, status = "";
-	private Afvejning afv = new Afvejning();
-	private StatusDTO sts = new StatusDTO();
-	private Personer pers = new Personer ();
-	private RaavareBatch raav = new RaavareBatch();
+	private MySQLStatusDAO sts = new MySQLStatusDAO();
+	private MySQLRaavareBatchDAO raaBa = new MySQLRaavareBatchDAO();
+	private MySQLPersonerDAO pers = new MySQLPersonerDAO ();
+	private MySQLRaavareDAO raa = new MySQLRaavareDAO();
+	private MySQLProduktBatchKompDAO ProBaKoDAO = new MySQLProduktBatchKompDAO();
+	private MySQLReceptDAO recpt = new MySQLReceptDAO();	
+	private MySQLAfvejningDAO afvDAO = new MySQLAfvejningDAO();
+	
 	private Produktbatch proBa = new Produktbatch();
-	private Recept recpt = new Recept();	
-	private int id;
+	private Afvejning afv = new Afvejning();
 	private UserResources UsRe = new UserResources();
-	private produktBatchKompDTO ProBaKoDTO = new produktBatchKompDTO();
+	private int id;
 	private boolean run = false;
 	private boolean mainRun = false;
 	private int foo;
@@ -94,7 +101,7 @@ public class Weight_IO {
 
 				//Input Produktbatch id on weight
 				responseFromServer = getFromServer.readLine();		//Save
-				proBa.setPbId(retrieveIdAsInt(responseFromServer)); //Sets productBatch id in DTO.
+				proBa.setPbId(retrieveIdAsInt(responseFromServer)); //Sets productBatch id in DAO.
 				String str = recpt.findReceptName(proBa.getPbId());
 				System.out.println("recept navn " + str);
 				System.out.println("7 " + responseFromServer);
@@ -108,6 +115,8 @@ public class Weight_IO {
 				}
 				
 				} while (recpt.findReceptName(proBa.getPbId()) == null);
+				
+				
 				
 				//Send text to weight
 				sendToServer.writeBytes("RM20 8 ”Recept navn: " + recpt.findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
@@ -152,6 +161,12 @@ public class Weight_IO {
 						System.out.println("12.5 " + afv.getTara());
 
 						do {
+							
+							sendToServer.writeBytes("RM20 8 ”Afvej råvaren: " + raa.findRaavareName(proBa.getPbId()) + "” ”” ”&3”" + '\n');
+							responseFromServer = getFromServer.readLine();
+							responseFromServer = getFromServer.readLine();
+							
+							
 						sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
 						responseFromServer = getFromServer.readLine();
@@ -162,14 +177,14 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("14" + responseFromServer);	
 						
-						if(!raav.iterateRb(afv.getRbId())){
+						if(!raaBa.iterateRb(afv.getRbId())){
 							System.out.println("Ugyldigt ID");
 							sendToServer.writeBytes("RM20 8 ”Ugyldigt råvarebatch nr " + "” ”” ”&3”" + '\n');
 							responseFromServer = getFromServer.readLine();		
 							responseFromServer = getFromServer.readLine();		
 						}
 						
-						} while (!raav.iterateRb(afv.getRbId()));
+						} while (!raaBa.iterateRb(afv.getRbId()));
 						
 						
 						//Send text to weight
@@ -189,7 +204,9 @@ public class Weight_IO {
 						sendToServer.writeBytes("T" + '\n');
 						responseFromServer = getFromServer.readLine();
 						System.out.println("18" + responseFromServer);
-
+						afv.setBrutto(Double.parseDouble(strip(responseFromServer)));
+						System.out.println("Double parsed as: " + afv.getBrutto() );
+						
 						sendToServer.writeBytes("RM20 8 ”Fjern venligst brutto” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
 						System.out.println("19" + responseFromServer);
@@ -198,9 +215,11 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("20 " + responseFromServer);
 
-						if(afv.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId())) {
+
+						if(afvDAO.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId()) && bruttoCheck(afv.getBrutto())) {
+
 							//sql transaction
-							ProBaKoDTO.insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
+							ProBaKoDAO.insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 							System.out.println("Success! Gemt i database.");
 
 							sendToServer.writeBytes("RM20 8 ”Afvejnings status: OK” “” “&3”" + '\n');
@@ -208,7 +227,7 @@ public class Weight_IO {
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
 
-							sts.updateStatus(this, proBa, proBa.getPbId());
+							sts.updateStatus(proBa.getPbId());
 							if(sts.checkIfDone(proBa.getPbId())) {
 								run = false;
 							} else {
@@ -224,7 +243,7 @@ public class Weight_IO {
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
 
-							System.out.println("Nom_netto: " + afv.getNom_netto(afv.getRbId(), proBa.getPbId()));
+							System.out.println("Nom_netto: " + afvDAO.getNom_netto(afv.getRbId(), proBa.getPbId()));
 
 							run = false;
 						}
@@ -297,4 +316,13 @@ public class Weight_IO {
 		return foo;
 
 	}
+	
+	public boolean bruttoCheck (double brutto) {
+		if(brutto == (afv.getNetto() + afv.getTara())) {
+			return true;
+		} else {
+			return false;			
+		}
+	}
+	
 }

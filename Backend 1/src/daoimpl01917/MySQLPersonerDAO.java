@@ -16,7 +16,9 @@ import DTO.Personer;
 
 public class MySQLPersonerDAO implements PersonerDAO {
 
+
 	//Returns a list of personer from the database.
+
 	@Override
 	public ArrayList<Personer> getPersonerList() throws DALException, SQLException {
 		ArrayList<Personer> list = new ArrayList<Personer>();
@@ -51,9 +53,6 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			for(int j = 0; j < cpr.size(); j++)
 			{
 				list.add(new Personer(rolle_id.get(j), opr_navn.get(j), ini.get(j), cpr.get(j), rolle.get(j), status.get(j)));  //TODO Fix parameters
-			}
-			for (Personer obj : list) {
-				System.out.println(obj.toString());
 			}
 		} catch (SQLException e ) {
 			System.out.println(e);
@@ -150,5 +149,33 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		{
 			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
 		}
+	}
+	
+	public String findUserName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		String name = null;
+		PreparedStatement getUserName = null;
+		ResultSet rs = null;
+	
+		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
+	
+		try {
+			getUserName = sqlCon.prepareStatement(getName);
+	
+			getUserName.setInt(1, id);
+			rs = getUserName.executeQuery();
+			if(rs.first()) {
+				name = rs.getString("opr_navn");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		} finally {
+			if(getUserName != null) {
+				getUserName.close();
+			}
+		}
+		return name;
 	}
 }
