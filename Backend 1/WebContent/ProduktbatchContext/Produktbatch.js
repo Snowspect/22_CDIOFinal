@@ -1,65 +1,27 @@
-/**
- * Generate n input fields in form depending on number of needed raavare
- */
-function generateProdukt() {
-	var number = 0;
-	number = document.getElementById("produktCount").value;
-	
-	for(i = 0; i < number; i++) {
-		var form = '	<tr>' + 
-		'				<td><center>Bruger ID</center>'+
-		'				<center>'+
-		'					<input type="number" id="rolle_id' + i + '" required pattern="[0-9.]+">'+
-		'				</center></td>'+
-		'				<br>'+
-		'				<td><center>rbID</center>'+
-		'				<center>'+
-		'					<input type="number" id="rbID' + i + '" step="0.01" required pattern="[0-9.]+">'+
-		'				</center></td>'+
-		'				<br>'+
-		'				<td><center>Tara</center>'+
-		'				<center>'+
-		'					<input type="number" id="tara' + i + '" step="0.01" required pattern="[0-9.]+">'+
-		'				</center></td>' +
-		'				<td><center>Netto</center>'+
-		'				<center>'+
-		'					<input type="number" id="Netto' + i + '" step="0.01" required pattern="[0-9.]+">'+
-		'				</center></td>' +
-		'				</tr>';
-		
-			
-		$("#numberOfProductBatch").append(form);
-	}
-}
-
-
-
-
-
-function submitProduct() { //Formen kalder denne function, sikre at alle felter er udfyldt
-	myJSON = getProduktFromHTML(); //myJSON is an object just like "bruger"
-	$.ajax({ //Indleder et asynkront ajax kald¨
-		url : "cargostock/produktbatch", //specificerer endpointet
-		type : 'POST', //Typen af HTTP requestet
+function submitProduct() { 
+	myJSON = getProduktFromHTML();
+	$.ajax({ //Starts an asynchronous ajax call
+		url : "cargostock/produktbatch", //specified end point
+		type : 'POST', //Type of HTTP request
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
-		//Nedenstående bliver ikke kørt
-		success : function(data) {//Funktion der skal udføres når data er hentet
-			alert("success"); //Manipulerer #mydiv.
+		// The code below does not run
+		success : function(data) {//Function to be performed when data is collected
+			alert("success"); //Manipulates #mydiv.
 		}, error: function(message) {
 			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
-	return false; //For at undgå at knappen poster data (default behavior).
+	return false; // To prevent button posting data (default behavior).
 }
 
-
+// Returns the produktbatch object from the html form
 function getProduktFromHTML() {
 	var pbIdT = document.getElementById("pbId").value;
 	var rcpIdT = document.getElementById("receptId").value;
 	
-	// lav afvejnings inputs
+	// Make weighing inputs
 
 	var produktbatch = {
 		pbId : pbIdT,
@@ -82,6 +44,7 @@ function getProduktFromHTML() {
 	return produktbatch;
 }
 
+// Loads all the produktKomp into the corresponding table
 function loadproduktKomp() {
 	var id = document.getElementById("produktbatchID").value;
 	toViewProduktbatch();
@@ -101,15 +64,16 @@ function loadproduktKomp() {
 	})
 }
 
+// Loads all the Products into the corresponding table
 function loadProducts(){
 	$(function() {
-		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'cargostock/produktbatch', //specificerer endpointet
-			type : 'GET', //Typen af HTTP requestet (GET er default)
+		$.ajax({ //Starts an asynchronous ajax call
+			url : 'cargostock/produktbatch', //specified end point
+			type : 'GET', //Type of HTTP request (GET is default)
 			contentType : 'application/json',
-			//Nedenstående bliver ikke kørt
+			// The code below does not run
 			success : function(data)
-			{//Funktion der skal udføres når data er hentet
+			{//Function to be performed when data is collected
 				iterateProductTable(data);
 				//alert("data");
 			}, error: function(message) {
@@ -119,6 +83,7 @@ function loadProducts(){
 	});
 }
 
+// Loads all the Products into the corresponding table when called through LoadProducts
 function iterateProductTable(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
 		insertIntoProductTable(this.pbId, this.receptId, this.status);

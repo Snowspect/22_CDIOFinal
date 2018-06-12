@@ -1,14 +1,5 @@
 package DTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-
-import JDBC.Connector;
-import func.Weight_IO;
-
 public class Afvejning {
 	private int userId;
 	private int rbId;
@@ -19,40 +10,39 @@ public class Afvejning {
 	private RaavareBatch raav;
 
 	public double getBrutto() {
-		return brutto;
+		return this.brutto;
 	}
 	public void setBrutto(double brutto) {
 		this.brutto = brutto;
 	}
 	public int getUserId() {
-		return userId;
+		return this.userId;
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 	public int getRbId() {
-		return rbId;
+		return this.rbId;
 	}
 	public void setRbId(int rbId) {
 		this.rbId = rbId;
 	}
 	public double getTara() {
-		return tara;
+		return this.tara;
 	}
 	public void setTara(double tara) {
 		this.tara = tara;
 	}
 	public double getNetto() {
-		return netto;
+		return this.netto;
 	}
 	public void setNetto(double netto) {
 		this.netto = netto;
 	}
 	
-//	Copied from CDIO 2. Not sure if we need it.
 	public String toString(){
-		return "userId: " + pers.getUserId() + " råvareBatchId: " + raav.getRbId()
-				+ " taravægt: " + tara + " netto: "+ netto + " brutto: " 
-				+ brutto;
+		return "userId: " + this.pers.getUserId() + " råvareBatchId: " + this.raav.getRbId()
+				+ " taravægt: " + this.tara + " netto: "+ this.netto + " brutto: " 
+				+ this.brutto;
 	}
 }
