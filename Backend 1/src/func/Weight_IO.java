@@ -220,7 +220,7 @@ public class Weight_IO {
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
 
-							sts.updateStatus(this, proBa, proBa.getPbId());
+							sts.updateStatus(proBa.getPbId());
 							if(sts.checkIfDone(proBa.getPbId())) {
 								run = false;
 							} else {

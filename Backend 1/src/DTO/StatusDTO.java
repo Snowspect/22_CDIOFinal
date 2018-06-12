@@ -94,7 +94,7 @@ public class StatusDTO {
 	}
 	
 	//A method that checks if a status needs updating by calling other methods.
-	public int updateStatus(Weight_IO weight_IO, Produktbatch produktbatch, int id) throws SQLException {
+	public int updateStatus(int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();
 		try {
 			switch (checkStatus(id)) {
