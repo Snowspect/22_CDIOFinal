@@ -22,9 +22,9 @@ public class StatusDTO {
 		ResultSet rs2 = null;
 		int count = 0;
 	
-		//Det vi har vejet	
+		//Items that we have weighed
 		String getWeighedItems = "SELECT raavare_id FROM raavarebatch WHERE rb_id IN (SELECT rb_id FROM produktbatchkomponent WHERE pb_id = ?);";
-		//Det vi skal veje
+		//Items that has to be weighed
 		String getToWeighItems = "SELECT raavare_id FROM receptkomponent WHERE recept_id = (SELECT recept_id FROM produktbatch WHERE pb_id = ?);";
 	
 		try {
@@ -113,7 +113,6 @@ public class StatusDTO {
 			}
 	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return checkStatus(id);
@@ -142,7 +141,6 @@ public class StatusDTO {
 				setStatus2.execute();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if(setStatus1 != null || setStatus2 != null) {
