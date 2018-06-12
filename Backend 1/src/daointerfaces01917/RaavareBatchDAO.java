@@ -12,5 +12,6 @@ public interface RaavareBatchDAO {
 //	List<RaavareBatch> getRaavareBatchList(int raavareId) throws DALException, SQLException;
 	String createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException, FoundException;
 //	void updateRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException;
+	public boolean iterateRb(int rb_id) throws SQLException;
 }
 

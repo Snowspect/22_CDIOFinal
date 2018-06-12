@@ -76,7 +76,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 				createRec.close();
 			}
 		}
-		//Indsætter komponenter relateret til den oprettede recept
+		//Indsï¿½tter komponenter relateret til den oprettede recept
 		MySQLReceptKompDAO t = new MySQLReceptKompDAO();
 		try 
 		{		
@@ -90,5 +90,34 @@ public class MySQLReceptDAO implements ReceptDAO {
 		}
 		//endelige return string
 		return "Recept oprettet";
+	}
+	
+	//Returns the recept name given a pb_id
+	public String findReceptName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		String recept = null;
+		PreparedStatement getReceptName = null;
+		ResultSet rs = null;
+	
+		String getRecept = "Select recept_navn from produktbatch NATURAL JOIN recept where pb_id = ? group by recept_navn;";
+	
+		try {
+			getReceptName = sqlCon.prepareStatement(getRecept);
+	
+			getReceptName.setInt(1, id);
+			rs = getReceptName.executeQuery();
+			if(rs.first()) {
+				recept = rs.getString("recept_navn");	
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(getReceptName != null) {
+				getReceptName.close();
+			}
+		}
+		return recept;
 	}
 }

@@ -17,7 +17,7 @@ import DTO.Personer;
 public class MySQLPersonerDAO implements PersonerDAO {
 
 	/**
-	 * Får liste over personer i databasen og returnerer
+	 * Fï¿½r liste over personer i databasen og returnerer
 	 */
 	@Override
 	public ArrayList<Personer> getPersonerList() throws DALException, SQLException {
@@ -162,5 +162,33 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		{
 			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
 		}
+	}
+	
+	public String findUserName (int id) throws SQLException {
+		Connection sqlCon = Connector.getConn();
+	
+		String name = null;
+		PreparedStatement getUserName = null;
+		ResultSet rs = null;
+	
+		String getName = "Select opr_navn from personer natural join roller where rolle_id = ?;";
+	
+		try {
+			getUserName = sqlCon.prepareStatement(getName);
+	
+			getUserName.setInt(1, id);
+			rs = getUserName.executeQuery();
+			if(rs.first()) {
+				name = rs.getString("opr_navn");
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		} finally {
+			if(getUserName != null) {
+				getUserName.close();
+			}
+		}
+		return name;
 	}
 }
