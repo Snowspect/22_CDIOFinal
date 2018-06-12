@@ -25,16 +25,15 @@ public class MySQLPersonerDAO implements PersonerDAO {
 
 		Connection conn = Connector.getConn();
 		PreparedStatement getPerson = null;
-		PreparedStatement getRolle = null;
-		PreparedStatement getOperator = null;
 		ResultSet rs = null;
 		
-		String getper = "SELECT * FROM personer";
-		String getopr = "SELECT * FROM operatoer";
-		String getrol = "SELECT * FROM roller";
+		String getper = "SELECT * FROM roller natural join operatoer natural join personer";
 		
 		try {
-			ArrayList<String> cpr = new ArrayList<String>(), opr_navn = new ArrayList<String>(), ini = new ArrayList<String>(),rolle = new ArrayList<String>();
+			ArrayList<String> cpr = new ArrayList<String>();
+			ArrayList<String> opr_navn = new ArrayList<String>();
+			ArrayList<String> ini = new ArrayList<String>();
+			ArrayList<String> rolle = new ArrayList<String>();
 			ArrayList<Integer> rolle_id = new ArrayList<Integer>();
 			ArrayList<Boolean> status = new ArrayList<Boolean>();
 			
@@ -46,27 +45,17 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			cpr.add(rs.getString("cpr"));
 			opr_navn.add(rs.getString("opr_navn"));
 			ini.add(rs.getString("ini"));
+			rolle_id.add(rs.getInt("rolle_id"));
+			rolle.add(rs.getString("rolle"));
+			status.add(rs.getBoolean("opr_status"));
 			}
 			
-			getRolle = conn.prepareStatement(getrol);
-			rs = getRolle.executeQuery();
-			while(rs.next()) {
-				rolle_id.add(rs.getInt("rolle_id"));
-				rolle.add(rs.getString("rolle"));
-			}
-			
-			getOperator = conn.prepareStatement(getopr);
-			rs = getOperator.executeQuery();
-			while(rs.next())
+			for(int j = 0; j < cpr.size(); j++)
 			{
-				status.add(rs.getBoolean("opr_status"));
-				System.out.println(rs.getBoolean("opr_status"));
+				list.add(new Personer(rolle_id.get(j), opr_navn.get(j), ini.get(j), cpr.get(j), rolle.get(j), status.get(j)));  //TODO Fix parameters
 			}
-			
-			int i = 0;
-			for (String string : ini) {
-				list.add(new Personer(rolle_id.get(i), opr_navn.get(i), ini.get(i), cpr.get(i), rolle.get(i), status.get(i)));  //TODO Fix parameters
-				i++;
+			for (Personer obj : list) {
+				System.out.println(obj.toString());
 			}
 		} catch (SQLException e ) {
 			System.out.println(e);
@@ -74,8 +63,6 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		} finally {
 			if (getPerson != null) {
 				getPerson.close();
-				getRolle.close();
-				getOperator.close();
 	        }
 		}
 		return list;
