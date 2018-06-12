@@ -81,7 +81,6 @@ public class Personer {
 		String str = null;
 		str = "ID: " + userId + " , userName: " + userName + " , ini: " + ini + " , cpr: " + cpr + " , roles " + roles + ", status: " + status;
 		return str;
-
 	}
 
 	public String findUserName (int id) throws SQLException {
@@ -99,10 +98,10 @@ public class Personer {
 			getUserName.setInt(1, id);
 			rs = getUserName.executeQuery();
 			if(rs.first()) {
-				name = rs.getString("opr_navn");	
+				name = rs.getString("opr_navn");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e);
 			e.printStackTrace();
 		} finally {
 			if(getUserName != null) {
