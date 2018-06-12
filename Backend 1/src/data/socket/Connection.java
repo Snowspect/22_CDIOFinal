@@ -8,7 +8,8 @@ public class Connection
 	private BufferedReader br;
 	private DataOutputStream dos;
 	private int port = 8000;
-	private String LocalHost = "127.0.0.1";
+	private String LocalHost = "169.254.2.3";
+//	private String LocalHost = "127.0.0.1";
 	private Socket clientSocket = null;
 
 	/**

@@ -94,7 +94,6 @@ public class MySQLStatusDAO implements StatusDAO {
 	
 	//A method that checks if a status needs updating by calling other methods.
 	public int updateStatus(int id) throws SQLException {
-		Connection sqlCon = Connector.getConn();
 		try {
 			switch (checkStatus(id)) {
 			case 0:
@@ -164,10 +163,7 @@ public class MySQLStatusDAO implements StatusDAO {
 			checkStatus.setInt(1,id);
 			rs = checkStatus.executeQuery();
 			if(rs.first()) {
-				status = rs.getInt("status");	
-				if (status != 2) {
-					status = 1;
-				}
+				status = rs.getInt(1);	
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
