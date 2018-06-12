@@ -9,28 +9,19 @@ import java.util.Arrays;
 
 import JDBC.Connector;
 
+
+//Data Transfer object to hold information regarding one instance of Recept
 public class Recept {
-	/** recept id i området 1-99999999 */
+	
 	private int receptId;
-
-	/** Receptnavn min. 2 max. 20 karakterer */
-	private String receptNavn;
-
-	/** Ingredienser i recept */
-	private ArrayList<ReceptKompDTO> receptKomponent = new ArrayList<>();
+	private String receptNavn; 
+	private ArrayList<ReceptKompDTO> receptKomponent = new ArrayList<>();	// Ingredienses in recept
 
 	public Recept() {}
 	
 	public Recept(int receptId, String receptNavn) {
-		// TODO Auto-generated constructor stub
 		this.receptId = receptId;
 		this.receptNavn = receptNavn;
-	}
-
-
-	public String toString() {
-		return "receptId: " + receptId + ", receptNavn: " + receptNavn + 
-				", recept komponents: " + Arrays.toString(receptKomponent.toArray());
 	}
 
 	public int getReceptId() {
@@ -57,6 +48,11 @@ public class Recept {
 		this.receptKomponent = receptKomponent;
 	}
 
+	public String toString() {
+		return "receptId: " + receptId + ", receptNavn: " + receptNavn + 
+				", recept komponents: " + Arrays.toString(receptKomponent.toArray());
+	}
+	
 	//Returns the recept name given a pb_id
 	public String findReceptName (int id) throws SQLException {
 		Connection sqlCon = Connector.getConn();

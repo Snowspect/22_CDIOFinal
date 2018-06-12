@@ -28,29 +28,15 @@ public class ReceptResources {
 	MySQLReceptDAO recpt = new MySQLReceptDAO();
 	MySQLReceptKompDAO recptkomp = new MySQLReceptKompDAO();
 	
-	/**
-	 * creates a recept dto in the database
-	 * @param rec 
-	 * @return a string : representing the result
-	 * @throws FoundException
-	 * @throws DALException
-	 * @throws SQLException
-	 */
+	// inserts a recept into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Recept rec) throws FoundException, DALException, SQLException
 	{
-		String result = null;
-		try {
-			result = recpt.createRecept(rec);
-		}
-		catch(Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-		return result;
+		return recpt.createRecept(rec);
 	}
 
+	// gets a list of recepts from database without their attached raavare components 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Recept> getRecept() throws DALException, SQLException
@@ -58,10 +44,9 @@ public class ReceptResources {
 		return (ArrayList<Recept>) recpt.getReceptList();
 	}
 	
-	
+	// gets a list of raavare components attached to a recept based on a recept id.
 	@GET
 	@Path("{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<ReceptKompDTO> getReceptRaavare(@PathParam("id") int id) throws DALException, SQLException
 	{

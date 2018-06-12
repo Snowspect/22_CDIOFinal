@@ -1,7 +1,7 @@
 package JDBC;
 
 
-// erstat konstanterne nedenfor
+// Constant value sthat define the databasse connection information
 
 public abstract class Constant
 {
