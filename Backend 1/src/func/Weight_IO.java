@@ -204,7 +204,9 @@ public class Weight_IO {
 						sendToServer.writeBytes("T" + '\n');
 						responseFromServer = getFromServer.readLine();
 						System.out.println("18" + responseFromServer);
-
+						afv.setBrutto(Double.parseDouble(strip(responseFromServer)));
+						System.out.println("Double parsed as: " + afv.getBrutto() );
+						
 						sendToServer.writeBytes("RM20 8 ”Fjern venligst brutto” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
 						System.out.println("19" + responseFromServer);
@@ -213,7 +215,9 @@ public class Weight_IO {
 						responseFromServer = getFromServer.readLine();
 						System.out.println("20 " + responseFromServer);
 
-						if(afvDAO.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId())) {
+
+						if(afvDAO.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId()) && bruttoCheck(afv.getBrutto())) {
+
 							//sql transaction
 							ProBaKoDAO.insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), foo);
 							System.out.println("Success! Gemt i database.");
@@ -312,4 +316,13 @@ public class Weight_IO {
 		return foo;
 
 	}
+	
+	public boolean bruttoCheck (double brutto) {
+		if(brutto == (afv.getNetto() + afv.getTara())) {
+			return true;
+		} else {
+			return false;			
+		}
+	}
+	
 }

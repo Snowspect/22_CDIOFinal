@@ -56,7 +56,7 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 			
 			createRaavareBatch.setInt(1, raavarebatch.getRbId());
 			createRaavareBatch.setInt(2, raavarebatch.getRaavareId());
-			createRaavareBatch.setDouble(3, raavarebatch.getMaengde());
+			createRaavareBatch.setDouble(3, raavarebatch.getamount());
 			createRaavareBatch.executeUpdate();
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			throw new FoundException("RaavareBatchen findes allerede");	

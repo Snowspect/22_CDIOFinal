@@ -24,6 +24,8 @@ import daointerfaces01917.DALException;
 public class RaavareResources 
 {	
 	MySQLRaavareDAO test = new MySQLRaavareDAO();	
+	
+	// Inserts new raavare into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String submit(Raavare rav) throws FoundException, DALException, SQLException
@@ -32,20 +34,14 @@ public class RaavareResources
 		return result;
 	}
 
+	// gets list of raavare from database
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Raavare> getRaavare() throws DALException, SQLException{
 		return (ArrayList<Raavare>) test.getRaavareList();
 	}
 
-	/**
-	 * 
-	 * @param rav
-	 * @return a string : 
-	 * @throws NotFoundException
-	 * @throws DALException
-	 * @throws SQLException
-	 */
+	// updates a raavare in database
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON) 
 	public String update(Raavare rav) throws NotFoundException, DALException, SQLException {

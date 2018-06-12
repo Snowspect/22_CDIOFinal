@@ -10,9 +10,9 @@ import DTO.NotFoundException;
 @Provider
 public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
 
+	//takes a NotFoundException parameter and returns a response message with status 404 with message
 	@Override
 	public Response toResponse(NotFoundException exception) {
 		return Response.status(Status.NOT_FOUND).entity("{msg:"+exception.getMessage()+"}").build();
 	}
-	//if NotFoundException called then return 404 http error code	
 }

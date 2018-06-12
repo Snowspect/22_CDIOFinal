@@ -54,9 +54,6 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			{
 				list.add(new Personer(rolle_id.get(j), opr_navn.get(j), ini.get(j), cpr.get(j), rolle.get(j), status.get(j)));  //TODO Fix parameters
 			}
-			for (Personer obj : list) {
-				System.out.println(obj.toString());
-			}
 		} catch (SQLException e ) {
 			System.out.println(e);
 			e.printStackTrace();

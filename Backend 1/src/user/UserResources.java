@@ -24,9 +24,8 @@ import daointerfaces01917.DALException;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResources {
 	MySQLPersonerDAO pers = new MySQLPersonerDAO();
-	private static ArrayList <Personer> perList = new ArrayList<Personer>();
 	
-	//Inserts new user into system
+	//Inserts new user into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createUser(Personer per) throws FoundException, DALException, SQLException 
@@ -40,7 +39,7 @@ public class UserResources {
 		return result;
 	}
 
-	//Gets list of users
+	//Gets list of users from database
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Personer> getUsers() throws DALException, SQLException {
@@ -49,7 +48,7 @@ public class UserResources {
 		return pers.getPersonerList();
 	}
 	
-	//removes user from list
+	//sets user to inactive in database
 	@DELETE
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -59,12 +58,7 @@ public class UserResources {
 		pers.deletePersoner(id);
 	}
 
-	public static ArrayList<Personer> getPerList() {
-		return perList;
-	}
-
-
-	//Updates a user
+	//Updates a user in database
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void updateUser(Personer per) throws NotFoundException, DALException, SQLException
