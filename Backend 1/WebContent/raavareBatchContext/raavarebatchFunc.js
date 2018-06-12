@@ -50,7 +50,7 @@
 		var raavarebatch = {
 			"rbId" : rbId,
 			"raavareId" : rId,
-			"maengde" : amount,
+			"amount" : amount,
 		}
 		return raavarebatch;
 	}
@@ -62,7 +62,7 @@
 	 */
 	function iterateRaavareBatch(data) {
 		$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
-			insertIntoRaavareBatchTable(this.rbId, this.raavareId, this.maengde);
+			insertIntoRaavareBatchTable(this.rbId, this.raavareId, this.amount);
 		});
 	}
 
