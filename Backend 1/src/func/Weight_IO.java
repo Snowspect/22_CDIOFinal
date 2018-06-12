@@ -9,9 +9,12 @@ import java.net.UnknownHostException;
 import DTO.Afvejning ;
 import DTO.Personer;
 import DTO.Produktbatch;
+import DTO.Raavare;
 import DTO.RaavareBatch;
+import DTO.Recept;
+import DTO.StatusDTO;
+import DTO.produktBatchKompDTO;
 import user.UserResources;
-import DTO.*;
 
 public class Weight_IO {
 	private data.socket.Connection conn;
@@ -28,6 +31,7 @@ public class Weight_IO {
 	private int id;
 	private UserResources UsRe = new UserResources();
 	private produktBatchKompDTO ProBaKoDTO = new produktBatchKompDTO();
+	private Raavare raa = new Raavare();
 	private boolean run = false;
 	private boolean mainRun = false;
 	private int foo;
@@ -109,6 +113,8 @@ public class Weight_IO {
 				
 				} while (recpt.findReceptName(proBa.getPbId()) == null);
 				
+				
+				
 				//Send text to weight
 				sendToServer.writeBytes("RM20 8 ”Recept navn: " + recpt.findReceptName(retrieveIdAsInt(responseFromServer)) + "” ”” ”&3”" + '\n');
 				responseFromServer = getFromServer.readLine();
@@ -152,6 +158,12 @@ public class Weight_IO {
 						System.out.println("12.5 " + afv.getTara());
 
 						do {
+							
+							sendToServer.writeBytes("RM20 8 ”Afvej råvaren: " + raa.findRaavareName(proBa.getPbId()) + "” ”” ”&3”" + '\n');
+							responseFromServer = getFromServer.readLine();
+							responseFromServer = getFromServer.readLine();
+							
+							
 						sendToServer.writeBytes("RM20 8 ”Indtast råvareBatch nr” ”” ”&3”" + '\n');
 						responseFromServer = getFromServer.readLine();
 						responseFromServer = getFromServer.readLine();
