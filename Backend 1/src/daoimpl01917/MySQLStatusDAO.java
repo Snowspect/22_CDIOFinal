@@ -85,8 +85,11 @@ public class MySQLStatusDAO implements StatusDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if( getWeighed != null || getToWeigh != null) {
+			if( getWeighed != null) {
 				getWeighed.close();
+			}
+			if (getToWeigh != null) {
+				getToWeigh.close();
 			}
 		}
 		return false;
