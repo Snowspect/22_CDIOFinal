@@ -1,7 +1,6 @@
 
 //Updates a user using PUT
 function updateRaavare() {
-//	alert("update called");
 	myJSON = getRaavareFromHTML();
 	$.ajax({
 		url : "cargostock/raavare",
@@ -16,45 +15,39 @@ function updateRaavare() {
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
-	return false; //For at undgå at knappen poster data (default behavior).
+	return false; // To prevent button posting data (default behavior).
 }
 
-/**
- * Creates a user using POST, uses the cargostock/user/create path
- */
-function submitRaavare() { //Formen kalder denne function, sikre at alle felter er udfyldt
-	myJSON = getRaavareFromHTML(); //myJSON is an object just like "bruger"
-	$.ajax({ //Indleder et asynkront ajax kald
-		url : "cargostock/raavare", //specificerer endpointet
-		type : 'POST', //Typen af HTTP requestet
+//Creates a Raavare using POST 
+function submitRaavare() { 
+	myJSON = getRaavareFromHTML(); 
+	$.ajax({ //Starts an asynchronous ajax call
+		url : "cargostock/raavare", //specified end point
+		type : 'POST', //Type of HTTP request
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
-		//Nedenstående bliver ikke kørt
-		success : function(data) {//Funktion der skal udføres når data er hentet
-			alert("success"); //Manipulerer #mydiv.
+		// The code below does not run
+		success : function(data) {//Function to be performed when data is collected
+			alert("success"); //Manipulates #mydiv.
 		}, error: function(message) {
 			alert(message.responseText);
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
-	return false; //For at undgå at knappen poster data (default behavior).
+	return false; // To prevent button posting data (default behavior).
 }
-
-/**
- * Loads users from list using GET and displays them in table
- * @returns
- */
+ 
+//  Loads users from list using GET and displays them in table
 function loadRaavare(){
 	$(function() {
-		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'cargostock/raavare', //specificerer endpointet
-			type : 'GET', //Typen af HTTP requestet (GET er default)
+		$.ajax({ //Starts an asynchronous ajax call
+			url : 'cargostock/raavare', //specified end point
+			type : 'GET', //Type of HTTP request (GET is default)
 			contentType : 'application/json',
-			//Nedenstående bliver ikke kørt
+			// The code below does not run
 			success : function(data)
-			{//Funktion der skal udføres når data er hentet
+			{//Function to be performed when data is collected
 				iterateRaavare(data);
-				//alert("data");
 			}, error: function(message) {
 				alert("Raavare get failed");
 			}
@@ -62,39 +55,31 @@ function loadRaavare(){
 	});
 }
 
-//draws person information from html into a "bruger" variable
+// Draws Raavare information from html into a "Raavare" variable
 function getRaavareFromHTML() {
 	var ravareId = document.getElementById("RaavareId").value;
 	var name = document.getElementById("RaavareNavn").value;
 	var supplier = document.getElementById("Supplier").value;
-	
+
 
 	var raavare = {
-		ravareId : ravareId,
-		name : name,
-		supplier : supplier
+			ravareId : ravareId,
+			name : name,
+			supplier : supplier
 	}
 	return raavare;
 }
 
-/**
- * Iterates throuch each data instance, first stringifying it into JSON and then parsing it into JSO
- * calls insert and adds all to the html table
- * @param data
- */
+//Loads all the Raavare into the corresponding table when called through LoadRaavare
+// Iterates through each data instance, first parsing it into JSON and then stringify it into javascript
+// calls insert and adds all to the html table
 function iterateRaavare(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
 		insertIntoRaavareTable(this.ravareId, this.name, this.supplier);
 	});
 }
 
-/**
- * Adds each JSO to the html table
- * @param RaavareId
- * @param name
- * @param supplier
- * @returns
- */
+//The function to insert the Raavare into the RaavareTable
 function insertIntoRaavareTable(ravareId, name, supplier) {
 	var table = document.getElementById("RaavareTable");
 	var row = table.insertRow(1);

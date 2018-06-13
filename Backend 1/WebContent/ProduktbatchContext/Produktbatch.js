@@ -28,19 +28,7 @@ function getProduktFromHTML() {
 		receptId : rcpIdT,
 		status : 0,
 		produktBatchKomponent: []
-	};
-//	
-//	$("tr").each(function(index,element){
-//		//debugger;
-//		var pbIdA = pbIdT;
-//		var rbIdA = document.getElementById("rbID" + index).value;
-//		var taraA = document.getElementById("tara" + index).value;
-//		var nettoA = document.getElementById("Netto" + index).value;
-//		var rolle_idA = document.getElementById("rolle_id" + index).value;
-//		var obj = {pbId : pbIdA, rbId: rbIdA, tara: taraA, netto: nettoA, rolle_id: rolle_idA};
-//		produktbatch.produktBatchKomponent.push(obj);
-//	});	
-	
+	};	
 	return produktbatch;
 }
 
@@ -75,7 +63,6 @@ function loadProducts(){
 			success : function(data)
 			{//Function to be performed when data is collected
 				iterateProductTable(data);
-				//alert("data");
 			}, error: function(message) {
 				alert("Produktbatch get failed");
 			}
@@ -84,38 +71,35 @@ function loadProducts(){
 }
 
 // Loads all the Products into the corresponding table when called through LoadProducts
+// Iterates through each data instance, first parsing it into JSON and then stringify it into javascript
+// calls insert and adds all to the html table
 function iterateProductTable(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
 		insertIntoProductTable(this.pbId, this.receptId, this.status);
 	}); 
 }
-
+//Loads all the ProductKomp into the corresponding table when called through LoadproductKomp
 function iterateProductKompTable(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function(){
 		insertIntoProductKompTable(this.rolle_id, this.rbId, this.tara, this.netto);		
 	});
 }
 
+// The function to insert the Products into the ProductsTable
+// Adds the JSON objects to the table.
 function insertIntoProductTable(pbId, rcpId, Status) {
 	var table = document.getElementById("productBatchTable");
 	var row = table.insertRow(1);
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
-//	var cell4 = row.insertCell(3);
-//	var cell5 = row.insertCell(4);
-//	var cell6 = row.insertCell(5);
-//	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = pbId;
 	cell2.innerHTML = rcpId;
 	cell3.innerHTML = Status;
-//	cell4.innerHTML = rolle_id;
-//	cell5.innerHTML = rbId;
-//	cell6.innerHTML = tara;
-//	cell7.innerHTML = netto;
 }
 
+//The function to insert the productKomps into the ProductKompTable
 function insertIntoProductKompTable(rolle_id, rbId, tara, netto) {
 	var table = document.getElementById("produktBatchKompTable");
 	var row = table.insertRow(1);
@@ -123,13 +107,7 @@ function insertIntoProductKompTable(rolle_id, rbId, tara, netto) {
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
 	var cell4 = row.insertCell(3);
-//	var cell5 = row.insertCell(4);
-//	var cell6 = row.insertCell(5);
-//	var cell7 = row.insertCell(6);
 
-//	cell1.innerHTML = pbId;
-//	cell2.innerHTML = rcpId;
-//	cell3.innerHTML = Status;
 	cell1.innerHTML = rolle_id;
 	cell2.innerHTML = rbId;
 	cell3.innerHTML = tara;

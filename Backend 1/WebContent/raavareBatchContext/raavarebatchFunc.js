@@ -1,39 +1,34 @@
-	/**
-	 * Creates a user using PUT, uses the cargostock/user/create path
-	 */
-	function submitRaavareBatch() { //Formen kalder denne function, sikre at alle felter er udfyldt
-		myJSON = getRaavarebatchFromHTML(); //myJSON is an object just like "bruger"
-		$.ajax({ //Indleder et asynkront ajax kald
-			url : "cargostock/raavarebatch", //specificerer endpointet
-			type : 'POST', //Typen af HTTP requestet
+	// Creates the raavareBatch in the database with the info from the html form.
+	function submitRaavareBatch() { 
+		myJSON = getRaavarebatchFromHTML(); 
+		$.ajax({ //Starts an asynchronous ajax call
+			url : "cargostock/raavarebatch", //specified end point
+			type : 'POST', //Type of HTTP request
 			data : 	JSON.stringify(myJSON),
 			contentType : 'application/json',
-			//Nedenstående bliver ikke kørt
-			success : function(data) {//Funktion der skal udføres når data er hentet
-				alert("success"); //Manipulerer #mydiv.
+			// The code below does not run
+			success : function(data) {//Function to be performed when data is collected
+				alert("success"); //Manipulates #mydiv.
 			}, error: function(message) {
 				alert(message.responseText);
 			}
 		});
 		document.getElementById("myForm").reset();	//Clear the form
-		return false; //For at undgå at knappen poster data (default behavior).
+		return false; // To prevent button posting data (default behavior).
 	}
 
-	/**
-	 * Loads users from list using GET and displays them in table
-	 * @returns
-	 */
+	 // Loads users from list using GET and displays them in table
 	function loadRaavareBatch(){
 		$(function() {
-			$.ajax({ //Indleder et asynkront ajax kald
-				url : 'cargostock/raavarebatch', //specificerer endpointet
-				type : 'GET', //Typen af HTTP requestet (GET er default)
+			$.ajax({ //Starts an asynchronous ajax call
+				url : 'cargostock/raavarebatch', //specified end point
+				type : 'GET', //Type of HTTP request (GET is default)
 				contentType : 'application/json',
-				//Nedenstående bliver ikke kørt
+				// The code below does not run
 				success : function(data)
-				{//Funktion der skal udføres når data er hentet
+				{//Function to be performed when data is collected
+					//Manipulates #mydiv.
 					iterateRaavareBatch(data);
-					//alert("data");
 				}, error: function(message) {
 					alert("Raavarebatch get failed");
 				}
@@ -41,7 +36,7 @@
 		});
 	}
 
-	//draws person information from html into a "bruger" variable
+	// Draws RaavareBatch information from html into a "raavarebatch" variable
 	function getRaavarebatchFromHTML() {
 		var rbId = document.getElementById("rbId").value;
 		var rId = document.getElementById("raavareId").value
@@ -55,27 +50,16 @@
 		return raavarebatch;
 	}
 
-	/**
-	 * Iterates through each data instance, first stringifying it into JSON and then parsing it into JSO
-	 * calls insert and adds all to the html table
-	 * @param data
-	 */
+	// Loads all the RaavareBatchs into the corresponding table when called through LoadRaavareBatch
+	// Iterates through each data instance, first parsing it into JSON and then stringify it into javascript
+	// calls insert and adds all to the html table
 	function iterateRaavareBatch(data) {
 		$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
 			insertIntoRaavareBatchTable(this.rbId, this.raavareId, this.amount);
 		});
 	}
 
-	/**
-	 * Adds each JSO to the html table
-	 * @param id
-	 * @param userName
-	 * @param ini
-	 * @param cpr
-	 * @param passwd
-	 * @param role
-	 * @returns
-	 */
+	// The function to insert the RaavareBatchs into the raavarebatchTable
 	function insertIntoRaavareBatchTable(rbId, rId, amount) {
 		var table = document.getElementById("raavarebatchTable");
 		var row = table.insertRow(1);
@@ -87,10 +71,3 @@
 		cell2.innerHTML = rId;
 		cell3.innerHTML = amount;	
 	}
-
-
-	/**
-	 * loads the page that allows you to create a user
-	 * @returns
-	 */
-
