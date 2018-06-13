@@ -34,11 +34,11 @@ public class Weight_IO {
 	private boolean mainRun = false;
 
 
-	public Weight_IO(Afvejning afv) throws UnknownHostException, IOException {
+	public Weight_IO(Afvejning afv, String host) throws UnknownHostException, IOException {
 		this.afv = afv;
 
 		//Starts connection with the weight simulator.
-		conn = new data.socket.Connection("127.0.0.1", 8000);
+		conn = new data.socket.Connection(host, 8000);
 		clientSocket = conn.SocketConn();
 		sendToServer = conn.getWriter();
 		getFromServer = conn.getReader();
@@ -139,7 +139,7 @@ public class Weight_IO {
 						System.out.println("Tryk OK ");
 
 						//Place tara
-						sendToServer.writeBytes("RM20 8 \"Placér venligst tara\"" + " \"\"" + " \"&3\"" + "\r\n");
+						sendToServer.writeBytes("DW \"Placér venligst tara\"" + " \"\"" + " \"&3\"" + "\r\n");
 						responseFromServer = getFromServer.readLine();
 						System.out.println("11.5 " + responseFromServer);
 
