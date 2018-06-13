@@ -29,18 +29,6 @@ function getProduktFromHTML() {
 		status : 0,
 		produktBatchKomponent: []
 	};
-//	
-//	$("tr").each(function(index,element){
-//		//debugger;
-//		var pbIdA = pbIdT;
-//		var rbIdA = document.getElementById("rbID" + index).value;
-//		var taraA = document.getElementById("tara" + index).value;
-//		var nettoA = document.getElementById("Netto" + index).value;
-//		var rolle_idA = document.getElementById("rolle_id" + index).value;
-//		var obj = {pbId : pbIdA, rbId: rbIdA, tara: taraA, netto: nettoA, rolle_id: rolle_idA};
-//		produktbatch.produktBatchKomponent.push(obj);
-//	});	
-	
 	return produktbatch;
 }
 
@@ -102,18 +90,10 @@ function insertIntoProductTable(pbId, rcpId, Status) {
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
-//	var cell4 = row.insertCell(3);
-//	var cell5 = row.insertCell(4);
-//	var cell6 = row.insertCell(5);
-//	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = pbId;
 	cell2.innerHTML = rcpId;
 	cell3.innerHTML = Status;
-//	cell4.innerHTML = rolle_id;
-//	cell5.innerHTML = rbId;
-//	cell6.innerHTML = tara;
-//	cell7.innerHTML = netto;
 }
 
 function insertIntoProductKompTable(rolle_id, rbId, tara, netto) {
@@ -123,13 +103,7 @@ function insertIntoProductKompTable(rolle_id, rbId, tara, netto) {
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
 	var cell4 = row.insertCell(3);
-//	var cell5 = row.insertCell(4);
-//	var cell6 = row.insertCell(5);
-//	var cell7 = row.insertCell(6);
 
-//	cell1.innerHTML = pbId;
-//	cell2.innerHTML = rcpId;
-//	cell3.innerHTML = Status;
 	cell1.innerHTML = rolle_id;
 	cell2.innerHTML = rbId;
 	cell3.innerHTML = tara;
