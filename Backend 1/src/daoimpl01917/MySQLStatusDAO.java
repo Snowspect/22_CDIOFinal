@@ -97,7 +97,7 @@ public class MySQLStatusDAO implements StatusDAO {
 		try {
 			switch (checkStatus(id)) {
 			case 0:
-				setStatus(id, 1);			
+				setStatus(id, 1);	
 				break;
 			case 1:
 				if (checkIfDone(id)){
@@ -141,8 +141,10 @@ public class MySQLStatusDAO implements StatusDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(setStatus1 != null || setStatus2 != null) {
+			if(setStatus1 != null) {
 				setStatus1.close();
+			}
+			if (setStatus2 != null) {
 				setStatus2.close();
 			}
 		}
