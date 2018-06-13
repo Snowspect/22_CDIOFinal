@@ -226,14 +226,10 @@ public class Weight_IO {
 							responseFromServer = getFromServer.readLine();
 							System.out.println("22 " + responseFromServer);
 							responseFromServer = getFromServer.readLine();
-
+							
+							//Update status and check if done. Then set run = true or false.
 							sts.updateStatus(proBa.getPbId());
-							if(sts.checkIfDone(proBa.getPbId())) {
-								run = false;
-							} else {
-								run = true;
-							}
-
+							run = !(sts.checkIfDone(proBa.getPbId()));
 						} else {
 							//break loop
 							System.out.println("Fejl");
