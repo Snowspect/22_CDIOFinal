@@ -18,6 +18,7 @@ public class Weight_IO {
 	private DataOutputStream sendToServer;
 	private BufferedReader getFromServer;
 	private String responseFromServer;
+	
 	private MySQLStatusDAO sts = new MySQLStatusDAO();
 	private MySQLRaavareBatchDAO raaBa = new MySQLRaavareBatchDAO();
 	private MySQLPersonerDAO pers = new MySQLPersonerDAO ();
@@ -47,8 +48,7 @@ public class Weight_IO {
 	 * In RM20 8 there needs to be exactly 3 words in the message for some reason
 	 * @throws IOException
 	 */
-	public void run() throws IOException
-	{
+	public void run() throws IOException {
 		try {
 
 			//Do-while loop that keeps asking for user Id until a valid one is entered.
