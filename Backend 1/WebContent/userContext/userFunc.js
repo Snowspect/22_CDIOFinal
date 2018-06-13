@@ -1,7 +1,6 @@
 
 //Updates a user using POST
 function updateUser() {
-//	alert("update called");
 	myJSON = getPersonFromUpdateHTML();
 	$.ajax({
 		url : "cargostock/users",
@@ -16,45 +15,41 @@ function updateUser() {
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
-	return false; //For at undgå at knappen poster data (default behavior).
+	return false; // To prevent button posting data (default behavior).
 }
 
-/**
- * Creates a user using PUT, uses the cargostock/user/create path
- */
-function submitUser() { //Formen kalder denne function, sikre at alle felter er udfyldt
-	myJSON = getPersonFromHTML(); //myJSON is an object just like "bruger"
-	$.ajax({ //Indleder et asynkront ajax kald
-		url : "cargostock/users/", //specificerer endpointet
-		type : 'POST', //Typen af HTTP requestet
+
+ // Creates a user using PUT, uses the cargostock/user/create path
+function submitUser() { 
+	myJSON = getPersonFromHTML(); 
+	$.ajax({ //Starts an asynchronous ajax call
+		url : "cargostock/users/", //specified end point
+		type : 'POST', //Type of HTTP request
 		data : 	JSON.stringify(myJSON),
 		contentType : 'application/json',
-		//Nedenstående bliver ikke kørt
-		success : function(data) {//Funktion der skal udføres når data er hentet
-			alert("success"); //Manipulerer #mydiv.
+		// The code below does not run
+		success : function(data) {//Function to be performed when data is collected
+			alert("success"); //Manipulates #mydiv.
 		}, error: function(message) {
 			alert(message.responseText);;
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
-	return false; //For at undgå at knappen poster data (default behavior).
+	return false; // To prevent button posting data (default behavior).
 }
 
-/**
- * Loads users from list using GET and displays them in table
- * @returns
- */
+
+// Loads users from list using GET and displays them in corresponding table
 function loadUsers(){
 	$(function() {
-		$.ajax({ //Indleder et asynkront ajax kald
-			url : 'cargostock/users', //specificerer endpointet
-			type : 'GET', //Typen af HTTP requestet (GET er default)
+		$.ajax({ //Starts an asynchronous ajax call
+			url : 'cargostock/users', //specified end point
+			type : 'GET', //Type of HTTP request (GET is default)
 			contentType : 'application/json',
-			//Nedenstående bliver ikke kørt
+			// The code below does not run
 			success : function(data)
-			{//Funktion der skal udføres når data er hentet
+			{//Function to be performed when data is collected
 				iterateUsers(data);
-				//alert("data");
 			}, error: function(message) {
 				alert("Users get failed");
 			}
@@ -63,17 +58,14 @@ function loadUsers(){
 }
 
 
-/**
- * Removes user from list using DELETE
- * @returns
- */
+
+// Removes user using DELETE
+// Sets users status to 0
 function removeUser() {
 	var id = document.getElementById("ID").value;
-//	s	var myObj = null;
 	$.ajax({
 		url : "cargostock/users/" + id,
 		type : 'DELETE',
-		//data : JSON.stringify(id),
 		contentType: 'application/json',
 		success : function(data)
 		{
@@ -87,7 +79,7 @@ function removeUser() {
 	document.getElementById("deleteForm").reset();	//Clear the form
 }
 
-//draws person information from html into a "bruger" variable
+// Draws person information from html into a "bruger" variable
 function getPersonFromHTML() {
 	var id = document.getElementById("ID").value;
 	var navn = document.getElementById("Brugernavn").value;
@@ -106,6 +98,8 @@ function getPersonFromHTML() {
 	return bruger;
 }
 
+// Draws person information from html into a "bruger" variable
+// Used for updating the user
 function getPersonFromUpdateHTML() {
 	var id = document.getElementById("ID").value;
 	var navn = document.getElementById("Brugernavn").value
@@ -124,27 +118,16 @@ function getPersonFromUpdateHTML() {
 	return bruger;
 }
 
-/**
- * Iterates throuch each data instance, first stringifying it into JSON and then parsing it into JSO
- * calls insert and adds all to the html table
- * @param data
- */
+//Loads all the Users into the corresponding table when called through LoadUsers
+// Iterates through each data instance, first parsing it into JSON and then stringify it into javascript
+// calls insert and adds all to the html table
 function iterateUsers(data) {
 	$(jQuery.parseJSON(JSON.stringify(data))).each(function() {  
 		insertIntoUserTable(this.userId, this.userName, this.ini, this.cpr, this.roles, this.status);
 	});
 }
 
-/**
- * Adds each JSO to the html table
- * @param id
- * @param userName
- * @param ini
- * @param cpr
- * @param role
- * @param status
- * @returns
- */
+//The function to insert the Users into the userTable
 function insertIntoUserTable(id, userName, ini, cpr, role, status) {
 	var table = document.getElementById("userTable");
 	var row = table.insertRow(1);
@@ -162,9 +145,3 @@ function insertIntoUserTable(id, userName, ini, cpr, role, status) {
 	cell5.innerHTML = role;
 	cell6.innerHTML = status;
 }
-
-
-
-
-
-

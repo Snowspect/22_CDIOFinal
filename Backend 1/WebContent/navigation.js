@@ -1,9 +1,11 @@
+// Function to load the page that allows you to create a Produktbatch
 function toCreateProduktbatch(){
 	$(function(){
 		$("#transform").load("ProduktbatchContext/Produktbatch.html");
 	})
 }
 
+//Function to load the page that shows the produktbatches
 function toViewProduktbatch()
 {
 	$(function(){
@@ -13,14 +15,14 @@ function toViewProduktbatch()
 	});
 }
 
-
-
+//Function to load the recept html page
 function toCreateRecept(){
 	$(function(){
 		$("#transform").load("receptContext/recept.html");
 	})
 }
 
+//Function to load the page that shows the recepts
 function toViewRecept(){
 	$(function(){
 		$("#transform").load("receptContext/ShowRecept.html",null,function() {
@@ -31,20 +33,15 @@ function toViewRecept(){
 
 
 
-/**
- * loads the page that allows you to create a user
- * @returns
- */
+
+// loads the page that allows you to create a user
 function toCreate(){
 	$(function(){
 		$("#transform").load("userContext/opret.html");
 	})
 }
 
-/**
- * Loads the page that allows you to delete a user
- * @returns
- */
+// Loads the page that allows you to delete a user
 function toDelete(){
 	$(function() {
 		$("#transform").load("userContext/deleteUser.html",null,function() {
@@ -53,10 +50,7 @@ function toDelete(){
 	});
 }
 
-/**
- * Loads the page that allows you to simply view users.
- * @returns
- */
+// Loads the page that allows you to view the users.
 function toView()
 {
 	$(function loadViewUsers(){
@@ -65,6 +59,7 @@ function toView()
 	});
 }
 
+//Loads the page that allows you to update the users.
 function toUpdate()
 {
 	$(function() {
@@ -74,13 +69,14 @@ function toUpdate()
 	});
 }
 
-
+//Loads the page that allows you to create raavareBatches
 function toRbCreate(){
 	$(function(){
 		$("#transform").load("raavareBatchContext/opretRaavareBatch.html");
 	})
 }
 
+//Loads the page that allows you to view raavareBatches
 function toRbView()
 {
 	$(function loadViewRb(){
@@ -89,25 +85,28 @@ function toRbView()
 	});
 }
 
-
+//Loads the Administrator page
 function toAdministrator(){
 	$(function(){
 		$("#buttons_container").load("admin.html");
 	})
 }
 
+//Loads the Farmaceut page
 function toFarmaceut(){
 	$(function(){
 		$("#buttons_container").load("farmaceut.html");
 	})
 }
 
+//Loads the Produktionsleder page
 function toProduktionsleder(){
 	$(function(){
 		$("#buttons_container").load("produktionsleder.html");
 	})
 }
 
+//Loads the page that allows you to update Raavare
 function toRUpdate()
 {
 	$(function() {
@@ -117,13 +116,14 @@ function toRUpdate()
 	});
 }
 
-
+//Loads the page that allows you to create Raavare
 function toRCreate(){
 	$(function(){
 		$("#transform").load("RaavareContext/Raavare.html");
 	})
 }
 
+//Loads the page that allows you to view Raavare
 function toRView()
 {
 	$(function loadViewRb(){
