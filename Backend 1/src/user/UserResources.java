@@ -31,11 +31,11 @@ public class UserResources {
 	public String createUser(Personer per) throws FoundException, DALException, SQLException 
 	{		
 		System.out.println("foer createPersoner");
-		pers.createPersoner(per);
+		String result = pers.createPersoner(per);
 		
 		System.out.println("Created user: " + per.toString()); //LOGGER
 
-		String result = "Bruger tilføjet til databasen";
+//		String result = "Bruger tilføjet til databasen";
 		return result;
 	}
 
