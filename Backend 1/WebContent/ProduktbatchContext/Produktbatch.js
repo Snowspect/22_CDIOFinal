@@ -29,6 +29,7 @@ function getProduktFromHTML() {
 		status : 0,
 		produktBatchKomponent: []
 	};	
+
 	return produktbatch;
 }
 

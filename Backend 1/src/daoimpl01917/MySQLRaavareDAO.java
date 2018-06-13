@@ -60,7 +60,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			getRaavareList = conn.prepareStatement(getRaaList);
 			rs = getRaavareList.executeQuery();
 			while (rs.next()) {
-					list.add(new Raavare(rs.getInt("raavare_id"),rs.getString("leverandoer"),rs.getString("raavare_navn")));
+					list.add(new Raavare(rs.getInt("raavare_id"),rs.getString("raavare_navn"),rs.getString("leverandoer")));
 				}
 		} catch (SQLException e ) {
 			System.out.println(e);

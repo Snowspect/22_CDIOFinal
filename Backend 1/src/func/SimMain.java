@@ -5,9 +5,12 @@ import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 import DTO.Afvejning;
+import DTO.Personer;
+import DTO.RaavareBatch;
 import JDBC.Connector;
+import user.UserResources;
 
-public class Main {
+public class SimMain {
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 
@@ -19,8 +22,8 @@ public class Main {
 		catch (SQLException e) { e.printStackTrace(); }	
 		
 		Afvejning afv = new Afvejning();
-		//connection to physical weight
-		Weight_IO io = new Weight_IO(afv, "169.254.2.3");
+		//connection to weight simulator
+		Weight_IO io = new Weight_IO(afv, "127.0.0.1");
 		io.run();
 	}
 }
