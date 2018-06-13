@@ -225,6 +225,7 @@ public class Weight_IO {
 							//Update status and check if done. Then set run = true or false.
 							sts.updateStatus(proBa.getPbId());
 							run = !(sts.checkIfDone(proBa.getPbId()));
+							
 						} else {
 							//break loop
 							System.out.println("Fejl");
