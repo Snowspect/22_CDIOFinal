@@ -14,4 +14,5 @@ public interface PersonerDAO {
 	String createPersoner(Personer per) throws DALException, SQLException, FoundException;
 	void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException;
 	public String findUserName (int id) throws SQLException;
+	public String deletePersoner(int id) throws DALException, SQLException, NotFoundException;
 }

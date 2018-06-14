@@ -85,7 +85,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			createPerson.setString(4, per.getCpr());
 			createPerson.setInt(5, per.getUserId());
 			createPerson.setString(6, per.getRoles());
-			createPerson.registerOutParameter(7, java.sql.Types.INTEGER);
+			createPerson.registerOutParameter(7, java.sql.Types.INTEGER); //defines the out parameter in the sql stored procedure
 			createPerson.executeUpdate();
 			result = createPerson.getInt(7);
 		} catch (SQLException e ) {
@@ -124,7 +124,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			updatePerson.setInt(3, per.getUserId());
 			updatePerson.setString(4, per.getRoles());
 			updatePerson.setString(5, per.getCpr());
-			updatePerson.executeUpdate();
+			affectedRows = updatePerson.executeUpdate();
 		} catch (SQLException e ) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -140,7 +140,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 	}
 
 	// Sets status to false on a operatoer associated with the id parameter.
-	public void deletePersoner(int id) throws DALException, SQLException, NotFoundException 
+	public String deletePersoner(int id) throws DALException, SQLException, NotFoundException 
 	{
 		Connection conn = Connector.getConn();
 		PreparedStatement deletePerson = null;
@@ -158,11 +158,12 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				deletePerson.close();
 	        }
 		}
-		//delete returns a number for affected rows.
+		//UPDATE returns a number for affected rows.
 		if(affectedRows == 0)
 		{
 			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
 		}
+		return "user status updated";
 	}
 	
 	public String findUserName (int id) throws SQLException {

@@ -53,9 +53,9 @@ public class UserResources {
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
-	public void deleteUser(@PathParam("id") int id) throws NotFoundException, DALException, SQLException
+	public String deleteUser(@PathParam("id") int id) throws NotFoundException, DALException, SQLException
 	{
-		pers.deletePersoner(id);
+		return pers.deletePersoner(id);
 	}
 
 	//Updates a user in database

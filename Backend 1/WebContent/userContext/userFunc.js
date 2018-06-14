@@ -69,7 +69,7 @@ function removeUser() {
 		contentType: 'application/json',
 		success : function(data)
 		{
-			alert("successful delete");
+			alert(data);
 			toDelete(); //currently called as there is no direct method for emptying a table, 
 			//and as such we reload the html
 		}, error: function(message) {
