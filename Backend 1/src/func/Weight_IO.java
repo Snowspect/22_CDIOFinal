@@ -139,7 +139,7 @@ public class Weight_IO {
 						System.out.println("Tryk OK ");
 
 						//Place tara
-						sendToServer.writeBytes("DW \"Placér venligst tara\"" + " \"\"" + " \"&3\"" + "\r\n");
+						sendToServer.writeBytes("RM20 8 \"Placér venligst tara\"" + " \"\"" + " \"&3\"" + "\r\n");
 						responseFromServer = getFromServer.readLine();
 						System.out.println("11.5 " + responseFromServer);
 
