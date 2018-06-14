@@ -98,11 +98,11 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		}
 		if(result == 3)
 		{
-			throw new FoundException("user id already exists");
+			throw new FoundException("user id already exists - Error code Ux01");
 		}
 		if(result == 4)
 		{
-			return "a problem occured - contact nearest technical department with code 60ax";
+			return "a problem occured - contact nearest technical department with code Ux02";
 		}
 		return "user created";
 	}
@@ -110,7 +110,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 	// Updates a person in the database with the information from the Personer parameter.
 	// The CPR nr and UserId needs to be from an existing person and it must be the same person.
 	@Override
-	public void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
+	public String updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
@@ -133,10 +133,11 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				updatePerson.close();
 	        }
 		}
-		if (affectedRows == 0)
+		if (affectedRows == 2)
 		{
-			throw new NotFoundException("Ingen Bruger fundet - ingen bruger opdateret");
+			throw new NotFoundException("Ingen Bruger fundet - ingen bruger opdateret - error code Ux04");
 		}
+		return "updated record";
 	}
 
 	// Sets status to false on a operatoer associated with the id parameter.
@@ -161,7 +162,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 		//UPDATE returns a number for affected rows.
 		if(affectedRows == 0)
 		{
-			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
+			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere - Error code Ux03");
 		}
 		return "user status updated";
 	}

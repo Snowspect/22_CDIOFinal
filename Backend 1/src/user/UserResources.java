@@ -61,8 +61,8 @@ public class UserResources {
 	//Updates a user in database
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateUser(Personer per) throws NotFoundException, DALException, SQLException
+	public String updateUser(Personer per) throws NotFoundException, DALException, SQLException
 	{
-				pers.updatePersoner(per);
+		return pers.updatePersoner(per);
 	}
 }

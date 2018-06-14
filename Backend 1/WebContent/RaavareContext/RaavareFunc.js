@@ -49,7 +49,7 @@ function loadRaavare(){
 			{//Function to be performed when data is collected
 				iterateRaavare(data);
 			}, error: function(message) {
-				alert("Raavare get failed");
+				alert("Raavare get failed - error code Rax03");
 			}
 		});
 	});

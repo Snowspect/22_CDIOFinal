@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.Produktbatch;
 import DTO.produktBatchKompDTO;
 import daoimpl01917.MySQLPersonerDAO;
@@ -31,16 +32,16 @@ public class ProduktResources {
 	// inserts a produktbatch to database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(Produktbatch batch) throws FoundException, DALException, SQLException
+	public String submit(Produktbatch batch) throws FoundException, DALException, SQLException, NotFoundException
 	{
-		proConn.createProduktBatch(batch);		
-		return "created productbatch"; //proconn.createProduktBatch(batch) this should be the return value (fix by changing return value of method
+		//proConn.createProduktBatch(batch);		
+		return proConn.createProduktBatch(batch); //proconn.createProduktBatch(batch) this should be the return value (fix by changing return value of method
 	}
 	
 	// gets list of produktbatches without their attached components
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Produktbatch> getProduktbatch() throws DALException, SQLException
+	public ArrayList<Produktbatch> getProduktbatch() throws DALException, SQLException, NotFoundException
 	{
 		return (ArrayList<Produktbatch>) proConn.getProduktBatchList();
 	}
@@ -49,7 +50,7 @@ public class ProduktResources {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<produktBatchKompDTO> getProduktBatchKomponenter(@PathParam("id") int id) throws DALException, SQLException
+	public ArrayList<produktBatchKompDTO> getProduktBatchKomponenter(@PathParam("id") int id) throws DALException, SQLException, NotFoundException
 	{
 		return (ArrayList<produktBatchKompDTO>) pbkomp.getProduktBatchKompList(id);
 	}

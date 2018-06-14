@@ -14,6 +14,7 @@ import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.RaavareBatchDAO;
 import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.RaavareBatch;
 
 public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
@@ -47,7 +48,7 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 
 	// Creates a RaavareBatch in the database with the information from the RaavareBatch parameter.
 	@Override
-	public String createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException, FoundException {
+	public String createRaavareBatch(RaavareBatch raavarebatch) throws DALException, SQLException, FoundException, NotFoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRaavareBatch = null;
 		
@@ -60,10 +61,16 @@ public class MySQLRaavareBatchDAO implements RaavareBatchDAO {
 			createRaavareBatch.setInt(2, raavarebatch.getRaavareId());
 			createRaavareBatch.setDouble(3, raavarebatch.getamount());
 			createRaavareBatch.executeUpdate();
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			throw new FoundException("RaavareBatchen findes allerede");	
-		}
+		} 
+//		catch (MySQLIntegrityConstraintViolationException e) {
+//			throw new FoundException("RaavareBatchen findes allerede");	
+//		} 
 		catch (SQLException e) {
+			if(e.getErrorCode() == 1062)
+		        throw new FoundException("RaavareBatch already exists"); 
+			if(e.getErrorCode() == 1452)
+				throw new NotFoundException("Raavare id does not exists, please create it first");
+			
 			System.out.println(e);
 			return "Error ikke relateret til allerede eksisterende id - se consol output";
 		} finally {
