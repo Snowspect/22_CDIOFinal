@@ -53,6 +53,10 @@ public class MySQLReceptDAO implements ReceptDAO {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRec = null;
 		
+		if(recept.getReceptKomponent().size() == 0) { //Exception handling
+			return "can't create without Raavare, please add atleast 1 - error code Rx01"; 
+		}
+		
 		String createRecept = "INSERT INTO recept (recept_id, recept_navn) VALUES (?,?)";
 		try {
 			createRec = conn.prepareStatement(createRecept);
@@ -60,14 +64,15 @@ public class MySQLReceptDAO implements ReceptDAO {
 			createRec.setInt(1, recept.getReceptId());
 			createRec.setString(2, recept.getReceptNavn());
 			createRec.executeUpdate();
-		} catch(MySQLIntegrityConstraintViolationException e)
+		} catch(MySQLIntegrityConstraintViolationException e) //Exception handling
 		{
-			//throw exception if an id already exists
-			throw new FoundException("Recept Id already exists");
+			//throw exception if an id already exists 
+			throw new FoundException("Recept Id already exists - error code Rx02");
 		}
-		catch (SQLException e) {
+		catch (SQLException e) { //Exception handling
 			System.out.println(e);
 			e.printStackTrace();
+			return "SQL exception, contact technical department with error code Rx03";
 		} finally {
 			if (createRec != null) {
 				createRec.close();
@@ -85,7 +90,7 @@ public class MySQLReceptDAO implements ReceptDAO {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		return "Recept oprettet";
+		return "Created recept and components";
 	}
 	
 	//Returns the recept name given a pb_id

@@ -10,6 +10,7 @@ import java.util.List;
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.ProduktBatchKompDAO;
+import DTO.NotFoundException;
 import DTO.produktBatchKompDTO;
 
 public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
@@ -32,8 +33,8 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			if (!rs.first()) throw new DALException("Produktbatchkomponent ID: " + pbId + "eller Raavarebatch ID: " + rbId + " findes ikke");
 			PbkDTO = new produktBatchKompDTO (rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id"));
 		} catch (SQLException e) {
-			//do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (getProBatchKomp != null) {
 				getProBatchKomp.close();
@@ -44,7 +45,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 
 	// Returns a list of produktBatchKompDTO associated with the pbId parameter, from the database.
 	@Override
-	public List<produktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException {
+	public List<produktBatchKompDTO> getProduktBatchKompList(int pbId) throws DALException, SQLException, NotFoundException {
 		List<produktBatchKompDTO> list = new ArrayList<produktBatchKompDTO>();
 
 		Connection conn = Connector.getConn();
@@ -69,6 +70,10 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			if (getProdBatchKompList != null) {
 				getProdBatchKompList.close();
 			}
+		}
+		if(list.size() == 0)
+		{
+			throw new NotFoundException("Either ProduktBatch id doesn't exist or there are no components added to it yet - Error code Pbx04)");
 		}
 		return list;
 	}
@@ -101,20 +106,6 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 		}
 		return list;
 	}
-		
-		
-		
-//		ResultSet rs = Connector.doQuery("SELECT * FROM produktbatchkomponent");
-//		try
-//		{
-//			while (rs.next()) 
-//			{
-//				list.add(new ProduktBatchKompDTO(rs.getInt("pb_id"), rs.getInt("rb_id"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("opr_id")));
-//			}
-//		}
-//		catch (SQLException e) { throw new DALException(e); }
-//		return list;
-//	}
 
 	// Creates a produktBatchKomp in the database with the information from the produktBatchKompDTO parameter.
 	@Override
@@ -142,13 +133,6 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			}
 		}
 	}
-		
-//		Connector.doUpdate(
-//				"INSERT INTO produktbatchkomponent(pb_id, rb_id, tara, netto, opr_id) VALUES " +
-//						"(" + produktbatchkomponent.getPbId() + ", " + produktbatchkomponent.getRbId() + ", " + produktbatchkomponent.getTara() + ", " + 
-//						produktbatchkomponent.getNetto() + ", " + produktbatchkomponent.getOprId() + ")"
-//				);
-//	}
 
 	// Updates the produktbatchkomponent in the database with the information from the produktBatchKompDTO parameter.
 	// The pbId and rbId from the DTO needs to be associated with a produktbatchkomponent in the database before this method is called.
@@ -171,8 +155,8 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			updateProBatchKomp.setInt(7, produktbatchkomponent.getRbId());
 			updateProBatchKomp.executeUpdate();
 		} catch (SQLException e) {
-			//Do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (updateProBatchKomp != null) {
 				updateProBatchKomp.close();
@@ -197,11 +181,10 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			row.setDouble(3,tara);
 			row.setDouble(4,netto);
 			row.setInt(5,oprId);
-	
 			row.execute();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e);
 			e.printStackTrace();
 		} finally {
 			if(row != null) {

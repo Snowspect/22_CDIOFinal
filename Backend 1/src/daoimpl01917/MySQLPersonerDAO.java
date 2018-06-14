@@ -7,10 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.CallableStatement;
+
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.PersonerDAO;
 import jersey.repackaged.com.google.common.base.Throwables;
+import DTO.FoundException;
 import DTO.NotFoundException;
 import DTO.Personer;
 
@@ -67,13 +70,14 @@ public class MySQLPersonerDAO implements PersonerDAO {
 
 	// Creates a person in the database with information from the Personer parameter.
 	@Override
-	public void createPersoner(Personer per) throws DALException, SQLException {
+	public String createPersoner(Personer per) throws DALException, SQLException, FoundException {
 		
 		Connection conn = Connector.getConn();
-		PreparedStatement createPerson = null;
-		String createPer = "CALL NewEmployee(?,?,?,?,?,?)";
+		CallableStatement createPerson = null;
+		String createPer = "CALL NewEmployee(?,?,?,?,?,?,?)";
+		int result = -1;
 		try {
-			createPerson = conn.prepareStatement(createPer);
+			createPerson = (CallableStatement) conn.prepareCall(createPer);
 		
 			createPerson.setString(1, per.getUserName());
 			createPerson.setString(2, per.getIni());
@@ -81,7 +85,9 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			createPerson.setString(4, per.getCpr());
 			createPerson.setInt(5, per.getUserId());
 			createPerson.setString(6, per.getRoles());
+			createPerson.registerOutParameter(7, java.sql.Types.INTEGER); //defines the out parameter in the sql stored procedure
 			createPerson.executeUpdate();
+			result = createPerson.getInt(7);
 		} catch (SQLException e ) {
 			System.out.println(e);
 			e.printStackTrace();
@@ -90,13 +96,21 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				createPerson.close();
 	        }
 		}
-
+		if(result == 3)
+		{
+			throw new FoundException("user id already exists - Error code Ux01");
+		}
+		if(result == 4)
+		{
+			return "a problem occured - contact nearest technical department with code Ux02";
+		}
+		return "user created";
 	}
 
 	// Updates a person in the database with the information from the Personer parameter.
 	// The CPR nr and UserId needs to be from an existing person and it must be the same person.
 	@Override
-	public void updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
+	public String updatePersoner(Personer per) throws DALException, SQLException, NotFoundException {
 		Connection conn = Connector.getConn();
 		PreparedStatement updatePerson = null;
 		
@@ -110,7 +124,7 @@ public class MySQLPersonerDAO implements PersonerDAO {
 			updatePerson.setInt(3, per.getUserId());
 			updatePerson.setString(4, per.getRoles());
 			updatePerson.setString(5, per.getCpr());
-			updatePerson.executeUpdate();
+			affectedRows = updatePerson.executeUpdate();
 		} catch (SQLException e ) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -119,14 +133,15 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				updatePerson.close();
 	        }
 		}
-		if (affectedRows == 0)
+		if (affectedRows == 2)
 		{
-			throw new NotFoundException("Ingen Bruger fundet - ingen bruger opdateret");
+			throw new NotFoundException("Ingen Bruger fundet - ingen bruger opdateret - error code Ux04");
 		}
+		return "updated record";
 	}
 
 	// Sets status to false on a operatoer associated with the id parameter.
-	public void deletePersoner(int id) throws DALException, SQLException, NotFoundException 
+	public String deletePersoner(int id) throws DALException, SQLException, NotFoundException 
 	{
 		Connection conn = Connector.getConn();
 		PreparedStatement deletePerson = null;
@@ -144,11 +159,12 @@ public class MySQLPersonerDAO implements PersonerDAO {
 				deletePerson.close();
 	        }
 		}
-		//delete returns a number for affected rows.
+		//UPDATE returns a number for affected rows.
 		if(affectedRows == 0)
 		{
-			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere");
+			throw new NotFoundException("Bruger ikke fundet og derfor ingen fjernet brugere - Error code Ux03");
 		}
+		return "user status updated";
 	}
 	
 	public String findUserName (int id) throws SQLException {

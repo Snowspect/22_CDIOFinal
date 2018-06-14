@@ -79,11 +79,12 @@ function loadReceptRaavare() {
 			contentType : 'application/json',
 			success : function(data)
 			{
+				alert("components retrieved");
 				iterateReceptID(data);
 			},
 			error : function(message)
 			{
-				alert("something went wrong");
+				alert(message.responseText);
 			}
 		})
 	})

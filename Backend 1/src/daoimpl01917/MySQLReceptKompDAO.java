@@ -10,6 +10,7 @@ import java.util.List;
 import JDBC.Connector;
 import daointerfaces01917.DALException;
 import daointerfaces01917.ReceptKompDAO;
+import DTO.NotFoundException;
 import DTO.ReceptKompDTO;
 
 public class MySQLReceptKompDAO implements ReceptKompDAO {
@@ -32,8 +33,8 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 	    	if (!rs.first()) throw new DALException("Receptkomponentet med recept ID: " + receptId + " eller raavare ID: " + raavareId + " findes ikke");
 			RkDTO = new ReceptKompDTO (rs.getInt("recept_id"), rs.getInt("raavare_id"), rs.getDouble("nom_netto"), rs.getDouble("tolerance"));
 		} catch (SQLException e) {
-			//do error handling
-			//TODO
+			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (getRecepKomp != null) {
 				getRecepKomp.close();
@@ -44,7 +45,7 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 
 	// Returns a list of ReceptKompDTO associated with receptId, from the database.
 	@Override
-	public List<ReceptKompDTO> getReceptKompList(int receptId) throws DALException, SQLException {
+	public List<ReceptKompDTO> getReceptKompList(int receptId) throws DALException, SQLException, NotFoundException {
 		List<ReceptKompDTO> list = new ArrayList<ReceptKompDTO>();
 		
 		Connection conn = Connector.getConn();
@@ -52,7 +53,7 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 		ResultSet rs = null;
 		
 		String getRcptKoList = "SELECT * FROM receptkomponent WHERE recept_id = ?";
-		
+
 		try {
 			getRecepKompList = conn.prepareStatement(getRcptKoList);
 
@@ -69,20 +70,12 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 				getRecepKompList.close();
 			}
 		}
+		if(list.size() == 0)
+		{
+			throw new NotFoundException("no recept with that id - error code Rx04)");
+		}
 		return list;
 	}
-		
-//		ResultSet rs = Connector.doQuery("SELECT * FROM receptkomponent WHERE recept_id = " + receptId);
-//		try
-//		{
-//			while (rs.next()) 
-//			{
-//				list.add(new ReceptKompDTO(rs.getInt("recept_id"), rs.getInt("raavare_id"), rs.getDouble("nom_netto"), rs.getDouble("tolerance")));
-//			}
-//		}
-//		catch (SQLException e) { throw new DALException(e); }
-//		return list;
-//	}
 
 	// Returns a list of ReceptKompDTO from the database, containing all receptkomponent.
 	@Override
@@ -112,27 +105,12 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 		}
 		return list;
 	}
-		
-		
-		
-//		ResultSet rs = Connector.doQuery("SELECT * FROM receptkomponent");
-//		try
-//		{
-//			while (rs.next()) 
-//			{
-//				list.add(new ReceptKompDTO(rs.getInt("recept_id"), rs.getInt("raavare_id"), rs.getDouble("nom_netto"), rs.getDouble("tolerance")));
-//			}
-//		}
-//		catch (SQLException e) { throw new DALException(e); }
-//		return list;
-//	}
 
 	// Creates a receptkomponent in the database with information from the ReceptKompDTO parameter.
 	@Override
 	public void createReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException {
 		Connection conn = Connector.getConn();
 		PreparedStatement createRecKomp = null;
-		System.out.println("inhere");
 		
 		String createRcptKo = "INSERT INTO receptkomponent(recept_id, raavare_id, nom_netto, tolerance) VALUES " + "(?, ?, ?, ?)";
 		
@@ -153,46 +131,4 @@ public class MySQLReceptKompDAO implements ReceptKompDAO {
 			}
 		}
 	}
-//		Connector.doUpdate(
-//				"INSERT INTO receptkomponent(recept_id, raavare_id, nom_netto, tolerance) VALUES " +
-//				"(" + receptkomponent.getReceptId() + ", " + receptkomponent.getRaavareId() + ", " + receptkomponent.getNomNetto() + ", " + 
-//				receptkomponent.getTolerance() + ")"
-//			);
-//
-//	}
-/*
-	@Override
-	public void updateReceptKomp(ReceptKompDTO receptkomponent) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement updateRecKomp = null;
-
-		String updateRcptKo = "UPDATE receptkomponent SET recept_id = ?, raavare_id = ?, nom_netto = ?, tolerance = ? WHERE recept_id = ? AND raavare_id = ?";
-		
-		try {
-			updateRecKomp = conn.prepareStatement(updateRcptKo);
-
-			updateRecKomp.setInt(1, receptkomponent.getReceptId());
-			updateRecKomp.setInt(2, receptkomponent.getRaavareId());
-			updateRecKomp.setDouble(3, receptkomponent.getNomNetto());
-			updateRecKomp.setDouble(4,  receptkomponent.getTolerance());
-			updateRecKomp.setInt(5, receptkomponent.getReceptId());
-			updateRecKomp.setInt(6, receptkomponent.getRaavareId());
-			updateRecKomp.executeUpdate();
-		} catch (SQLException e) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (updateRecKomp != null) {
-				updateRecKomp.close();
-			}
-		}
-	}
-*/		
-//		Connector.doUpdate(
-//				"UPDATE receptkomponent SET  recept_id = " + receptkomponent.getReceptId() + ", raavare_id =  " + receptkomponent.getRaavareId() + 
-//				", nom_netto = " + receptkomponent.getNomNetto() + ", tolerance = " + receptkomponent.getTolerance() + " WHERE recept_id = " + receptkomponent.getReceptId() + " AND raavare_id = " + receptkomponent.getRaavareId()
-//		);
-//
-//	}
-
 }

@@ -8,10 +8,10 @@ function updateUser() {
 		data : JSON.stringify(myJSON),
 		contentType : 'application/json',
 		success: function(data) {
-			alert("update succesful");
+			alert(data);
 			toUpdate();
 		}, error: function(message) {
-			alert(message.responseText);
+			alert("user doesn't exist and so cannot update");
 		}
 	});
 	document.getElementById("myForm").reset();	//Clear the form
@@ -51,7 +51,7 @@ function loadUsers(){
 			{//Function to be performed when data is collected
 				iterateUsers(data);
 			}, error: function(message) {
-				alert("Users get failed");
+				alert(message.responseText);
 			}
 		});
 	});
@@ -69,7 +69,7 @@ function removeUser() {
 		contentType: 'application/json',
 		success : function(data)
 		{
-			alert("successful delete");
+			alert(data);
 			toDelete(); //currently called as there is no direct method for emptying a table, 
 			//and as such we reload the html
 		}, error: function(message) {

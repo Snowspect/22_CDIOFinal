@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import com.mysql.jdbc.Connection;
 
 import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.Raavare;
 import DTO.RaavareBatch;
 import daoimpl01917.MySQLRaavareBatchDAO;
@@ -32,8 +33,8 @@ public class RaavareBatchResources {
 	// inserts raavareBatch into database
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String submit(RaavareBatch ravBat) throws FoundException, DALException, SQLException
-	{		
+	public String submit(RaavareBatch ravBat) throws FoundException, DALException, SQLException, NotFoundException
+	{
 		String result = ravB.createRaavareBatch(ravBat);
 
 		System.out.println("Created raavareBatch: " + ravBat.toString());

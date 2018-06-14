@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.Recept;
 import DTO.ReceptKompDTO;
 import daoimpl01917.MySQLReceptDAO;
@@ -48,7 +49,7 @@ public class ReceptResources {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<ReceptKompDTO> getReceptRaavare(@PathParam("id") int id) throws DALException, SQLException
+	public ArrayList<ReceptKompDTO> getReceptRaavare(@PathParam("id") int id) throws DALException, SQLException, NotFoundException
 	{
 		return (ArrayList<ReceptKompDTO>) recptkomp.getReceptKompList(id);
 	}

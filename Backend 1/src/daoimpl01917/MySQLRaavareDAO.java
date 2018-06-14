@@ -19,32 +19,6 @@ import DTO.Raavare;
 
 public class MySQLRaavareDAO implements RaavareDAO{
 
-/*	@Override
-	public Raavare getRaavare(int raavareId) throws DALException, SQLException {
-		Connection conn = Connector.getConn();
-		PreparedStatement getraavare = null;
-		ResultSet rs = null;
-		Raavare raaDTO = null;
-		
-		String getraa = "SELECT * FROM raavare WHERE raavare_id = ?";
-		
-		try {
-			getraavare = conn.prepareStatement(getraa);
-			getraavare.setInt(1, raavareId);
-			rs = getraavare.executeQuery();
-			if (!rs.first()) throw new DALException("Raavaren med id:  " + raavareId + " findes ikke");
-			raaDTO = new Raavare (rs.getInt("raavare_id"), rs.getString("raavare_navn"), rs.getString("leverandoer"));
-		} catch (SQLException e ) {
-			//Do error handling
-			//TODO
-		} finally {
-			if (getraavare != null) {
-				getraavare.close();
-	        }
-		}
-		return raaDTO;
-	}
-*/
 	// Returns a list of Raavare containing all Raavare from the database.
 	@Override
 	public List<Raavare> getRaavareList() throws DALException, SQLException {
@@ -64,7 +38,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 				}
 		} catch (SQLException e ) {
 			System.out.println(e);
-			//TODO
+			e.printStackTrace();
 		} finally {
 			if (getRaavareList != null) {
 				getRaavareList.close();
@@ -89,16 +63,16 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			createRaavare.setString(3, raavare.getSupplier());
 			createRaavare.executeUpdate();
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			throw new FoundException("RaavareBatchen findes allerede");
+			throw new FoundException("Raavaren findes allerede - error code Rax01");
 		} catch (SQLException e ) {
 			System.out.println(e);
-			return "sql fejl ikke relateret til eksisterende id, tjek consol";
+			return "sql fejl ikke relateret til eksisterende id, tjek consol - Error code Rax02";
 		} finally {
 			if (createRaavare != null) {
 				createRaavare.close();
 	        }
 		}
-		return "raavare oprettet";
+		return "Created raavare";
 	}
 		
 
@@ -109,7 +83,6 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		Connection conn = Connector.getConn();
 		PreparedStatement updateRaavare = null;		
 				
-		System.out.println("heoo");
 		String updateRaa = "UPDATE raavare SET raavare_navn = ? , leverandoer = ? WHERE raavare_id = ?";
 		int NumberOfRows = -1;
 		try {
@@ -120,7 +93,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 			NumberOfRows = updateRaavare.executeUpdate();
 		} catch (SQLException e ) {
 				System.out.println(e);
-				return "sql fejl ikke relateret til mangel p� eksistens af raavare, se consol";
+				return "sql fejl ikke relateret til mangel paa eksistens af raavare, se consol - error code Rax04";
 		} finally {
 			if (updateRaavare != null) {
 				updateRaavare.close();
@@ -128,7 +101,7 @@ public class MySQLRaavareDAO implements RaavareDAO{
 		}
 		if(NumberOfRows == 0)
 		{
-			throw new NotFoundException("Raavaren eksisterer ikke");
+			throw new NotFoundException("Raavaren eksisterer ikke - Error code Rax05");
 		}
 		return "Raavaren er opdateret";
 	}

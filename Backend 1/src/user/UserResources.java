@@ -31,11 +31,11 @@ public class UserResources {
 	public String createUser(Personer per) throws FoundException, DALException, SQLException 
 	{		
 		System.out.println("foer createPersoner");
-		pers.createPersoner(per);
+		String result = pers.createPersoner(per);
 		
 		System.out.println("Created user: " + per.toString()); //LOGGER
 
-		String result = "Bruger tilføjet til databasen";
+//		String result = "Bruger tilføjet til databasen";
 		return result;
 	}
 
@@ -53,16 +53,16 @@ public class UserResources {
 	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	//placed inside the parameter list of deleteUser -- @PathParam("id")
-	public void deleteUser(@PathParam("id") int id) throws NotFoundException, DALException, SQLException
+	public String deleteUser(@PathParam("id") int id) throws NotFoundException, DALException, SQLException
 	{
-		pers.deletePersoner(id);
+		return pers.deletePersoner(id);
 	}
 
 	//Updates a user in database
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateUser(Personer per) throws NotFoundException, DALException, SQLException
+	public String updateUser(Personer per) throws NotFoundException, DALException, SQLException
 	{
-				pers.updatePersoner(per);
+		return pers.updatePersoner(per);
 	}
 }

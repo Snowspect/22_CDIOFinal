@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+import DTO.FoundException;
+import DTO.NotFoundException;
 import DTO.Produktbatch;
 import DTO.produktBatchKompDTO;
 import JDBC.Connector;
@@ -17,14 +21,13 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 
 	// Creates a Produktbatch in the database with the information from the DTO parameter.
 	@Override
-	public void createProduktBatch(Produktbatch pb) throws DALException, SQLException {		
+	public String createProduktBatch(Produktbatch pb) throws DALException, SQLException, FoundException, NotFoundException {		
 		Connection conn = Connector.getConn();
 		PreparedStatement createProBatch = null;
 		PreparedStatement createProBaKomponent = null;
 
 		String createProBa = "INSERT INTO produktbatch(pb_id, status, recept_id) VALUES " + 
 				"(?, ?, ?)";
-
 		try {
 			createProBatch = conn.prepareStatement(createProBa);
 
@@ -33,17 +36,25 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 			createProBatch.setInt(3, pb.getReceptId());
 			createProBatch.executeUpdate();
 		} catch (SQLException e) {
+			if(e.getErrorCode() == 1062)
+		        throw new FoundException("Produktbatch already exists - Pbx01"); 
+			if(e.getErrorCode() == 1452)
+				throw new NotFoundException("Recept id does not exists, please create it first - Pbx02");
+			
 			System.out.println(e);
+			e.printStackTrace();
+			return "unknown error, please contact technical department with error code Pbx03";
 		} finally {
 			if (createProBatch != null) {
 				createProBatch.close();
 			}
 		}
+		return "produktbatch created";
 		}
 
 	//Returns a list of ProduktBatch from the database.
 	@Override
-	public List<Produktbatch> getProduktBatchList() throws DALException, SQLException {
+	public List<Produktbatch> getProduktBatchList() throws DALException, SQLException, NotFoundException {
 		List<Produktbatch> list = new ArrayList<Produktbatch>();
 
 		Connection conn = Connector.getConn();
@@ -65,13 +76,6 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 			if (getProdBatchList != null) {
 				getProdBatchList.close();
 			}
-		}
-		MySQLProduktBatchKompDAO t = new MySQLProduktBatchKompDAO();
-		ArrayList<produktBatchKompDTO> tmpList = new ArrayList<>();
-		for(int i = 0; i < list.size(); i++)
-		{
-			tmpList = (ArrayList<produktBatchKompDTO>) t.getProduktBatchKompList(list.get(i).getPbId());
-			list.get(i).setProduktBatchKomponent(tmpList);
 		}
 		return list;
 	}

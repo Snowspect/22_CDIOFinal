@@ -47,7 +47,7 @@ function loadproduktKomp() {
 				iterateProductKompTable(data);
 			}, error : function(message)
 			{
-				alert("produkt batch komp fejlet");
+				alert(message.responseText);
 			}
 		})
 	})
@@ -65,7 +65,8 @@ function loadProducts(){
 			{//Function to be performed when data is collected
 				iterateProductTable(data);
 			}, error: function(message) {
-				alert("Produktbatch get failed");
+				alert(message.responseText);
+				alert("Produktbatch get failed - Error code Pbx04");
 			}
 		});
 	});
