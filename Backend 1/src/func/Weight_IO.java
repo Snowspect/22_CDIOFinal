@@ -139,7 +139,7 @@ public class Weight_IO {
 						System.out.println("Tryk OK ");
 
 						//Place tara
-						sendToServer.writeBytes("RM20 8 \"Placér venligst tara\"" + " \"\"" + " \"&3\"" + "\r\n");
+						sendToServer.writeBytes("RM20 8 \"Afvej venligst tara\"" + " \"\"" + " \"&3\"" + "\r\n");
 						responseFromServer = getFromServer.readLine();
 						System.out.println("11.5 " + responseFromServer);
 
@@ -178,7 +178,7 @@ public class Weight_IO {
 						} while (!raaBa.iterateRb(afv.getRbId()));
 
 						//Send text to weight
-						sendToServer.writeBytes("RM20 8 \"Placér venligst netto\"" + " \"\"" + " \"&3\"" + "\r\n");
+						sendToServer.writeBytes("RM20 8 \"Afvej venligst netto\"" + " \"\"" + " \"&3\"" + "\r\n");
 						responseFromServer = getFromServer.readLine();
 						System.out.println("15 " + responseFromServer);
 						
@@ -244,7 +244,7 @@ public class Weight_IO {
 				} else {
 					System.out.println("Ikke tilladt");
 
-					sendToServer.writeBytes("RM20 8 \"Er allerede færdig!\"" + " \"\"" + " \"&3\"" + "\r\n");
+					sendToServer.writeBytes("RM20 8 \"Er allerede faerdig!\"" + " \"\"" + " \"&3\"" + "\r\n");
 					responseFromServer = getFromServer.readLine();
 					System.out.println("22 " + responseFromServer);
 					responseFromServer = getFromServer.readLine();
@@ -252,7 +252,7 @@ public class Weight_IO {
 					run = false;
 				}
 				//Asks the user if they want to continue.
-				sendToServer.writeBytes("RM20 8 \"Fortsæt? Tryk 1\"" + " \"\"" + " \"&3\"" + "\r\n");
+				sendToServer.writeBytes("RM20 8 \"Fortsaet? Tryk 1\"" + " \"\"" + " \"&3\"" + "\r\n");
 				responseFromServer = getFromServer.readLine();
 				System.out.println(responseFromServer);
 				responseFromServer = getFromServer.readLine();
