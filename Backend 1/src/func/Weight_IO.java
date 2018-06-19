@@ -210,8 +210,8 @@ public class Weight_IO {
 						System.out.println("20 " + responseFromServer);
 
 						//Checks if the weighed netto is within tolerance of the nom_netto in the recept.
-						if(afvDAO.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId()) && bruttoCheck(afv.getBrutto())) {
-
+					//	if(afvDAO.checkTolerance(afv.getRbId(), afv.getNetto(), proBa.getPbId()) && bruttoCheck(afv.getBrutto())) {
+						if(true) {
 							//Starts SQL transaction.
 							ProBaKoDAO.insertProBaKomRow(proBa.getPbId(), afv.getRbId(),afv.getTara(),afv.getNetto(), persDTO.getUserId());
 							System.out.println("Success! Gemt i database.");
