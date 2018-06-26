@@ -1,5 +1,5 @@
 # CDIO_3_3
-Made with eclipse
+Weight simulator with REST API Backend and Database Mysql access
 
 
 ______________________________________________________________
